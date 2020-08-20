@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_cadastrados"
+            android:icon="@drawable/ic_baseline_receipt_24"
+            android:title="@string/menu_cadastrados" />
+        <item
+            android:id="@+id/nav_cadastro"
+            android:icon="@drawable/ic_baseline_assignment_24"
+            android:title="@string/menu_cadastro" />
+        <item
+            android:id="@+id/nav_mapa"
+            android:icon="@drawable/ic_baseline_map_24"
+            android:title="Mapa" />
+        <item
+            android:id="@+id/nav_enviado"
+            android:icon="@drawable/ic_baseline_backup_24"
+            android:title="Enviados"/>
+
+        <item
+            android:id="@+id/nav_suporte"
+            android:icon="@drawable/ic_baseline_help_24"
+            android:title="@string/menu_suporte" />
+    </group>
+</menu>

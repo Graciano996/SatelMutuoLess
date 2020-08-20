@@ -1,0 +1,349 @@
+<resources>
+    <string name="app_name">SatelProjetos</string>
+    <string name="title_activity_drawer">DrawerActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_cadastrados">Cadastrados</string>
+    <string name="menu_cadastro">Cadastro</string>
+    <string name="menu_suporte">Suporte</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_data">DataActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+    <string name="Default">Tipo</string>
+    <string-array name="Tipos">
+        <item>EXEMPLO 1</item>
+        <item>EXEMPLO 2</item>
+        <item>EXEMPLO 3</item>
+        <item>EXEMPLO 4</item>
+    </string-array>
+
+    <string-array name="vinteEQuatro">
+        <item>24H</item>
+        <item>1</item>
+        <item>1/2</item>
+        <item>1/4</item>
+    </string-array>
+
+    <string-array name="vegetacao">
+        <item>Dimensão</item>
+        <item>GRANDE PORTE</item>
+        <item>MÉDIO PORTE</item>
+        <item>PEQUENO PORTE</item>
+        <item>SEM VEGETAÇÃO</item>
+    </string-array>
+
+    <string-array name="Placa">
+        <item>Placa Ident.</item>
+        <item>SEM</item>
+        <item>COM</item>
+        <item>SEM/COM</item>
+        <item>SEM/SEM</item>
+    </string-array>
+
+    <string-array name="IluminacaoTipo">
+        <item>Tipo de Estrutura</item>
+        <item>BRAÇO</item>
+        <item>PÉTALA</item>
+        <item>SUPORTE</item>
+        <item>REFLETOR</item>
+    </string-array>
+
+    <string-array name="IluminacaoLampadaTipo">
+        <item>Tipo</item>
+        <item>VS 35</item>
+        <item>VS 50</item>
+        <item>VS 70</item>
+        <item>VS 80</item>
+        <item>VS 100</item>
+        <item>VS 125</item>
+        <item>VS 150</item>
+        <item>VS 250</item>
+        <item>VS 350</item>
+        <item>VS 400</item>
+        <item>VS 600</item>
+        <item> VS 700</item>
+        <item>VS 1000</item>
+        <item>VS 1500</item>
+        <item>VS 2000</item>
+        <item>VM 35</item>
+        <item>VM 50</item>
+        <item>VM 70</item>
+        <item>VM 80</item>
+        <item>VM 100</item>
+        <item>VM 125</item>
+        <item>VM 150</item>
+        <item>VM 250</item>
+        <item>VM 350</item>
+        <item>VM 400</item>
+        <item>VM 600</item>
+        <item>VM 700</item>
+        <item>VM 1000</item>
+        <item>VM 1500</item>
+        <item>VM 2000</item>
+        <item>VMET 35</item>
+        <item>VMET 70</item>
+        <item>VMET 100</item>
+        <item>VMET 150</item>
+        <item>VMET 250</item>
+        <item>VMET 400</item>
+        <item>VMET 1000</item>
+        <item>VMET 2000</item>
+        <item>LED 35</item>
+        <item>LED 50</item>
+        <item>LED 65</item>
+        <item>LED 70</item>
+        <item>LED 80</item>
+        <item>LED 100</item>
+        <item>LED 120</item>
+        <item>LED 125</item>
+        <item>LED 150</item>
+        <item>LED 200</item>
+        <item>LED 250</item>
+        <item>LED 350</item>
+        <item>LED 400</item>
+        <item>LED 600</item>
+        <item>LED 700</item>
+        <item>LED 1000</item>
+        <item>LED 1500</item>
+        <item>LED 2000</item>
+        <item>MISTA 150</item>
+        <item>MISTA 250</item>
+    </string-array>
+
+    <string-array name="AlturaCarga">
+        <item>Altura/Carga</item>
+        <item>9/200</item>
+        <item>9/400</item>
+        <item>11/200</item>
+        <item>11/400</item>
+        <item>11/600</item>
+        <item>11/1000</item>
+        <item>12/400</item>
+        <item>12/600</item>
+        <item>12/1000</item>
+        <item>15/200</item>
+        <item>SEM IDENTIFICAÇÃO</item>
+    </string-array>
+
+    <string-array name="TipoAtivacao">
+        <item>Tipo de Ativação</item>
+        <item>RELÉ</item>
+        <item>INTERRUPTOR</item>
+        <item>NÃO IDENTIFICADO</item>
+        <item>N/A</item>
+    </string-array>
+
+    <string-array name="RamalSubt">
+        <item>Ramal Substação</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="TipoCaboMutuo">
+        <item>Tipo de Cabo</item>
+        <item>FIBRA</item>
+        <item>CTP-APL</item>
+        <item>SEM INDENTIFICAÇÃO</item>
+    </string-array>
+
+    <string-array name="TrafoTrifasico">
+        <item>Trafo Trifásico(KVA)</item>
+        <item>0</item>
+        <item>15</item>
+        <item>30</item>
+        <item>45</item>
+        <item>75</item>
+        <item>112,5</item>
+        <item>150</item>
+        <item>225</item>
+        <item>300</item>
+    </string-array>
+
+    <string-array name="MutuoOcupantes">
+        <item>Quantidade de Ocupantes</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="TrafoMono">
+        <item>Trafo Mono(KVA)</item>
+        <item>0</item>
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>25</item>
+    </string-array>
+
+    <string-array name="EstadoArvore">
+        <item>Estado da Árvore</item>
+        <item>NÃO APLICA</item>
+        <item>SAUDÁVEL</item>
+        <item>MORTA</item>
+    </string-array>
+
+    <string-array name="LocalArvore">
+        <item>Local</item>
+        <item>NÃO APLICA</item>
+        <item>RUA</item>
+        <item>RESIDÊNCIA</item>
+    </string-array>
+
+    <string-array name="DistanciaBaixa">
+        <item>Distância Vegetação da Baixa Tensão</item>
+        <item>NÃO APLICA</item>
+        <item>ATÉ 100CM</item>
+        <item>DE 100CM A 200CM</item>
+        <item>MAIS DE 200CM</item>
+        <item>VEGETAÇÃO SOBRE O POSTE</item>
+        <item>EM CONTATO</item>
+    </string-array>
+
+    <string-array name="DistanciaMedia">
+        <item>Distância Vegetação da Média Tensão</item>
+        <item>NÃO APLICA</item>
+        <item>ATÉ 100CM</item>
+        <item>DE 100CM A 200CM</item>
+        <item>MAIS DE 200CM</item>
+        <item>VEGETAÇÃO SOBRE O POSTE</item>
+        <item>EM CONTATO</item>
+    </string-array>
+
+    <string-array name="TipoPoste">
+        <item>Tipo de Poste</item>
+        <item>DUPLO T</item>
+        <item>CC-CONCRETO CIRCULAR</item>
+        <item>MADEIRA</item>
+        <item>FIBRA</item>
+        <item>METÁLICO</item>
+        <item>ORNAMENTAL</item>
+    </string-array>
+
+    <string-array name="finalidade">
+        <item>Finalidade</item>
+        <item>NÃO IDENTIFICADO</item>
+        <item>INTERNET</item>
+        <item>TV A CABO</item>
+        <item>TELEFONIA</item>
+    </string-array>
+
+    <string-array name="ceans">
+        <item>CEANS</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="tar">
+        <item>TAR</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="reservaTec">
+        <item>RESERVA TEC</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+
+    <string-array name="backbone">
+        <item>BACKBONE</item>
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string name="cadastro_municipio">Município</string>
+    <string name="sessionId" />
+    <string-array name="list_municipios">
+        <item>Município</item>
+        <item>Alta Floresta d\'Oeste</item>
+        <item>Alto Alegre dos Parecis</item>
+        <item>Alto Paraíso</item>
+        <item>Alvorada d\'Oeste</item>
+        <item>Ariquemes</item>
+        <item>Buritis</item>
+        <item>Cabixi</item>
+        <item>Cacaulândia</item>
+        <item>Cacoal</item>
+        <item>Campo Novo de Rondônia</item>
+        <item>Candeias do Jamari</item>
+        <item>Castanheiras</item>
+        <item>Cerejeiras</item>
+        <item>Chupinguaia</item>
+        <item>Colorado do Oeste</item>
+        <item>Corumbiara</item>
+        <item>Costa Marques</item>
+        <item>Cujubim</item>
+        <item>Espigão d\'Oeste</item>
+        <item>Governador Jorge Teixeira</item>
+        <item>Guajará-Mirim</item>
+        <item>Itapuã do Oeste</item>
+        <item>Jaru</item>
+        <item>Ji-Paraná</item>
+        <item>Machadinho d\'Oeste</item>
+        <item>Ministro Andreazza</item>
+        <item>Mirante da Serra</item>
+        <item>Monte Negro</item>
+        <item>Nova Brasilândia d\'Oeste</item>
+        <item>Nova Mamoré</item>
+        <item>Nova União</item>
+        <item>Novo Horizonte do Oeste</item>
+        <item>Ouro Preto do Oeste</item>
+        <item>Parecis</item>
+        <item>Pimenta Bueno</item>
+        <item>Pimenteiras do Oeste</item>
+        <item>Porto Velho</item>
+        <item>Presidente Médici</item>
+        <item>Primavera de Rondônia</item>
+        <item>Rio Crespo</item>
+        <item>Rolim de Moura</item>
+        <item>Santa Luzia d\'Oeste</item>
+        <item>São Felipe d\'Oeste</item>
+        <item>São Francisco do Guaporé</item>
+        <item>São Miguel do Guaporé</item>
+        <item>Seringueiras</item>
+        <item>Teixeirópolis</item>
+        <item>Theobroma</item>
+        <item>Urupá</item>
+        <item>Vale do Anari</item>
+        <item>Vale do Paraíso</item>
+        <item>Vilhena</item>
+    </string-array>
+    <string name="title_activity_maps">Map</string>
+</resources>

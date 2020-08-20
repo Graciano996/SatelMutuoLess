@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "351076747235",
+    "firebase_url": "https://usomutuo-satel.firebaseio.com",
+    "project_id": "usomutuo-satel",
+    "storage_bucket": "usomutuo-satel.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:351076747235:android:a8f49efb5baff5c79742d6",
+        "android_client_info": {
+          "package_name": "com.example.satelprojetos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "351076747235-1m65d5png25dkv3c9npe4bm201kf9hrv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.satelprojetos",
+            "certificate_hash": "1dbcdc3b031c51bf5330b49516a0c35d750211cc"
+          }
+        },
+        {
+          "client_id": "351076747235-0q6j7cmgbjrghblhd0gmfde2ddsk5dod.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCy1xJwxQ3-TQjZSvgOt7D3iuZPXaNTgWQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "351076747235-0q6j7cmgbjrghblhd0gmfde2ddsk5dod.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

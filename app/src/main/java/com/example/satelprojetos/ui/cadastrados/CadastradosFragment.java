@@ -230,6 +230,15 @@ public class CadastradosFragment extends Fragment {
                     parmas.put("urlImagem", formularioLista.get(0).getUrlImagem());
                     parmas.put("urlImagem2", formularioLista.get(0).getUrlImagem2());
                     parmas.put("urlImagem3", formularioLista.get(0).getUrlImagem3());
+                    parmas.put("urlImagem4", formularioLista.get(0).getUrlImagem4());
+                    parmas.put("urlImagem5", formularioLista.get(0).getUrlImagem5());
+                    parmas.put("urlImagem6", formularioLista.get(0).getUrlImagem6());
+                    parmas.put("urlImagem7", formularioLista.get(0).getUrlImagem7());
+                    parmas.put("urlImagem8", formularioLista.get(0).getUrlImagem8());
+                    parmas.put("urlImagem9", formularioLista.get(0).getUrlImagem9());
+                    parmas.put("urlImagem10", formularioLista.get(0).getUrlImagem10());
+                    parmas.put("urlImagem11", formularioLista.get(0).getUrlImagem11());
+                    parmas.put("urlImagem12", formularioLista.get(0).getUrlImagem12());
                     parmas.put("data", formularioLista.get(0).getData());
                     parmas.put("municipio", formularioLista.get(0).getMunicipio());
                     parmas.put("endereco", formularioLista.get(0).getEndereco());
@@ -293,6 +302,8 @@ public class CadastradosFragment extends Fragment {
 
                     parmas.put("quantidadeCabos", formularioLista.get(0).getQuantidadeCabos());
                     parmas.put("tipoCabo", formularioLista.get(0).getTipoCabo());
+                    parmas.put("quantidadeCabosdois", formularioLista.get(0).getQuantidadeCabosdois());
+                    parmas.put("tipoCabodois", formularioLista.get(0).getTipoCabodois());
                     parmas.put("nomeEmpresa", formularioLista.get(0).getNome());
                     parmas.put("finalidade", formularioLista.get(0).getFinalidade());
                     parmas.put("ceans", formularioLista.get(0).getCeans());
@@ -303,60 +314,6 @@ public class CadastradosFragment extends Fragment {
                     parmas.put("descidaCabos", formularioLista.get(0).getDescidaCabos());
                     parmas.put("descricaoIrregularidade", formularioLista.get(0).getDescricaoIrregularidade());
                     parmas.put("observacaoMutuo", formularioLista.get(0).getObservacaoMutuo());
-
-                    parmas.put("quantidadeCabos2", formularioLista.get(0).getQuantidadeCabos2());
-                    parmas.put("tipoCabo2", formularioLista.get(0).getTipoCabo2());
-                    parmas.put("quantidadeCabos2dois", formularioLista.get(0).getQuantidadeCabos2dois());
-                    parmas.put("tipoCabo2dois", formularioLista.get(0).getTipoCabo2dois());
-                    parmas.put("nomeEmpresa2", formularioLista.get(0).getNome2());
-                    parmas.put("finalidade2", formularioLista.get(0).getFinalidade2());
-                    parmas.put("ceans2", formularioLista.get(0).getCeans2());
-                    parmas.put("tar2", formularioLista.get(0).getTar2());
-                    parmas.put("reservaTec2", formularioLista.get(0).getReservaTec2());
-                    parmas.put("backbone2", formularioLista.get(0).getBackbone2());
-                    parmas.put("placaIdent2", formularioLista.get(0).getPlacaIdent2());
-                    parmas.put("descidaCabos2", formularioLista.get(0).getDescidaCabos2());
-                    parmas.put("descricaoIrregularidade2", formularioLista.get(0).getDescricaoIrregularidade2());
-                    parmas.put("observacaoMutuo2", formularioLista.get(0).getObservacaoMutuo2());
-
-                    parmas.put("quantidadeCabos3", formularioLista.get(0).getQuantidadeCabos3());
-                    parmas.put("tipoCabo3", formularioLista.get(0).getTipoCabo3());
-                    parmas.put("nomeEmpresa3", formularioLista.get(0).getNome3());
-                    parmas.put("finalidade3", formularioLista.get(0).getFinalidade3());
-                    parmas.put("ceans3", formularioLista.get(0).getCeans3());
-                    parmas.put("tar3", formularioLista.get(0).getTar3());
-                    parmas.put("reservaTec3", formularioLista.get(0).getReservaTec3());
-                    parmas.put("backbone3", formularioLista.get(0).getBackbone3());
-                    parmas.put("placaIdent3", formularioLista.get(0).getPlacaIdent3());
-                    parmas.put("descidaCabos3", formularioLista.get(0).getDescidaCabos3());
-                    parmas.put("descricaoIrregularidade3", formularioLista.get(0).getDescricaoIrregularidade3());
-                    parmas.put("observacaoMutuo3", formularioLista.get(0).getObservacaoMutuo3());
-
-                    parmas.put("quantidadeCabos4", formularioLista.get(0).getQuantidadeCabos4());
-                    parmas.put("tipoCabo4", formularioLista.get(0).getTipoCabo4());
-                    parmas.put("nomeEmpresa4", formularioLista.get(0).getNome4());
-                    parmas.put("finalidade4", formularioLista.get(0).getFinalidade4());
-                    parmas.put("ceans4", formularioLista.get(0).getCeans4());
-                    parmas.put("tar4", formularioLista.get(0).getTar4());
-                    parmas.put("reservaTec4", formularioLista.get(0).getReservaTec4());
-                    parmas.put("backbone4", formularioLista.get(0).getBackbone4());
-                    parmas.put("placaIdent4", formularioLista.get(0).getPlacaIdent4());
-                    parmas.put("descidaCabos4", formularioLista.get(0).getDescidaCabos4());
-                    parmas.put("descricaoIrregularidade4", formularioLista.get(0).getDescricaoIrregularidade4());
-                    parmas.put("observacaoMutuo4", formularioLista.get(0).getObservacaoMutuo4());
-
-                    parmas.put("quantidadeCabos5", formularioLista.get(0).getQuantidadeCabos5());
-                    parmas.put("tipoCabo5", formularioLista.get(0).getTipoCabo5());
-                    parmas.put("nomeEmpresa5", formularioLista.get(0).getNome5());
-                    parmas.put("finalidade5", formularioLista.get(0).getFinalidade5());
-                    parmas.put("ceans5", formularioLista.get(0).getCeans5());
-                    parmas.put("tar5", formularioLista.get(0).getTar5());
-                    parmas.put("reservaTec5", formularioLista.get(0).getReservaTec5());
-                    parmas.put("backbone5", formularioLista.get(0).getBackbone5());
-                    parmas.put("placaIdent5", formularioLista.get(0).getPlacaIdent5());
-                    parmas.put("descidaCabos5", formularioLista.get(0).getDescidaCabos5());
-                    parmas.put("descricaoIrregularidade5", formularioLista.get(0).getDescricaoIrregularidade5());
-                    parmas.put("observacaoMutuo5", formularioLista.get(0).getObservacaoMutuo5());
 
                     parmas.put("vegetacao", formularioLista.get(0).getDimensaoVegetacao());
                     parmas.put("distanciaBaixa", formularioLista.get(0).getDistaciaBaixa());

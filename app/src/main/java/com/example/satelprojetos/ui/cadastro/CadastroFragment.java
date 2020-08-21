@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -101,22 +102,10 @@ public class CadastroFragment extends Fragment {
     private static final int IMAGE_PICK_CODE3 = 7;
     private static final int IMAGE_CAPTURE_CODE4 = 8;
     private static final int IMAGE_PICK_CODE4 = 9;
-    private static final int IMAGE_CAPTURE_CODE5 = 10;
-    private static final int IMAGE_PICK_CODE5 = 11;
-    private static final int IMAGE_CAPTURE_CODE6 = 12;
-    private static final int IMAGE_PICK_CODE6 = 13;
     private static final int IMAGE_CAPTURE_CODE7 = 14;
     private static final int IMAGE_PICK_CODE7 = 15;
-    private static final int IMAGE_CAPTURE_CODE8 = 16;
-    private static final int IMAGE_PICK_CODE8 = 17;
-    private static final int IMAGE_CAPTURE_CODE9 = 18;
-    private static final int IMAGE_PICK_CODE9 = 19;
     private static final int IMAGE_CAPTURE_CODE10 = 20;
     private static final int IMAGE_PICK_CODE10 = 21;
-    private static final int IMAGE_CAPTURE_CODE11 = 22;
-    private static final int IMAGE_PICK_CODE11 = 23;
-    private static final int IMAGE_CAPTURE_CODE12 = 24;
-    private static final int IMAGE_PICK_CODE12 = 25;
     private static final int IMAGE_CAPTURE_CODE13 = 26;
     private static final int IMAGE_PICK_CODE13 = 27;
     private static final int IMAGE_CAPTURE_CODE14 = 28;
@@ -127,30 +116,6 @@ public class CadastroFragment extends Fragment {
     private static final int IMAGE_PICK_CODE16 = 33;
     private static final int IMAGE_CAPTURE_CODE17 = 34;
     private static final int IMAGE_PICK_CODE17 = 35;
-    private static final int IMAGE_CAPTURE_CODE18 = 36;
-    private static final int IMAGE_PICK_CODE18 = 37;
-    private static final int IMAGE_CAPTURE_CODE19 = 38;
-    private static final int IMAGE_PICK_CODE19 = 39;
-    private static final int IMAGE_CAPTURE_CODE20 = 40;
-    private static final int IMAGE_PICK_CODE20 = 41;
-    private static final int IMAGE_CAPTURE_CODE21 = 42;
-    private static final int IMAGE_PICK_CODE21 = 43;
-    private static final int IMAGE_CAPTURE_CODE22 = 44;
-    private static final int IMAGE_PICK_CODE22 = 45;
-    private static final int IMAGE_CAPTURE_CODE23 = 46;
-    private static final int IMAGE_PICK_CODE23 = 47;
-    private static final int IMAGE_CAPTURE_CODE24 = 48;
-    private static final int IMAGE_PICK_CODE24 = 49;
-    private static final int IMAGE_CAPTURE_CODE25 = 50;
-    private static final int IMAGE_PICK_CODE25 = 51;
-    private static final int IMAGE_CAPTURE_CODE26 = 52;
-    private static final int IMAGE_PICK_CODE26 = 53;
-    private static final int IMAGE_CAPTURE_CODE27 = 54;
-    private static final int IMAGE_PICK_CODE27 = 55;
-    private static final int IMAGE_CAPTURE_CODE28 = 56;
-    private static final int IMAGE_PICK_CODE28 = 57;
-    private static final int IMAGE_CAPTURE_CODE29 = 58;
-    private static final int IMAGE_PICK_CODE29 = 59;
     private static final int IMAGE_CAPTURE_CODE30 = 60;
     private static final int IMAGE_PICK_CODE30 = 61;
     private LocationManager locationManager;
@@ -163,7 +128,7 @@ public class CadastroFragment extends Fragment {
     private EditText codigo, endereco, latitude, longitude, observacaoFisicas,
             observacaoAtivos, quantidadeLampada, quantidadeLampada2, quantidadeLampada3,
             potReator, potReator2, potReator3, quantidade24H, quantidade24H2, quantidade24H3,
-            observacaoVegetacao, observacaoIP,outros,
+            observacaoVegetacao, observacaoIP,outros, quantidadeOcupantes,
             quantidadeCabos, quantidadeCabosdois, nome,  descricaoIrregularidade, observacaoMutuo;
     private Spinner municipio, alturaCarga, tipoPoste, ipEstrutura, ipEstrutura2, ipEstrutura3, tipoPot,
             tipoPot2, tipoPot3, dimensaoVegetacao, ipAtivacao, ipAtivacao2, ipAtivacao3,
@@ -173,7 +138,7 @@ public class CadastroFragment extends Fragment {
     private CheckBox normal, ferragemExposta, fletido, danificado, abalroado, trincado, religador, medicao,
             chFusivel, chFaca, vinteEQuatro, vinteEQuatro2, vinteEQuatro3,
             ativos, chkTrafoTrifasico, chkTrafoMono, ip, ip2, ip3, chFusivelReligador, chBanco, mutuo,
-            placaIdentificadora, descidaCabos, quedaArvore;
+            placaIdentificadora, descidaCabos, quedaArvore, posteNovo;
     private Formulario formularioAtual;
     private Boolean controle = false;
     private TextView mutuo2, mutuo3, mutuo4, mutuo5;
@@ -184,23 +149,21 @@ public class CadastroFragment extends Fragment {
     private List<Boolean> novoU = new ArrayList<>();
     private Location localizacao;
     private String codigoEnergisa ="";
-    public int contadorIp = 1, contadorPan = 1, contadorAt = 1;
+    public int contadorIp = 1, contadorAt = 1, contadorAr = 1;
     public int codigoSetorUpload;
-    private ImageView foto, foto2, foto3, foto4, foto5, foto6, foto7, foto8, foto9, foto10, foto11,
-            foto12, foto13, foto14,foto15, foto16, foto17,foto30;
-    private Uri urlFoto, urlFoto2, urlFoto3, urlFoto4,urlFoto5, urlFoto6, urlFoto7, urlFoto8,
-            urlFoto9,urlFoto10, urlFoto11, urlFoto12, urlFoto13, urlFoto14, urlFoto15, urlFoto16, urlFoto17,urlFoto30;
+    private ImageView foto, foto2, foto3, foto4, foto7, foto10,foto13, foto14,foto15, foto16, foto17,foto30;
+    private Uri urlFoto, urlFoto2, urlFoto3, urlFoto4, urlFoto7,urlFoto10,
+            urlFoto13, urlFoto14, urlFoto15, urlFoto16, urlFoto17,urlFoto30;
 
-    private Bitmap imagem, imagem2, imagem3, imagem4,imagem5, imagem6, imagem7, imagem8, imagem9,
-            imagem10, imagem11, imagem12, imagem13, imagem14, imagem15, imagem16, imagem17,imagem30;
+    private Bitmap imagem, imagem2, imagem3, imagem4, imagem7,
+            imagem10, imagem13, imagem14, imagem15, imagem16, imagem17,imagem30;
 
-    private String imgPath, imgPath2, imgPath3,imgPath4,imgPath5, imgPath6, imgPath7, imgPath8,
-            imgPath9,imgPath10, imgPath11, imgPath12, imgPath13, imgPath14, imgPath15, imgPath16, imgPath17,imgPath30;
+    private String imgPath, imgPath2, imgPath3,imgPath4, imgPath7,imgPath10, imgPath13, imgPath14,
+            imgPath15, imgPath16, imgPath17,imgPath30;
 
     private Boolean novoUpload = false, novoUpload2 = false, novoUpload3 = false, novoUpload4 = false,
-            novoUpload5 = false, novoUpload6 = false, novoUpload7 = false, novoUpload8 = false, novoUpload9 = false,
-            novoUpload10 = false, novoUpload11 = false, novoUpload12 = false, novoUpload13 = false, novoUpload14 = false
-            , novoUpload15 = false, novoUpload16 = false, novoUpload17 = false, novoUpload30;
+             novoUpload7 = false, novoUpload10 = false, novoUpload13 = false, novoUpload14 = false
+            , novoUpload15 = false, novoUpload16 = false, novoUpload17 = false, novoUpload30 = false;
 
 
 
@@ -214,14 +177,8 @@ public class CadastroFragment extends Fragment {
         foto2 = root.findViewById(R.id.imageCadastroFoto2);
         foto3 = root.findViewById(R.id.imageCadastroFoto3);
         foto4 = root.findViewById(R.id.imageCadastroFoto4);
-        foto5 = root.findViewById(R.id.imageCadastroFoto5);
-        foto6 = root.findViewById(R.id.imageCadastroFoto6);
         foto7 = root.findViewById(R.id.imageCadastroFoto7);
-        foto8 = root.findViewById(R.id.imageCadastroFoto8);
-        foto9 = root.findViewById(R.id.imageCadastroFoto9);
         foto10 = root.findViewById(R.id.imageCadastroFoto10);
-        foto11 = root.findViewById(R.id.imageCadastroFoto11);
-        foto12 = root.findViewById(R.id.imageCadastroFoto12);
         foto13 = root.findViewById(R.id.imageCadastroFoto13);
         foto14 = root.findViewById(R.id.imageCadastroFoto14);
         foto15 = root.findViewById(R.id.imageCadastroFoto15);
@@ -283,13 +240,6 @@ public class CadastroFragment extends Fragment {
                     try {
                         addresses = geocoder.getFromLocation(localizacao.getLatitude(), localizacao.getLongitude(), 1);
                         endereco.setText(addresses.get(0).getAddressLine(0));
-                        String municipioTexto = addresses.get(0).getAdminArea();
-                        for (int i = 0; i < municipio.getAdapter().getCount(); i++) {
-                            municipio.setSelection(i);
-                            if (municipio.getSelectedItem().toString().equals(municipioTexto)) {
-                                break;
-                            }
-                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -297,7 +247,6 @@ public class CadastroFragment extends Fragment {
                 }
             }
         });
-
 
         storageReference = ConfiguracaoFirebase.getStorageReference();
         autentificacao = ConfiguracaoFirebase.getFirebaseAuth();
@@ -403,56 +352,6 @@ public class CadastroFragment extends Fragment {
                 ;
             }
         });
-        final Button btnFoto5 = root.findViewById(R.id.btnFoto5);
-        btnFoto5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (verificarPermissao()) {
-                    final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.LightDialogTheme);
-                    dialog.setPositiveButton("Tirar foto", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            chamarCamera(IMAGE_CAPTURE_CODE5);
-
-                        }
-                    });
-                    dialog.setNegativeButton("Escolher na galeria", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            chamarGaleria(IMAGE_PICK_CODE5);
-                        }
-                    });
-                    dialog.create();
-                    dialog.show();
-                }
-                ;
-            }
-        });
-        final Button btnFoto6 = root.findViewById(R.id.btnFoto6);
-        btnFoto6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (verificarPermissao()) {
-                    final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.LightDialogTheme);
-                    dialog.setPositiveButton("Tirar foto", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            chamarCamera(IMAGE_CAPTURE_CODE6);
-
-                        }
-                    });
-                    dialog.setNegativeButton("Escolher na galeria", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            chamarGaleria(IMAGE_PICK_CODE6);
-                        }
-                    });
-                    dialog.create();
-                    dialog.show();
-                }
-                ;
-            }
-        });
         final Button btnFoto7 = root.findViewById(R.id.btnFoto7);
         btnFoto7.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -478,57 +377,6 @@ public class CadastroFragment extends Fragment {
                 ;
             }
         });
-        final Button btnFoto8 = root.findViewById(R.id.btnFoto8);
-        btnFoto8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (verificarPermissao()) {
-                    final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.LightDialogTheme);
-                    dialog.setPositiveButton("Tirar foto", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            chamarCamera(IMAGE_CAPTURE_CODE8);
-
-                        }
-                    });
-                    dialog.setNegativeButton("Escolher na galeria", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            chamarGaleria(IMAGE_PICK_CODE8);
-                        }
-                    });
-                    dialog.create();
-                    dialog.show();
-                }
-                ;
-            }
-        });
-        final Button btnFoto9 = root.findViewById(R.id.btnFoto9);
-        btnFoto9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (verificarPermissao()) {
-                    final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.LightDialogTheme);
-                    dialog.setPositiveButton("Tirar foto", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            chamarCamera(IMAGE_CAPTURE_CODE9);
-
-                        }
-                    });
-                    dialog.setNegativeButton("Escolher na galeria", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            chamarGaleria(IMAGE_PICK_CODE9);
-                        }
-                    });
-                    dialog.create();
-                    dialog.show();
-                }
-                ;
-            }
-        });
-
         final Button btnFoto10 = root.findViewById(R.id.btnFoto10);
         btnFoto10.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -554,59 +402,6 @@ public class CadastroFragment extends Fragment {
                 ;
             }
         });
-
-        final Button btnFoto11 = root.findViewById(R.id.btnFoto11);
-        btnFoto11.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (verificarPermissao()) {
-                    final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.LightDialogTheme);
-                    dialog.setPositiveButton("Tirar foto", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            chamarCamera(IMAGE_CAPTURE_CODE11);
-
-                        }
-                    });
-                    dialog.setNegativeButton("Escolher na galeria", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            chamarGaleria(IMAGE_PICK_CODE11);
-                        }
-                    });
-                    dialog.create();
-                    dialog.show();
-                }
-                ;
-            }
-        });
-
-        final Button btnFoto12 = root.findViewById(R.id.btnFoto12);
-        btnFoto12.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (verificarPermissao()) {
-                    final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.LightDialogTheme);
-                    dialog.setPositiveButton("Tirar foto", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            chamarCamera(IMAGE_CAPTURE_CODE12);
-
-                        }
-                    });
-                    dialog.setNegativeButton("Escolher na galeria", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            chamarGaleria(IMAGE_PICK_CODE12);
-                        }
-                    });
-                    dialog.create();
-                    dialog.show();
-                }
-                ;
-            }
-        });
-
         final Button btnFoto13 = root.findViewById(R.id.btnFoto13);
         btnFoto13.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -768,10 +563,10 @@ public class CadastroFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (formularioAtual != null) {
-                    upload(imagem, imgPath, codigo, contadorPan, 1, true, "CS");
+                    upload(imagem, imgPath, codigo, contadorAt, 1, true, "CS");
                 } else {
                     Log.i("UPLOAD", "AAQUI");
-                    upload(imagem, imgPath, codigo, contadorPan, 1, false, "CS");
+                    upload(imagem, imgPath, codigo, contadorAt, 1, false, "CS");
                 }
             }
         });
@@ -781,10 +576,10 @@ public class CadastroFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (formularioAtual != null) {
-                    upload(imagem2, imgPath2, codigo, contadorPan, 2, true, "Pan");
+                    upload(imagem2, imgPath2, codigo, contadorAt, 2, true, "CS");
                 } else {
                     Log.i("UPLOAD", "AAQUI");
-                    upload(imagem2, imgPath2, codigo, contadorPan, 2, false, "Pan");
+                    upload(imagem2, imgPath2, codigo, contadorAt, 2, false, "CS");
                 }
             }
         });
@@ -794,10 +589,10 @@ public class CadastroFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (formularioAtual != null) {
-                    upload(imagem3, imgPath3, codigo, contadorPan, 3, true, "Pan");
+                    upload(imagem3, imgPath3, codigo, contadorAt, 3, true, "CS");
                 } else {
                     Log.i("UPLOAD", "AAQUI");
-                    upload(imagem3, imgPath3, codigo, contadorPan, 3, false, "Pan");
+                    upload(imagem3, imgPath3, codigo, contadorAt, 3, false, "CS");
                 }
             }
         });
@@ -814,30 +609,7 @@ public class CadastroFragment extends Fragment {
                 }
             }
         });
-        final Button btnUpload5 = root.findViewById(R.id.btnUpload5);
-        btnUpload5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (formularioAtual != null) {
-                    upload(imagem5, imgPath5, codigo, contadorIp, 5, true, "IP");
-                } else {
-                    Log.i("UPLOAD", "AAQUI");
-                    upload(imagem5, imgPath5, codigo, contadorIp, 5, false, "IP");
-                }
-            }
-        });
-        final Button btnUpload6 = root.findViewById(R.id.btnUpload6);
-        btnUpload6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (formularioAtual != null) {
-                    upload(imagem6, imgPath6, codigo, contadorIp, 6, true, "IP");
-                } else {
-                    Log.i("UPLOAD", "AAQUI");
-                    upload(imagem6, imgPath6, codigo, contadorIp, 6, false, "IP");
-                }
-            }
-        });
+
 
         final Button btnUpload7 = root.findViewById(R.id.btnUpload7);
         btnUpload7.setOnClickListener(new View.OnClickListener() {
@@ -852,31 +624,6 @@ public class CadastroFragment extends Fragment {
             }
         });
 
-        final Button btnUpload8 = root.findViewById(R.id.btnUpload8);
-        btnUpload8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (formularioAtual != null) {
-                    upload(imagem8, imgPath8, codigo, contadorIp, 8, true, "IP");
-                } else {
-                    Log.i("UPLOAD", "AAQUI");
-                    upload(imagem8, imgPath8, codigo, contadorIp, 8, false, "IP");
-                }
-            }
-        });
-        final Button btnUpload9 = root.findViewById(R.id.btnUpload9);
-        btnUpload9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (formularioAtual != null) {
-                    upload(imagem9, imgPath9, codigo, contadorIp, 9, true, "IP");
-                } else {
-                    Log.i("UPLOAD", "AAQUI");
-                    upload(imagem9, imgPath9, codigo, contadorIp, 9, false, "IP");
-                }
-            }
-        });
-
         final Button btnUpload10 = root.findViewById(R.id.btnUpload10);
         btnUpload10.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -886,32 +633,6 @@ public class CadastroFragment extends Fragment {
                 } else {
                     Log.i("UPLOAD", "AAQUI");
                     upload(imagem10, imgPath10, codigo, contadorIp, 10, false, "IP");
-                }
-            }
-        });
-
-        final Button btnUpload11 = root.findViewById(R.id.btnUpload11);
-        btnUpload11.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (formularioAtual != null) {
-                    upload(imagem11, imgPath11, codigo, contadorIp, 11, true, "IP");
-                } else {
-                    Log.i("UPLOAD", "AAQUI");
-                    upload(imagem11, imgPath11, codigo, contadorIp, 11, false, "IP");
-                }
-            }
-        });
-
-        final Button btnUpload12 = root.findViewById(R.id.btnUpload12);
-        btnUpload12.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (formularioAtual != null) {
-                    upload(imagem12, imgPath12, codigo, contadorIp, 12, true, "IP");
-                } else {
-                    Log.i("UPLOAD", "AAQUI");
-                    upload(imagem12, imgPath12, codigo, contadorIp, 12, false, "IP");
                 }
             }
         });
@@ -985,10 +706,10 @@ public class CadastroFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (formularioAtual != null) {
-                    upload(imagem30, imgPath30, codigo, contadorAt, 30, true, "CS");
+                    upload(imagem30, imgPath30, codigo, contadorAr, 30, true, "Ar");
                 } else {
                     Log.i("UPLOAD", "AAQUI");
-                    upload(imagem30, imgPath30, codigo, contadorAt, 30, false, "CS");
+                    upload(imagem30, imgPath30, codigo, contadorAr, 30, false, "Ar");
                 }
             }
         });
@@ -1120,25 +841,18 @@ public class CadastroFragment extends Fragment {
 
         //MUTUO
         mutuo = root.findViewById(R.id.chkCadastroMutuo);
-
-
+        quantidadeOcupantes = root.findViewById(R.id.textCadastroQuantidadeMutuo);
         quantidadeCabos = root.findViewById(R.id.textCadastroMutuoQuantidadeCabos);
         quantidadeCabosdois = root.findViewById(R.id.textCadastroMutuoQuantidadeCabosdois);
         tipoCabo = root.findViewById(R.id.spinCadastroMutuoTipoCabo);
         tipoCabodois = root.findViewById(R.id.spinCadastroMutuoTipoCabodois);
-        tipoCabo.setEnabled(false);
-        tipoCabodois.setEnabled(false);
+
         nome = root.findViewById(R.id.textCadastroNome);
         finalidade = root.findViewById(R.id.spinCadastroFinalidade);
-        finalidade.setEnabled(false);
         ceans = root.findViewById(R.id.spinCadastroCeans);
-        ceans.setEnabled(false);
         tar = root.findViewById(R.id.spinCadastroTar);
-        tar.setEnabled(false);
         reservaTec = root.findViewById(R.id.spinCadastroReservaTec);
-        reservaTec.setEnabled(false);
         backbone = root.findViewById(R.id.spinCadastroBackbone);
-        backbone.setEnabled(false);
         placaIdentificadora = root.findViewById(R.id.chkCadastroPlaca);
         descidaCabos = root.findViewById(R.id.chkCadastroDescidaCabos);
         descricaoIrregularidade = root.findViewById(R.id.textCadastroDescricao);
@@ -1166,23 +880,176 @@ public class CadastroFragment extends Fragment {
             assert this.getArguments() != null;
             formularioAtual = (Formulario) this.getArguments().getSerializable("formularioSelecionado");
             if (formularioAtual != null) {
+                posteNovo = root.findViewById(R.id.chkCadastroPosteNovo);
+                posteNovo.setVisibility(View.VISIBLE);
+                posteNovo.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        if(formularioAtual.getCodigo().equals(codigo.getText().toString())){
+                            Toast.makeText(requireActivity().getApplicationContext(), "Um novo poste precisa de um código novo", Toast.LENGTH_SHORT).show();
+                            posteNovo.setChecked(false);
+                        }else {
+                            final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.LightDialogTheme);
+                            dialog.setMessage("Deseja realmente cadastrar um novo poste?");
+                            dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    contadorIp = 1;
+                                    contadorAr =1;
+                                    contadorAt = 1;
+                                    Button btnNovoPoste = root.findViewById(R.id.btnNovoPoste);
+                                    btnNovoPoste.setText("Novo Poste");
+                                    foto.setImageResource(R.drawable.ic_menu_camera);
+                                    foto2.setImageResource(R.drawable.ic_menu_camera);
+                                    foto3.setImageResource(R.drawable.ic_menu_camera);
+                                    foto4.setImageResource(R.drawable.ic_menu_camera);
+                                    foto7.setImageResource(R.drawable.ic_menu_camera);
+                                    foto10.setImageResource(R.drawable.ic_menu_camera);
+                                    foto13.setImageResource(R.drawable.ic_menu_camera);
+                                    foto14.setImageResource(R.drawable.ic_menu_camera);
+                                    foto15.setImageResource(R.drawable.ic_menu_camera);
+                                    foto16.setImageResource(R.drawable.ic_menu_camera);
+                                    foto17.setImageResource(R.drawable.ic_menu_camera);
+                                    foto30.setImageResource(R.drawable.ic_menu_camera);
+                                }
+                            });
+                            dialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    posteNovo.setChecked(false);
+
+                                }
+                            });
+                            dialog.create();
+                            dialog.show();
+                        }
+                    }
+                });
+
                 //LOCALIZAÇÃO
                 controle = true;
+                contadorAr = formularioAtual.getContadorAr();
+                contadorAt = formularioAtual.getContadorAt();
+                contadorIp = formularioAtual.getContadorIp();
                 codigo.setText(formularioAtual.getCodigo());
+
                 imgPath = formularioAtual.getCaminhoImagem();
-                foto.setImageBitmap(BitmapFactory.decodeFile(imgPath));
-                imagem = BitmapFactory.decodeFile(imgPath);
+                if(imgPath == null || imgPath.equals("")){
+
+                }else {
+                    foto.setImageBitmap(BitmapFactory.decodeFile(imgPath));
+                    imagem = BitmapFactory.decodeFile(imgPath);
+                }
                 imgPath2 = formularioAtual.getCaminhoImagem2();
-                foto2.setImageBitmap(BitmapFactory.decodeFile(imgPath2));
-                imagem2 = BitmapFactory.decodeFile(imgPath2);
+                if(imgPath2 == null || imgPath2.equals("")){
+
+                }else {
+                    imgPath2 = formularioAtual.getCaminhoImagem2();
+                    foto2.setImageBitmap(BitmapFactory.decodeFile(imgPath2));
+                    imagem2 = BitmapFactory.decodeFile(imgPath2);
+                }
+
                 imgPath3 = formularioAtual.getCaminhoImagem3();
-                foto3.setImageBitmap(BitmapFactory.decodeFile(imgPath3));
-                imagem3 = BitmapFactory.decodeFile(imgPath3);
+                if(imgPath3 == null || imgPath3.equals("")){
+
+                }else {
+                    imgPath3 = formularioAtual.getCaminhoImagem3();
+                    foto3.setImageBitmap(BitmapFactory.decodeFile(imgPath3));
+                    imagem3 = BitmapFactory.decodeFile(imgPath3);
+                }
+
+                imgPath4 = formularioAtual.getCaminhoImagem4();
+                if(imgPath4 == null || imgPath4.equals("")){
+
+                }else {
+                    imgPath4 = formularioAtual.getCaminhoImagem4();
+                    foto4.setImageBitmap(BitmapFactory.decodeFile(imgPath4));
+                    imagem4 = BitmapFactory.decodeFile(imgPath4);
+                }
+
+                imgPath7 = formularioAtual.getCaminhoImagem5();
+                if(imgPath7 == null || imgPath7.equals("")){
+
+                }else {
+                    imgPath7 = formularioAtual.getCaminhoImagem5();
+                    foto7.setImageBitmap(BitmapFactory.decodeFile(imgPath7));
+                    imagem7 = BitmapFactory.decodeFile(imgPath7);
+                }
+
+                imgPath10 = formularioAtual.getCaminhoImagem6();
+                if(imgPath10 == null || imgPath10.equals("")){
+
+                }else {
+                    imgPath10 = formularioAtual.getCaminhoImagem6();
+                    foto10.setImageBitmap(BitmapFactory.decodeFile(imgPath10));
+                    imagem10 = BitmapFactory.decodeFile(imgPath10);
+                }
+
+                imgPath13 = formularioAtual.getCaminhoImagem7();
+                if(imgPath13 == null || imgPath13.equals("")){
+
+                }else {
+                    imgPath13 = formularioAtual.getCaminhoImagem7();
+                    foto13.setImageBitmap(BitmapFactory.decodeFile(imgPath13));
+                    imagem13 = BitmapFactory.decodeFile(imgPath13);
+                }
+
+
+                if(imgPath14 == null || imgPath14.equals("")){
+                    imgPath14 = formularioAtual.getCaminhoImagem8();
+                }else {
+                    imgPath14 = formularioAtual.getCaminhoImagem8();
+                    foto14.setImageBitmap(BitmapFactory.decodeFile(imgPath14));
+                    imagem14 = BitmapFactory.decodeFile(imgPath14);
+                }
+
+                imgPath15 = formularioAtual.getCaminhoImagem9();
+                if(imgPath15 == null || imgPath15.equals("")){
+
+                }else {
+                    imgPath15 = formularioAtual.getCaminhoImagem9();
+                    foto15.setImageBitmap(BitmapFactory.decodeFile(imgPath15));
+                    imagem15 = BitmapFactory.decodeFile(imgPath15);
+                }
+
+                imgPath16 = formularioAtual.getCaminhoImagem10();
+                if(imgPath16 == null || imgPath16.equals("")){
+
+                }else {
+                    imgPath16 = formularioAtual.getCaminhoImagem10();
+                    foto16.setImageBitmap(BitmapFactory.decodeFile(imgPath16));
+                    imagem16 = BitmapFactory.decodeFile(imgPath16);
+                }
+
+                imgPath17 = formularioAtual.getCaminhoImagem11();
+                if(imgPath17 == null || imgPath17.equals("")){
+
+                }else {
+                    imgPath17 = formularioAtual.getCaminhoImagem11();
+                    foto17.setImageBitmap(BitmapFactory.decodeFile(imgPath17));
+                    imagem17 = BitmapFactory.decodeFile(imgPath17);
+                }
+
+                imgPath30 = formularioAtual.getCaminhoImagem12();
+                if(imgPath30 == null || imgPath30.equals("")){
+
+                }else {
+                    imgPath30 = formularioAtual.getCaminhoImagem12();
+                    foto30.setImageBitmap(BitmapFactory.decodeFile(imgPath30));
+                    imagem30 = BitmapFactory.decodeFile(imgPath30);
+                }
                 endereco.setText(formularioAtual.getEndereco());
                 urlFoto = Uri.parse(formularioAtual.getUrlImagem());
-                Log.i("TAG", urlFoto.toString());
                 urlFoto2 = Uri.parse(formularioAtual.getUrlImagem2());
                 urlFoto3 = Uri.parse(formularioAtual.getUrlImagem3());
+                urlFoto4 = Uri.parse(formularioAtual.getUrlImagem4());
+                urlFoto7 = Uri.parse(formularioAtual.getUrlImagem5());
+                urlFoto10 = Uri.parse(formularioAtual.getUrlImagem6());
+                urlFoto13 = Uri.parse(formularioAtual.getUrlImagem7());
+                urlFoto14 = Uri.parse(formularioAtual.getUrlImagem8());
+                urlFoto15 = Uri.parse(formularioAtual.getUrlImagem9());
+                urlFoto16 = Uri.parse(formularioAtual.getUrlImagem10());
+                urlFoto17 = Uri.parse(formularioAtual.getUrlImagem11());
+                urlFoto30 = Uri.parse(formularioAtual.getUrlImagem12());
                 if (formularioAtual.getMunicipio().equals("-")) {
                     municipio.setSelection(0);
                 } else {
@@ -1259,6 +1126,9 @@ public class CadastroFragment extends Fragment {
                     vinteEQuatro.setVisibility(View.VISIBLE);
                     quantidade24H.setVisibility(View.VISIBLE);
                     ip2.setVisibility(View.VISIBLE);
+                    foto4.setVisibility(View.VISIBLE);
+                    btnFoto4.setVisibility(View.VISIBLE);
+                    btnUpload4.setVisibility(View.VISIBLE);
                     if (formularioAtual.getIpEstrutura().equals("-")) {
                         ipEstrutura.setSelection(0);
                     } else {
@@ -1312,9 +1182,13 @@ public class CadastroFragment extends Fragment {
                         ipAtivacao2.setVisibility(View.VISIBLE);
                         vinteEQuatro2.setVisibility(View.VISIBLE);
                         quantidade24H2.setVisibility(View.VISIBLE);
+                        foto7.setVisibility(View.VISIBLE);
+                        btnFoto7.setVisibility(View.VISIBLE);
+                        btnUpload7.setVisibility(View.VISIBLE);
                         ip3.setVisibility(View.VISIBLE);
                         if (formularioAtual.getIpEstrutura2().equals("-")) {
                             ipEstrutura2.setSelection(0);
+
                         } else {
                             for (int i = 0; i < ipEstrutura2.getAdapter().getCount(); i++) {
                                 ipEstrutura2.setSelection(i);
@@ -1366,6 +1240,9 @@ public class CadastroFragment extends Fragment {
                             ipAtivacao3.setVisibility(View.VISIBLE);
                             vinteEQuatro3.setVisibility(View.VISIBLE);
                             quantidade24H3.setVisibility(View.VISIBLE);
+                            foto10.setVisibility(View.VISIBLE);
+                            btnFoto10.setVisibility(View.VISIBLE);
+                            btnUpload10.setVisibility(View.VISIBLE);
                             if (formularioAtual.getIpEstrutura3().equals("-")) {
                                 ipEstrutura3.setSelection(0);
                             } else {
@@ -1449,6 +1326,12 @@ public class CadastroFragment extends Fragment {
                     chFusivelReligador.setVisibility(View.VISIBLE);
                     ramalSubt.setVisibility(View.VISIBLE);
                     outros.setVisibility(View.VISIBLE);
+                    foto13.setVisibility(View.VISIBLE);
+                    btnFoto13.setVisibility(View.VISIBLE);
+                    btnUpload13.setVisibility(View.VISIBLE);
+                    foto14.setVisibility(View.VISIBLE);
+                    btnFoto14.setVisibility(View.VISIBLE);
+                    btnUpload14.setVisibility(View.VISIBLE);
                 }
                 if (formularioAtual.getChkTrafoTrifasico().equals("Sim")) {
                     chkTrafoTrifasico.setChecked(true);
@@ -1511,8 +1394,36 @@ public class CadastroFragment extends Fragment {
                 //MUTUO
                 if (formularioAtual.getMutuo().equals("Sim")) {
                     mutuo.setChecked(true);
+                    foto15.setVisibility(View.VISIBLE);
+                    btnFoto15.setVisibility(View.VISIBLE);
+                    btnUpload15.setVisibility(View.VISIBLE);
+
+                    foto16.setVisibility(View.VISIBLE);
+                    btnFoto16.setVisibility(View.VISIBLE);
+                    btnUpload16.setVisibility(View.VISIBLE);
+
+                    foto17.setVisibility(View.VISIBLE);
+                    btnFoto17.setVisibility(View.VISIBLE);
+                    btnUpload17.setVisibility(View.VISIBLE);
+                    quantidadeOcupantes.setVisibility(View.VISIBLE);
+                    quantidadeCabos.setVisibility(View.VISIBLE);
+                    tipoCabo.setVisibility(View.VISIBLE);
+                    quantidadeCabosdois.setVisibility(View.VISIBLE);
+                    tipoCabodois.setVisibility(View.VISIBLE);
+                    nome.setVisibility(View.VISIBLE);
+                    finalidade.setVisibility(View.VISIBLE);
+                    ceans.setVisibility(View.VISIBLE);
+                    tar.setVisibility(View.VISIBLE);
+                    reservaTec.setVisibility(View.VISIBLE);
+                    backbone.setVisibility(View.VISIBLE);
+                    placaIdentificadora.setVisibility(View.VISIBLE);
+                    descidaCabos.setVisibility(View.VISIBLE);
+                    descricaoIrregularidade.setVisibility(View.VISIBLE);
+
+
                 }
                 //1
+                quantidadeOcupantes.setText(formularioAtual.getQuantidadeOcupantes());
                 quantidadeCabos.setText(formularioAtual.getQuantidadeCabos());
                 if (formularioAtual.getTipoCabo().equals("-")) {
                     tipoCabo.setSelection(0);
@@ -1520,6 +1431,17 @@ public class CadastroFragment extends Fragment {
                     for (int i = 0; i < tipoCabo.getAdapter().getCount(); i++) {
                         tipoCabo.setSelection(i);
                         if (tipoCabo.getSelectedItem().toString().equals(formularioAtual.getTipoCabo())) {
+                            break;
+                        }
+                    }
+                }
+                quantidadeCabosdois.setText(formularioAtual.getQuantidadeCabosdois());
+                if (formularioAtual.getTipoCabodois().equals("-")) {
+                    tipoCabodois.setSelection(0);
+                } else {
+                    for (int i = 0; i < tipoCabodois.getAdapter().getCount(); i++) {
+                        tipoCabodois.setSelection(i);
+                        if (tipoCabodois.getSelectedItem().toString().equals(formularioAtual.getTipoCabodois())) {
                             break;
                         }
                     }
@@ -1668,22 +1590,60 @@ public class CadastroFragment extends Fragment {
                             } else {
                                 formulario.setCaminhoImagem("");
                             }
-                            Log.i("TAG2", imgPath2);
                             if (imgPath2 != null) {
                                 formulario.setCaminhoImagem2(imgPath2);
                             } else {
                                 formulario.setCaminhoImagem2("");
                             }
-                            Log.i("TAG3", imgPath3);
                             if (imgPath3 != null) {
                                 formulario.setCaminhoImagem3(imgPath3);
                             } else {
                                 formulario.setCaminhoImagem3("");
                             }
-                            try {
-                                Log.i("URL", urlFoto.toString());
-                            } catch (Exception e) {
-
+                            if (imgPath4 != null) {
+                                formulario.setCaminhoImagem4(imgPath4);
+                            } else {
+                                formulario.setCaminhoImagem4("");
+                            }
+                            if (imgPath7 != null) {
+                                formulario.setCaminhoImagem5(imgPath7);
+                            } else {
+                                formulario.setCaminhoImagem5("");
+                            }
+                            if (imgPath10 != null) {
+                                formulario.setCaminhoImagem6(imgPath10);
+                            } else {
+                                formulario.setCaminhoImagem6("");
+                            }
+                            if (imgPath13 != null) {
+                                formulario.setCaminhoImagem7(imgPath13);
+                            } else {
+                                formulario.setCaminhoImagem7("");
+                            }
+                            if (imgPath14 != null) {
+                                formulario.setCaminhoImagem8(imgPath14);
+                            } else {
+                                formulario.setCaminhoImagem8("");
+                            }
+                            if (imgPath15 != null) {
+                                formulario.setCaminhoImagem9(imgPath15);
+                            } else {
+                                formulario.setCaminhoImagem9("");
+                            }
+                            if (imgPath16 != null) {
+                                formulario.setCaminhoImagem10(imgPath16);
+                            } else {
+                                formulario.setCaminhoImagem10("");
+                            }
+                            if (imgPath17 != null) {
+                                formulario.setCaminhoImagem11(imgPath17);
+                            } else{
+                                formulario.setCaminhoImagem11("");
+                            }
+                            if (imgPath30 != null) {
+                                formulario.setCaminhoImagem12(imgPath30);
+                            } else {
+                                formulario.setCaminhoImagem12("");
                             }
                             if (!novoUpload) {
                                 urlFoto = null;
@@ -1694,26 +1654,116 @@ public class CadastroFragment extends Fragment {
                             if (!novoUpload3) {
                                 urlFoto3 = null;
                             }
-                            if ((urlFoto == null) || ((urlFoto.toString()).equals(""))) {
+                            if (!novoUpload4) {
+                                urlFoto4 = null;
+                            }
+                            if (!novoUpload7) {
+                                urlFoto7 = null;
+                            }
+                            if (!novoUpload10) {
+                                urlFoto10 = null;
+                            }
+                            if (!novoUpload13) {
+                                urlFoto13 = null;
+                            }
+                            if (!novoUpload14) {
+                                urlFoto14 = null;
+                            }
+                            if (!novoUpload15) {
+                                urlFoto15 = null;
+                            }
+                            if (!novoUpload16) {
+                                urlFoto16 = null;
+                            }
+                            if (!novoUpload17) {
+                                urlFoto17 = null;
+                            }
+                            if (!novoUpload30) {
+                                urlFoto30 = null;
+                            }
+                            if((urlFoto == null) || ((urlFoto.toString()).equals(""))) {
                                 formulario.setUrlImagem("");
                                 formulario.setColor(String.valueOf(R.color.design_default_color_error));
-                            } else {
+                            }else {
                                 formulario.setUrlImagem(urlFoto.toString());
                                 formulario.setColor(String.valueOf(R.color.colorPrimary));
                             }
-                            if ((urlFoto2 == null) || ((urlFoto2.toString()).equals(""))) {
+                            if((urlFoto2 == null) || ((urlFoto2.toString()).equals(""))) {
                                 formulario.setUrlImagem2("");
                                 formulario.setColor2(String.valueOf(R.color.design_default_color_error));
-                            } else {
+                            }else {
                                 formulario.setUrlImagem2(urlFoto2.toString());
                                 formulario.setColor2(String.valueOf(R.color.colorPrimary));
                             }
-                            if ((urlFoto3 == null) || ((urlFoto3.toString()).equals(""))) {
+                            if((urlFoto3 == null) || ((urlFoto3.toString()).equals(""))) {
                                 formulario.setUrlImagem3("");
                                 formulario.setColor3(String.valueOf(R.color.design_default_color_error));
-                            } else {
+                            }else {
                                 formulario.setUrlImagem3(urlFoto3.toString());
                                 formulario.setColor3(String.valueOf(R.color.colorPrimary));
+                            }
+                            if((urlFoto4 == null) || ((urlFoto4.toString()).equals(""))) {
+                                formulario.setUrlImagem4("");
+                                formulario.setColor4(String.valueOf(R.color.design_default_color_error));
+                            }else {
+                                formulario.setUrlImagem4(urlFoto4.toString());
+                                formulario.setColor4(String.valueOf(R.color.colorPrimary));
+                            }
+                            if((urlFoto7 == null) || ((urlFoto7.toString()).equals(""))) {
+                                formulario.setUrlImagem5("");
+                                formulario.setColor5(String.valueOf(R.color.design_default_color_error));
+                            }else {
+                                formulario.setUrlImagem5(urlFoto7.toString());
+                                formulario.setColor5(String.valueOf(R.color.colorPrimary));
+                            }
+                            if((urlFoto10 == null) || ((urlFoto10.toString()).equals(""))) {
+                                formulario.setUrlImagem6("");
+                                formulario.setColor6(String.valueOf(R.color.design_default_color_error));
+                            }else {
+                                formulario.setUrlImagem6(urlFoto10.toString());
+                                formulario.setColor6(String.valueOf(R.color.colorPrimary));
+                            }
+                            if((urlFoto13 == null) || ((urlFoto13.toString()).equals(""))) {
+                                formulario.setUrlImagem7("");
+                                formulario.setColor7(String.valueOf(R.color.design_default_color_error));
+                            }else {
+                                formulario.setUrlImagem7(urlFoto13.toString());
+                                formulario.setColor7(String.valueOf(R.color.colorPrimary));
+                            }
+                            if((urlFoto14 == null) || ((urlFoto14.toString()).equals(""))) {
+                                formulario.setUrlImagem8("");
+                                formulario.setColor8(String.valueOf(R.color.design_default_color_error));
+                            }else {
+                                formulario.setUrlImagem8(urlFoto14.toString());
+                                formulario.setColor8(String.valueOf(R.color.colorPrimary));
+                            }
+                            if((urlFoto15 == null) || ((urlFoto15.toString()).equals(""))) {
+                                formulario.setUrlImagem9("");
+                                formulario.setColor9(String.valueOf(R.color.design_default_color_error));
+                            }else {
+                                formulario.setUrlImagem9(urlFoto15.toString());
+                                formulario.setColor9(String.valueOf(R.color.colorPrimary));
+                            }
+                            if((urlFoto16 == null) || ((urlFoto16.toString()).equals(""))) {
+                                formulario.setUrlImagem10("");
+                                formulario.setColor10(String.valueOf(R.color.design_default_color_error));
+                            }else {
+                                formulario.setUrlImagem10(urlFoto16.toString());
+                                formulario.setColor10(String.valueOf(R.color.colorPrimary));
+                            }
+                            if((urlFoto17 == null) || ((urlFoto17.toString()).equals(""))) {
+                                formulario.setUrlImagem11("");
+                                formulario.setColor11(String.valueOf(R.color.design_default_color_error));
+                            }else {
+                                formulario.setUrlImagem11(urlFoto17.toString());
+                                formulario.setColor11(String.valueOf(R.color.colorPrimary));
+                            }
+                            if((urlFoto30 == null) || ((urlFoto30.toString()).equals(""))) {
+                                formulario.setUrlImagem12("");
+                                formulario.setColor12(String.valueOf(R.color.design_default_color_error));
+                            }else {
+                                formulario.setUrlImagem12(urlFoto30.toString());
+                                formulario.setColor12(String.valueOf(R.color.colorPrimary));
                             }
                             //LOCALIZAÇÂO
 
@@ -1874,9 +1924,11 @@ public class CadastroFragment extends Fragment {
                             } else {
                                 formulario.setMutuo("Não");
                             }
-
+                            formulario.setQuantidadeOcupantes(Objects.requireNonNull(quantidadeOcupantes.getText()).toString());
                             formulario.setQuantidadeCabos(Objects.requireNonNull(quantidadeCabos.getText()).toString());
                             setLista(formulario, tipoCabo, "tipoCabo");
+                            formulario.setQuantidadeCabosdois(Objects.requireNonNull(quantidadeCabosdois.getText()).toString());
+                            setLista(formulario, tipoCabodois, "tipoCabodois");
                             formulario.setNome(Objects.requireNonNull(nome.getText()).toString());
                             setLista(formulario, finalidade, "finalidade");
                             setLista(formulario, ceans, "ceans");
@@ -1910,7 +1962,9 @@ public class CadastroFragment extends Fragment {
                             }
                             setLista(formulario, localArvore, "localArvore");
                             formulario.setObservacaoVegetacao(Objects.requireNonNull(observacaoVegetacao.getText()).toString());
-
+                            formulario.setContadorAr(contadorAr);
+                            formulario.setContadorAt(contadorAt);
+                            formulario.setContadorIp(contadorIp);
                             String thisDayText, thisMonthText, thisYearText;
                             //region Inicialização da data
                             Calendar calendar = Calendar.getInstance();
@@ -2099,12 +2153,6 @@ public class CadastroFragment extends Fragment {
                     foto4.setVisibility(View.GONE);
                     btnFoto4.setVisibility(View.GONE);
                     btnUpload4.setVisibility(View.GONE);
-                    foto5.setVisibility(View.GONE);
-                    btnFoto5.setVisibility(View.GONE);
-                    btnUpload5.setVisibility(View.GONE);
-                    foto6.setVisibility(View.GONE);
-                    btnFoto6.setVisibility(View.GONE);
-                    btnUpload6.setVisibility(View.GONE);
 
                     ipEstrutura.setVisibility(View.GONE);
                     tipoPot.setVisibility(View.GONE);
@@ -2134,14 +2182,7 @@ public class CadastroFragment extends Fragment {
                     foto7.setVisibility(View.VISIBLE);
                     btnFoto7.setVisibility(View.VISIBLE);
                     btnUpload7.setVisibility(View.VISIBLE);
-                    //foto8.setEnabled(true);
-                    //foto8.setVisibility(View.VISIBLE);
-                    //btnFoto8.setVisibility(View.VISIBLE);
-                    //btnUpload8.setVisibility(View.VISIBLE);
-                    //foto9.setEnabled(true);
-                    //foto9.setVisibility(View.VISIBLE);
-                    //btnFoto9.setVisibility(View.VISIBLE);
-                    //btnUpload9.setVisibility(View.VISIBLE);
+
 
                     ipEstrutura2.setVisibility(View.VISIBLE);
                     tipoPot2.setVisibility(View.VISIBLE);
@@ -2170,12 +2211,6 @@ public class CadastroFragment extends Fragment {
                     foto7.setVisibility(View.GONE);
                     btnFoto7.setVisibility(View.GONE);
                     btnUpload7.setVisibility(View.GONE);
-                    foto8.setVisibility(View.GONE);
-                    btnFoto8.setVisibility(View.GONE);
-                    btnUpload8.setVisibility(View.GONE);
-                    foto9.setVisibility(View.GONE);
-                    btnFoto9.setVisibility(View.GONE);
-                    btnUpload9.setVisibility(View.GONE);
 
                     ipEstrutura2.setVisibility(View.GONE);
                     tipoPot2.setVisibility(View.GONE);
@@ -2205,14 +2240,6 @@ public class CadastroFragment extends Fragment {
                     foto10.setVisibility(View.VISIBLE);
                     btnFoto10.setVisibility(View.VISIBLE);
                     btnUpload10.setVisibility(View.VISIBLE);
-                    /*foto11.setEnabled(true);
-                    foto11.setVisibility(View.VISIBLE);
-                    btnFoto11.setVisibility(View.VISIBLE);
-                    btnUpload11.setVisibility(View.VISIBLE);
-                    foto12.setEnabled(true);
-                    foto12.setVisibility(View.VISIBLE);
-                    btnFoto12.setVisibility(View.VISIBLE);
-                    btnUpload12.setVisibility(View.VISIBLE);*/
 
                     ipEstrutura3.setVisibility(View.VISIBLE);
                     tipoPot3.setVisibility(View.VISIBLE);
@@ -2235,16 +2262,10 @@ public class CadastroFragment extends Fragment {
                     vinteEQuatro3.setChecked(false);
                     vinteEQuatro3.setEnabled(false);
                     ipAtivacao3.setSelection(0);
-
                     foto10.setVisibility(View.GONE);
                     btnFoto10.setVisibility(View.GONE);
                     btnUpload10.setVisibility(View.GONE);
-                    foto11.setVisibility(View.GONE);
-                    btnFoto11.setVisibility(View.GONE);
-                    btnUpload11.setVisibility(View.GONE);
-                    foto12.setVisibility(View.GONE);
-                    btnFoto12.setVisibility(View.GONE);
-                    btnUpload12.setVisibility(View.GONE);
+
 
                     ipEstrutura3.setVisibility(View.GONE);
                     tipoPot3.setVisibility(View.GONE);
@@ -2471,12 +2492,51 @@ public class CadastroFragment extends Fragment {
                 } else {
                     formulario.setCaminhoImagem3("");
                 }
-
-                try {
-                    Log.i("URL", urlFoto.toString());
-                }catch (Exception e){
-
-                }
+                    if (imgPath4 != null) {
+                        formulario.setCaminhoImagem4(imgPath4);
+                    } else {
+                        formulario.setCaminhoImagem4("");
+                    }
+                    if (imgPath7 != null) {
+                        formulario.setCaminhoImagem5(imgPath7);
+                    } else {
+                        formulario.setCaminhoImagem5("");
+                    }
+                    if (imgPath10 != null) {
+                        formulario.setCaminhoImagem6(imgPath10);
+                    } else {
+                        formulario.setCaminhoImagem6("");
+                    }
+                    if (imgPath13 != null) {
+                        formulario.setCaminhoImagem7(imgPath13);
+                    } else {
+                        formulario.setCaminhoImagem7("");
+                    }
+                    if (imgPath14 != null) {
+                        formulario.setCaminhoImagem8(imgPath14);
+                    } else {
+                        formulario.setCaminhoImagem8("");
+                    }
+                    if (imgPath15 != null) {
+                        formulario.setCaminhoImagem9(imgPath15);
+                    } else {
+                        formulario.setCaminhoImagem9("");
+                    }
+                    if (imgPath16 != null) {
+                        formulario.setCaminhoImagem10(imgPath16);
+                    } else {
+                        formulario.setCaminhoImagem10("");
+                    }
+                    if (imgPath17 != null) {
+                        formulario.setCaminhoImagem11(imgPath17);
+                    } else{
+                        formulario.setCaminhoImagem11("");
+                    }
+                    if (imgPath30 != null) {
+                        formulario.setCaminhoImagem12(imgPath30);
+                    } else {
+                        formulario.setCaminhoImagem12("");
+                    }
                 if((urlFoto == null) || ((urlFoto.toString()).equals(""))) {
                     formulario.setUrlImagem("");
                     formulario.setColor(String.valueOf(R.color.design_default_color_error));
@@ -2498,6 +2558,69 @@ public class CadastroFragment extends Fragment {
                     formulario.setUrlImagem3(urlFoto3.toString());
                     formulario.setColor3(String.valueOf(R.color.colorPrimary));
                 }
+                    if((urlFoto4 == null) || ((urlFoto4.toString()).equals(""))) {
+                        formulario.setUrlImagem4("");
+                        formulario.setColor4(String.valueOf(R.color.design_default_color_error));
+                    }else {
+                        formulario.setUrlImagem4(urlFoto4.toString());
+                        formulario.setColor4(String.valueOf(R.color.colorPrimary));
+                    }
+                    if((urlFoto7 == null) || ((urlFoto7.toString()).equals(""))) {
+                        formulario.setUrlImagem5("");
+                        formulario.setColor5(String.valueOf(R.color.design_default_color_error));
+                    }else {
+                        formulario.setUrlImagem5(urlFoto7.toString());
+                        formulario.setColor5(String.valueOf(R.color.colorPrimary));
+                    }
+                    if((urlFoto10 == null) || ((urlFoto10.toString()).equals(""))) {
+                        formulario.setUrlImagem6("");
+                        formulario.setColor6(String.valueOf(R.color.design_default_color_error));
+                    }else {
+                        formulario.setUrlImagem6(urlFoto10.toString());
+                        formulario.setColor6(String.valueOf(R.color.colorPrimary));
+                    }
+                    if((urlFoto13 == null) || ((urlFoto13.toString()).equals(""))) {
+                        formulario.setUrlImagem7("");
+                        formulario.setColor7(String.valueOf(R.color.design_default_color_error));
+                    }else {
+                        formulario.setUrlImagem7(urlFoto13.toString());
+                        formulario.setColor7(String.valueOf(R.color.colorPrimary));
+                    }
+                    if((urlFoto14 == null) || ((urlFoto14.toString()).equals(""))) {
+                        formulario.setUrlImagem8("");
+                        formulario.setColor8(String.valueOf(R.color.design_default_color_error));
+                    }else {
+                        formulario.setUrlImagem8(urlFoto14.toString());
+                        formulario.setColor8(String.valueOf(R.color.colorPrimary));
+                    }
+                    if((urlFoto15 == null) || ((urlFoto15.toString()).equals(""))) {
+                        formulario.setUrlImagem9("");
+                        formulario.setColor9(String.valueOf(R.color.design_default_color_error));
+                    }else {
+                        formulario.setUrlImagem9(urlFoto15.toString());
+                        formulario.setColor9(String.valueOf(R.color.colorPrimary));
+                    }
+                    if((urlFoto16 == null) || ((urlFoto16.toString()).equals(""))) {
+                        formulario.setUrlImagem10("");
+                        formulario.setColor10(String.valueOf(R.color.design_default_color_error));
+                    }else {
+                        formulario.setUrlImagem10(urlFoto16.toString());
+                        formulario.setColor10(String.valueOf(R.color.colorPrimary));
+                    }
+                    if((urlFoto17 == null) || ((urlFoto17.toString()).equals(""))) {
+                        formulario.setUrlImagem11("");
+                        formulario.setColor11(String.valueOf(R.color.design_default_color_error));
+                    }else {
+                        formulario.setUrlImagem11(urlFoto17.toString());
+                        formulario.setColor11(String.valueOf(R.color.colorPrimary));
+                    }
+                    if((urlFoto30 == null) || ((urlFoto30.toString()).equals(""))) {
+                        formulario.setUrlImagem12("");
+                        formulario.setColor12(String.valueOf(R.color.design_default_color_error));
+                    }else {
+                        formulario.setUrlImagem12(urlFoto30.toString());
+                        formulario.setColor12(String.valueOf(R.color.colorPrimary));
+                    }
 
 
                 //LOCALIZAÇÂO
@@ -2659,9 +2782,11 @@ public class CadastroFragment extends Fragment {
                 } else {
                     formulario.setMutuo("Não");
                 }
-
+                formulario.setQuantidadeOcupantes(Objects.requireNonNull(quantidadeOcupantes.getText()).toString());
                 formulario.setQuantidadeCabos(Objects.requireNonNull(quantidadeCabos.getText()).toString());
                 setLista(formulario,tipoCabo,"tipoCabo");
+                    formulario.setQuantidadeCabosdois(Objects.requireNonNull(quantidadeCabosdois.getText()).toString());
+                    setLista(formulario,tipoCabodois,"tipoCabodois");
                 formulario.setNome(Objects.requireNonNull(nome.getText()).toString());
                 setLista(formulario,finalidade,"finalidade");
                 setLista(formulario,ceans,"ceans");
@@ -2694,6 +2819,9 @@ public class CadastroFragment extends Fragment {
                 setLista(formulario,localArvore,"localArvore");
                 formulario.setObservacaoVegetacao(Objects.requireNonNull(observacaoVegetacao.getText()).toString());
                 formulario.setNome(Objects.requireNonNull(nome.getText()).toString());
+                formulario.setContadorAr(contadorAr);
+                formulario.setContadorAt(contadorAt);
+                formulario.setContadorIp(contadorIp);
                 if (formularioAtual != null) {
                     formulario.setId(formularioAtual.getId());
                     formulario.setData(formularioAtual.getData());
@@ -2959,57 +3087,6 @@ public class CadastroFragment extends Fragment {
                         // Set the Image in ImageView after decoding the String
                         foto4.setImageBitmap(imagem4);
                         break;
-
-                    case IMAGE_CAPTURE_CODE5:
-                        imgPath5 = photoFile.getAbsolutePath();
-                        Log.i("TAHC", imgPath5);
-                        imagem5 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                        foto5.setImageBitmap(imagem5);
-                        break;
-                    case IMAGE_PICK_CODE5:
-                        Log.i("TAH2", data.getData().toString());
-                        localImagemSelecionada = data.getData();
-                        imagem5 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
-                        //foto5.setImageBitmap(imagem5);
-                        String[] filePathColumn5 = { MediaStore.Images.Media.DATA };
-                        // Get the cursor
-                        cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
-                                filePathColumn5, null, null, null);
-                        // Move to first row
-                        cursor.moveToFirst();
-
-                        columnIndex = cursor.getColumnIndex(filePathColumn5[0]);
-                        imgPath5 = cursor.getString(columnIndex);
-                        cursor.close();
-                        // Set the Image in ImageView after decoding the String
-                        foto5.setImageBitmap(imagem5);
-                        break;
-
-                    case IMAGE_CAPTURE_CODE6:
-                        imgPath6 = photoFile.getAbsolutePath();
-                        Log.i("TAHC", imgPath6);
-                        imagem6 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                        foto6.setImageBitmap(imagem6);
-                        break;
-                    case IMAGE_PICK_CODE6:
-                        Log.i("TAH2", data.getData().toString());
-                        localImagemSelecionada = data.getData();
-                        imagem6 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
-                        //foto6.setImageBitmap(imagem6);
-                        String[] filePathColumn6 = { MediaStore.Images.Media.DATA };
-                        // Get the cursor
-                        cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
-                                filePathColumn6, null, null, null);
-                        // Move to first row
-                        cursor.moveToFirst();
-
-                        columnIndex = cursor.getColumnIndex(filePathColumn6[0]);
-                        imgPath6 = cursor.getString(columnIndex);
-                        cursor.close();
-                        // Set the Image in ImageView after decoding the String
-                        foto6.setImageBitmap(imagem6);
-                        break;
-
                     case IMAGE_CAPTURE_CODE7:
                         imgPath7 = photoFile.getAbsolutePath();
                         Log.i("TAHC", imgPath7);
@@ -3034,57 +3111,6 @@ public class CadastroFragment extends Fragment {
                         // Set the Image in ImageView after decoding the String
                         foto7.setImageBitmap(imagem7);
                         break;
-
-                    case IMAGE_CAPTURE_CODE8:
-                        imgPath8 = photoFile.getAbsolutePath();
-                        Log.i("TAHC", imgPath8);
-                        imagem8 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                        foto8.setImageBitmap(imagem8);
-                        break;
-                    case IMAGE_PICK_CODE8:
-                        Log.i("TAH2", data.getData().toString());
-                        localImagemSelecionada = data.getData();
-                        imagem8 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
-                        //foto8.setImageBitmap(imagem8);
-                        String[] filePathColumn8 = { MediaStore.Images.Media.DATA };
-                        // Get the cursor
-                        cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
-                                filePathColumn8, null, null, null);
-                        // Move to first row
-                        cursor.moveToFirst();
-
-                        columnIndex = cursor.getColumnIndex(filePathColumn8[0]);
-                        imgPath8 = cursor.getString(columnIndex);
-                        cursor.close();
-                        // Set the Image in ImageView after decoding the String
-                        foto8.setImageBitmap(imagem8);
-                        break;
-
-                    case IMAGE_CAPTURE_CODE9:
-                        imgPath9 = photoFile.getAbsolutePath();
-                        Log.i("TAHC", imgPath9);
-                        imagem9 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                        foto9.setImageBitmap(imagem9);
-                        break;
-                    case IMAGE_PICK_CODE9:
-                        Log.i("TAH2", data.getData().toString());
-                        localImagemSelecionada = data.getData();
-                        imagem9 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
-                        foto9.setImageBitmap(imagem9);
-                        String[] filePathColumn9 = { MediaStore.Images.Media.DATA };
-                        // Get the cursor
-                        cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
-                                filePathColumn9, null, null, null);
-                        // Move to first row
-                        cursor.moveToFirst();
-
-                        columnIndex = cursor.getColumnIndex(filePathColumn9[0]);
-                        imgPath9 = cursor.getString(columnIndex);
-                        cursor.close();
-                        // Set the Image in ImageView after decoding the String
-                        foto9.setImageBitmap(imagem9);
-                        break;
-
                     case IMAGE_CAPTURE_CODE10:
                         imgPath10 = photoFile.getAbsolutePath();
                         Log.i("TAHC", imgPath10);
@@ -3108,56 +3134,6 @@ public class CadastroFragment extends Fragment {
                         cursor.close();
                         // Set the Image in ImageView after decoding the String
                         foto10.setImageBitmap(imagem10);
-                        break;
-
-                    case IMAGE_CAPTURE_CODE11:
-                        imgPath11 = photoFile.getAbsolutePath();
-                        Log.i("TAHC", imgPath11);
-                        imagem11 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                        foto11.setImageBitmap(imagem11);
-                        break;
-                    case IMAGE_PICK_CODE11:
-                        Log.i("TAH2", data.getData().toString());
-                        localImagemSelecionada = data.getData();
-                        imagem11 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
-                        //foto11.setImageBitmap(imagem11);
-                        String[] filePathColumn11 = { MediaStore.Images.Media.DATA };
-                        // Get the cursor
-                        cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
-                                filePathColumn11, null, null, null);
-                        // Move to first row
-                        cursor.moveToFirst();
-
-                        columnIndex = cursor.getColumnIndex(filePathColumn11[0]);
-                        imgPath11 = cursor.getString(columnIndex);
-                        cursor.close();
-                        // Set the Image in ImageView after decoding the String
-                        foto11.setImageBitmap(imagem11);
-                        break;
-
-                    case IMAGE_CAPTURE_CODE12:
-                        imgPath12 = photoFile.getAbsolutePath();
-                        Log.i("TAHC", imgPath12);
-                        imagem12 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                        foto12.setImageBitmap(imagem12);
-                        break;
-                    case IMAGE_PICK_CODE12:
-                        Log.i("TAH2", data.getData().toString());
-                        localImagemSelecionada = data.getData();
-                        imagem12 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
-                        //foto12.setImageBitmap(imagem12);
-                        String[] filePathColumn12 = { MediaStore.Images.Media.DATA };
-                        // Get the cursor
-                        cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
-                                filePathColumn12, null, null, null);
-                        // Move to first row
-                        cursor.moveToFirst();
-
-                        columnIndex = cursor.getColumnIndex(filePathColumn12[0]);
-                        imgPath12 = cursor.getString(columnIndex);
-                        cursor.close();
-                        // Set the Image in ImageView after decoding the String
-                        foto12.setImageBitmap(imagem12);
                         break;
                     case IMAGE_CAPTURE_CODE13:
                         imgPath13 = photoFile.getAbsolutePath();
@@ -3442,31 +3418,21 @@ Log.i("TAGX", String.valueOf(orientation));
                                     case 1:
                                         urlFoto = task.getResult();
                                         novoUpload = estado;
-                                        contadorPan = contadorPan+1;
+                                        contadorAt = contadorAt+1;
                                         break;
                                     case 2:
                                         urlFoto2 = task.getResult();
                                         novoUpload2 = estado;
-                                        contadorPan = contadorPan+1;
+                                        contadorAt = contadorAt+1;
                                         break;
                                     case 3:
                                         urlFoto3 = task.getResult();
                                         novoUpload3 = estado;
-                                        contadorPan = contadorPan+1;
+                                        contadorAt = contadorAt+1;
                                         break;
                                     case 4:
                                         urlFoto4 = task.getResult();
                                         novoUpload4 = estado;
-                                        contadorIp = contadorIp+1;
-                                        break;
-                                    case 5:
-                                        urlFoto5 = task.getResult();
-                                        novoUpload5 = estado;
-                                        contadorIp = contadorIp+1;
-                                        break;
-                                    case 6:
-                                        urlFoto6 = task.getResult();
-                                        novoUpload6 = estado;
                                         contadorIp = contadorIp+1;
                                         break;
                                     case 7:
@@ -3474,29 +3440,9 @@ Log.i("TAGX", String.valueOf(orientation));
                                         novoUpload7 = estado;
                                         contadorIp = contadorIp+1;
                                         break;
-                                    case 8:
-                                        urlFoto8 = task.getResult();
-                                        novoUpload8 = estado;
-                                        contadorIp = contadorIp+1;
-                                        break;
-                                    case 9:
-                                        urlFoto9 = task.getResult();
-                                        novoUpload9 = estado;
-                                        contadorIp = contadorIp+1;
-                                        break;
                                     case 10:
                                         urlFoto10 = task.getResult();
                                         novoUpload10 = estado;
-                                        contadorIp = contadorIp+1;
-                                        break;
-                                    case 11:
-                                        urlFoto11 = task.getResult();
-                                        novoUpload11 = estado;
-                                        contadorIp = contadorIp+1;
-                                        break;
-                                    case 12:
-                                        urlFoto12 = task.getResult();
-                                        novoUpload12 = estado;
                                         contadorIp = contadorIp+1;
                                         break;
                                     case 13:
@@ -3527,7 +3473,7 @@ Log.i("TAGX", String.valueOf(orientation));
                                     case 30:
                                         urlFoto30 = task.getResult();
                                         novoUpload30 = estado;
-                                        contadorAt = contadorAt+1;
+                                        contadorAr = contadorAr+1;
                                         break;
                                 }
                                 progressDialog.dismiss();

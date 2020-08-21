@@ -41,32 +41,26 @@ public class DbHelper extends SQLiteOpenHelper {
                 " chFaca TEXT NOT NULL,religador TEXT NOT NULL, medicao TEXT NOT NULL, banco TEXT NOT NULL," +
                 " chFusivelReligador TEXT NOT NULL, ramalSubt TEXT NOT NULL, outros TEXT NOT NULL ,observacaoAtivos TEXT NOT NULL,"+
                 " mutuo TEXT NOT NULL, quantidadeOcupantes TEXT NOT NULL, " +
-                " quantidadeCabos TEXT NOT NULL, tipoCabo TEXT NOT NULL, nomeEmpresa TEXT NOT NULL," +
+                " quantidadeCabos TEXT NOT NULL, tipoCabo TEXT NOT NULL,quantidadeCabosdois TEXT NOT NULL, tipoCabodois TEXT NOT NULL," +
+                " nomeEmpresa TEXT NOT NULL," +
                 " finalidade TEXT NOT NULL, ceans TEXT NOT NULL, tar TEXT NOT NULL, reservaTec TEXT NOT NULL," +
                 " backbone TEXT NOT NULL, placaIdent TEXT NOT NULL, descidaCabos TEXT NOT NULL," +
                 " observacaoMutuo TEXT NOT NULL, descricaoIrregularidade TEXT NOT NULL," +
-                " quantidadeCabos2 TEXT NOT NULL, tipoCabo2 TEXT NOT NULL,quantidadeCabos2dois TEXT NOT NULL, tipoCabo2dois TEXT NOT NULL, nomeEmpresa2 TEXT NOT NULL," +
-                " finalidade2 TEXT NOT NULL, ceans2 TEXT NOT NULL, tar2 TEXT NOT NULL, reservaTec2 TEXT NOT NULL," +
-                " backbone2 TEXT NOT NULL, placaIdent2 TEXT NOT NULL, descidaCabos2 TEXT NOT NULL," +
-                " observacaoMutuo2 TEXT NOT NULL, descricaoIrregularidade2 TEXT NOT NULL," +
-                " quantidadeCabos3 TEXT NOT NULL, tipoCabo3 TEXT NOT NULL, nomeEmpresa3 TEXT NOT NULL," +
-                " finalidade3 TEXT NOT NULL, ceans3 TEXT NOT NULL, tar3 TEXT NOT NULL, reservaTec3 TEXT NOT NULL," +
-                " backbone3 TEXT NOT NULL, placaIdent3 TEXT NOT NULL, descidaCabos3 TEXT NOT NULL," +
-                " observacaoMutuo3 TEXT NOT NULL, descricaoIrregularidade3 TEXT NOT NULL," +
-                " quantidadeCabos4 TEXT NOT NULL, tipoCabo4 TEXT NOT NULL, nomeEmpresa4 TEXT NOT NULL," +
-                " finalidade4 TEXT NOT NULL, ceans4 TEXT NOT NULL, tar4 TEXT NOT NULL, reservaTec4 TEXT NOT NULL," +
-                " backbone4 TEXT NOT NULL, placaIdent4 TEXT NOT NULL,descidaCabos4 TEXT NOT NULL," +
-                " observacaoMutuo4 TEXT NOT NULL, descricaoIrregularidade4 TEXT NOT NULL," +
-                " quantidadeCabos5 TEXT NOT NULL, tipoCabo5 TEXT NOT NULL, nomeEmpresa5 TEXT NOT NULL," +
-                " finalidade5 TEXT NOT NULL, ceans5 TEXT NOT NULL, tar5 TEXT NOT NULL, reservaTec5 TEXT NOT NULL," +
-                " backbone5 TEXT NOT NULL, placaIdent5 TEXT NOT NULL,descidaCabos5 TEXT NOT NULL," +
-                " observacaoMutuo5 TEXT NOT NULL, descricaoIrregularidade5 TEXT NOT NULL," +
                 " dimensaoVegetacao TEXT NOT NULL, distanciaBaixa TEXT NOT NULL, distanciaMedia TEXT NOT NULL," +
                 " estadoArvore TEXT NOT NULL,quedaArvore TEXT NOT NULL, localArvore TEXT NOT NULL, " +
                 " observacaoVegetacao TEXT NOT NULL," +
                 " caminhoImagem TEXT NOT NULL, caminhoImagem2 TEXT NOT NULL, caminhoImagem3 TEXT NOT NULL," +
+                "caminhoImagem4 TEXT NOT NULL,caminhoImagem5 TEXT NOT NULL,caminhoImagem6 TEXT NOT NULL," +
+                "caminhoImagem7 TEXT NOT NULL,caminhoImagem8 TEXT NOT NULL,caminhoImagem9 TEXT NOT NULL," +
+                "caminhoImagem10 TEXT NOT NULL,caminhoImagem11 TEXT NOT NULL,caminhoImagem12 TEXT NOT NULL," +
                 " urlImagem TEXT NOT NULL, urlImagem2 TEXT NOT NULL, urlImagem3 TEXT NOT NULL," +
-                " color TEXT NOT NULL, color2 TEXT NOT NULL, color3 TEXT NOT NULL);";
+                " urlImagem4 TEXT NOT NULL, urlImagem5 TEXT NOT NULL, urlImagem6 TEXT NOT NULL," +
+                " urlImagem7 TEXT NOT NULL,urlImagem8 TEXT NOT NULL,urlImagem9 TEXT NOT NULL," +
+                " urlImagem10 TEXT NOT NULL,urlImagem11 TEXT NOT NULL,urlImagem12 TEXT NOT NULL," +
+                " color TEXT NOT NULL, color2 TEXT NOT NULL, color3 TEXT NOT NULL, color4 TEXT NOT NULL," +
+                " color5 TEXT NOT NULL, color6 TEXT NOT NULL, color7 TEXT NOT NULL, color8 TEXT NOT NULL," +
+                " color9 TEXT NOT NULL, color10 TEXT NOT NULL, color11 TEXT NOT NULL, color12 TEXT NOT NULL," +
+                " contadorIp INTEGER, contadorAr INTEGER,contadorAt INTEGER);";
 
         String sqlEnviado = "CREATE TABLE IF NOT EXISTS " + TABLE_ENVIADO + " (id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 " codigo TEXT NOT NULL , data TEXT NOT NULL, endereco TEXT NOT NULL, nome TEXT NOT NULL, municipio TEXT NOT NULL," +
@@ -88,32 +82,26 @@ public class DbHelper extends SQLiteOpenHelper {
                 " chFaca TEXT NOT NULL,religador TEXT NOT NULL, medicao TEXT NOT NULL, banco TEXT NOT NULL," +
                 " chFusivelReligador TEXT NOT NULL, ramalSubt TEXT NOT NULL, outros TEXT NOT NULL ,observacaoAtivos TEXT NOT NULL,"+
                 " mutuo TEXT NOT NULL, quantidadeOcupantes TEXT NOT NULL, " +
-                " quantidadeCabos TEXT NOT NULL, tipoCabo TEXT NOT NULL, nomeEmpresa TEXT NOT NULL," +
+                " quantidadeCabos TEXT NOT NULL, tipoCabo TEXT NOT NULL,quantidadeCabosdois TEXT NOT NULL, tipoCabodois TEXT NOT NULL," +
+                " nomeEmpresa TEXT NOT NULL," +
                 " finalidade TEXT NOT NULL, ceans TEXT NOT NULL, tar TEXT NOT NULL, reservaTec TEXT NOT NULL," +
                 " backbone TEXT NOT NULL, placaIdent TEXT NOT NULL, descidaCabos TEXT NOT NULL," +
                 " observacaoMutuo TEXT NOT NULL, descricaoIrregularidade TEXT NOT NULL," +
-                " quantidadeCabos2 TEXT NOT NULL, tipoCabo2 TEXT NOT NULL,quantidadeCabos2dois TEXT NOT NULL, tipoCabo2dois TEXT NOT NULL, nomeEmpresa2 TEXT NOT NULL," +
-                " finalidade2 TEXT NOT NULL, ceans2 TEXT NOT NULL, tar2 TEXT NOT NULL, reservaTec2 TEXT NOT NULL," +
-                " backbone2 TEXT NOT NULL, placaIdent2 TEXT NOT NULL, descidaCabos2 TEXT NOT NULL," +
-                " observacaoMutuo2 TEXT NOT NULL, descricaoIrregularidade2 TEXT NOT NULL," +
-                " quantidadeCabos3 TEXT NOT NULL, tipoCabo3 TEXT NOT NULL, nomeEmpresa3 TEXT NOT NULL," +
-                " finalidade3 TEXT NOT NULL, ceans3 TEXT NOT NULL, tar3 TEXT NOT NULL, reservaTec3 TEXT NOT NULL," +
-                " backbone3 TEXT NOT NULL, placaIdent3 TEXT NOT NULL, descidaCabos3 TEXT NOT NULL," +
-                " observacaoMutuo3 TEXT NOT NULL, descricaoIrregularidade3 TEXT NOT NULL," +
-                " quantidadeCabos4 TEXT NOT NULL, tipoCabo4 TEXT NOT NULL, nomeEmpresa4 TEXT NOT NULL," +
-                " finalidade4 TEXT NOT NULL, ceans4 TEXT NOT NULL, tar4 TEXT NOT NULL, reservaTec4 TEXT NOT NULL," +
-                " backbone4 TEXT NOT NULL, placaIdent4 TEXT NOT NULL,descidaCabos4 TEXT NOT NULL," +
-                " observacaoMutuo4 TEXT NOT NULL, descricaoIrregularidade4 TEXT NOT NULL," +
-                " quantidadeCabos5 TEXT NOT NULL, tipoCabo5 TEXT NOT NULL, nomeEmpresa5 TEXT NOT NULL," +
-                " finalidade5 TEXT NOT NULL, ceans5 TEXT NOT NULL, tar5 TEXT NOT NULL, reservaTec5 TEXT NOT NULL," +
-                " backbone5 TEXT NOT NULL, placaIdent5 TEXT NOT NULL,descidaCabos5 TEXT NOT NULL," +
-                " observacaoMutuo5 TEXT NOT NULL, descricaoIrregularidade5 TEXT NOT NULL," +
                 " dimensaoVegetacao TEXT NOT NULL, distanciaBaixa TEXT NOT NULL, distanciaMedia TEXT NOT NULL," +
                 " estadoArvore TEXT NOT NULL,quedaArvore TEXT NOT NULL, localArvore TEXT NOT NULL, " +
                 " observacaoVegetacao TEXT NOT NULL," +
                 " caminhoImagem TEXT NOT NULL, caminhoImagem2 TEXT NOT NULL, caminhoImagem3 TEXT NOT NULL," +
+                "caminhoImagem4 TEXT NOT NULL,caminhoImagem5 TEXT NOT NULL,caminhoImagem6 TEXT NOT NULL," +
+                "caminhoImagem7 TEXT NOT NULL,caminhoImagem8 TEXT NOT NULL,caminhoImagem9 TEXT NOT NULL," +
+                "caminhoImagem10 TEXT NOT NULL,caminhoImagem11 TEXT NOT NULL,caminhoImagem12 TEXT NOT NULL," +
                 " urlImagem TEXT NOT NULL, urlImagem2 TEXT NOT NULL, urlImagem3 TEXT NOT NULL," +
-                " color TEXT NOT NULL, color2 TEXT NOT NULL, color3 TEXT NOT NULL);";
+                " urlImagem4 TEXT NOT NULL, urlImagem5 TEXT NOT NULL, urlImagem6 TEXT NOT NULL," +
+                " urlImagem7 TEXT NOT NULL,urlImagem8 TEXT NOT NULL,urlImagem9 TEXT NOT NULL," +
+                " urlImagem10 TEXT NOT NULL,urlImagem11 TEXT NOT NULL,urlImagem12 TEXT NOT NULL," +
+                " color TEXT NOT NULL, color2 TEXT NOT NULL, color3 TEXT NOT NULL, color4 TEXT NOT NULL," +
+                " color5 TEXT NOT NULL, color6 TEXT NOT NULL, color7 TEXT NOT NULL, color8 TEXT NOT NULL," +
+                " color9 TEXT NOT NULL, color10 TEXT NOT NULL, color11 TEXT NOT NULL, color12 TEXT NOT NULL," +
+                " contadorIp INTEGER, contadorAr INTEGER,contadorAt INTEGER);";
 
         String sqlMapa = "CREATE TABLE IF NOT EXISTS " + TABLE_MAPA + " (id INTEGER PRIMARY KEY AUTOINCREMENT," +
         " codigo TEXT NOT NULL , latitude TEXT NOT NULL, longitude TEXT NOT NULL, cadastrado TEXT NOT NULL, existe TEXT NOT NULL);";

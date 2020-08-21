@@ -25,17 +25,46 @@ public class EnviadoDAO implements IFormularioDAO {
     @Override
     public boolean salvar(Formulario formulario) {
         ContentValues cv = new ContentValues();
+        cv.put("contadorIp", formulario.getContadorIp());
+        cv.put("contadorAr", formulario.getContadorAr());
+        cv.put("contadorAt", formulario.getContadorAt());
         cv.put("color", formulario.getColor());
         cv.put("color2", formulario.getColor2());
         cv.put("color3", formulario.getColor3());
-
-        cv.put("codigo",formulario.getCodigo());
+        cv.put("color4", formulario.getColor4());
+        cv.put("color5", formulario.getColor5());
+        cv.put("color6", formulario.getColor6());
+        cv.put("color7", formulario.getColor7());
+        cv.put("color8", formulario.getColor8());
+        cv.put("color9", formulario.getColor9());
+        cv.put("color10", formulario.getColor10());
+        cv.put("color11", formulario.getColor11());
+        cv.put("color12", formulario.getColor12());
+        cv.put("codigo", formulario.getCodigo());
         cv.put("caminhoImagem", formulario.getCaminhoImagem());
         cv.put("caminhoImagem2", formulario.getCaminhoImagem2());
         cv.put("caminhoImagem3", formulario.getCaminhoImagem3());
+        cv.put("caminhoImagem4", formulario.getCaminhoImagem4());
+        cv.put("caminhoImagem5", formulario.getCaminhoImagem5());
+        cv.put("caminhoImagem6", formulario.getCaminhoImagem6());
+        cv.put("caminhoImagem7", formulario.getCaminhoImagem7());
+        cv.put("caminhoImagem8", formulario.getCaminhoImagem8());
+        cv.put("caminhoImagem9", formulario.getCaminhoImagem9());
+        cv.put("caminhoImagem10", formulario.getCaminhoImagem10());
+        cv.put("caminhoImagem11", formulario.getCaminhoImagem11());
+        cv.put("caminhoImagem12", formulario.getCaminhoImagem12());
         cv.put("urlImagem", formulario.getUrlImagem());
         cv.put("urlImagem2", formulario.getUrlImagem2());
         cv.put("urlImagem3", formulario.getUrlImagem3());
+        cv.put("urlImagem4", formulario.getUrlImagem4());
+        cv.put("urlImagem5", formulario.getUrlImagem5());
+        cv.put("urlImagem6", formulario.getUrlImagem6());
+        cv.put("urlImagem7", formulario.getUrlImagem7());
+        cv.put("urlImagem8", formulario.getUrlImagem8());
+        cv.put("urlImagem9", formulario.getUrlImagem9());
+        cv.put("urlImagem10", formulario.getUrlImagem10());
+        cv.put("urlImagem11", formulario.getUrlImagem11());
+        cv.put("urlImagem12", formulario.getUrlImagem12());
 
         cv.put("data", formulario.getData());
         cv.put("endereco", formulario.getEndereco());
@@ -106,6 +135,8 @@ public class EnviadoDAO implements IFormularioDAO {
 
         cv.put("quantidadeCabos",formulario.getQuantidadeCabos());
         cv.put("tipoCabo", formulario.getTipoCabo());
+        cv.put("quantidadeCabosdois",formulario.getQuantidadeCabosdois());
+        cv.put("tipoCabodois", formulario.getTipoCabodois());
         cv.put("nomeEmpresa", formulario.getNome());
         cv.put("finalidade",formulario.getFinalidade());
         cv.put("ceans", formulario.getCeans());
@@ -116,60 +147,6 @@ public class EnviadoDAO implements IFormularioDAO {
         cv.put("descidaCabos", formulario.getDescidaCabos());
         cv.put("descricaoIrregularidade", formulario.getDescricaoIrregularidade());
         cv.put("observacaoMutuo",formulario.getObservacaoMutuo());
-
-        cv.put("quantidadeCabos2",formulario.getQuantidadeCabos2());
-        cv.put("tipoCabo2", formulario.getTipoCabo2());
-        cv.put("quantidadeCabos2dois",formulario.getQuantidadeCabos2dois());
-        cv.put("tipoCabo2dois", formulario.getTipoCabo2dois());
-        cv.put("nomeEmpresa2", formulario.getNome2());
-        cv.put("finalidade2",formulario.getFinalidade2());
-        cv.put("ceans2", formulario.getCeans2());
-        cv.put("tar2", formulario.getTar2());
-        cv.put("reservaTec2", formulario.getReservaTec2());
-        cv.put("backbone2", formulario.getBackbone2());
-        cv.put("placaIdent2", formulario.getPlacaIdent2());
-        cv.put("descidaCabos2", formulario.getDescidaCabos2());
-        cv.put("descricaoIrregularidade2", formulario.getDescricaoIrregularidade2());
-        cv.put("observacaoMutuo2",formulario.getObservacaoMutuo2());
-
-        cv.put("quantidadeCabos3",formulario.getQuantidadeCabos3());
-        cv.put("tipoCabo3", formulario.getTipoCabo3());
-        cv.put("nomeEmpresa3", formulario.getNome3());
-        cv.put("finalidade3",formulario.getFinalidade3());
-        cv.put("ceans3", formulario.getCeans3());
-        cv.put("tar3", formulario.getTar3());
-        cv.put("reservaTec3", formulario.getReservaTec3());
-        cv.put("backbone3", formulario.getBackbone3());
-        cv.put("placaIdent3", formulario.getPlacaIdent3());
-        cv.put("descidaCabos3", formulario.getDescidaCabos3());
-        cv.put("descricaoIrregularidade3", formulario.getDescricaoIrregularidade3());
-        cv.put("observacaoMutuo3",formulario.getObservacaoMutuo3());
-
-        cv.put("quantidadeCabos4",formulario.getQuantidadeCabos4());
-        cv.put("tipoCabo4", formulario.getTipoCabo4());
-        cv.put("nomeEmpresa4", formulario.getNome4());
-        cv.put("finalidade4",formulario.getFinalidade4());
-        cv.put("ceans4", formulario.getCeans4());
-        cv.put("tar4", formulario.getTar4());
-        cv.put("reservaTec4", formulario.getReservaTec4());
-        cv.put("backbone4", formulario.getBackbone4());
-        cv.put("placaIdent4", formulario.getPlacaIdent4());
-        cv.put("descidaCabos4", formulario.getDescidaCabos4());
-        cv.put("descricaoIrregularidade4", formulario.getDescricaoIrregularidade4());
-        cv.put("observacaoMutuo4",formulario.getObservacaoMutuo4());
-
-        cv.put("quantidadeCabos5",formulario.getQuantidadeCabos5());
-        cv.put("tipoCabo5", formulario.getTipoCabo5());
-        cv.put("nomeEmpresa5", formulario.getNome5());
-        cv.put("finalidade5",formulario.getFinalidade5());
-        cv.put("ceans5", formulario.getCeans5());
-        cv.put("tar5", formulario.getTar5());
-        cv.put("reservaTec5", formulario.getReservaTec());
-        cv.put("backbone5", formulario.getBackbone5());
-        cv.put("placaIdent5", formulario.getPlacaIdent5());
-        cv.put("descidaCabos5", formulario.getDescidaCabos5());
-        cv.put("descricaoIrregularidade5", formulario.getDescricaoIrregularidade5());
-        cv.put("observacaoMutuo5",formulario.getObservacaoMutuo5());
 
 
         cv.put("dimensaoVegetacao", formulario.getDimensaoVegetacao());
@@ -194,17 +171,46 @@ public class EnviadoDAO implements IFormularioDAO {
     @Override
     public boolean atualizar(Formulario formulario) {
         ContentValues cv = new ContentValues();
+        cv.put("contadorIp", formulario.getContadorIp());
+        cv.put("contadorAr", formulario.getContadorAr());
+        cv.put("contadorAt", formulario.getContadorAt());
         cv.put("color", formulario.getColor());
         cv.put("color2", formulario.getColor2());
         cv.put("color3", formulario.getColor3());
-
-        cv.put("codigo",formulario.getCodigo());
+        cv.put("color4", formulario.getColor4());
+        cv.put("color5", formulario.getColor5());
+        cv.put("color6", formulario.getColor6());
+        cv.put("color7", formulario.getColor7());
+        cv.put("color8", formulario.getColor8());
+        cv.put("color9", formulario.getColor9());
+        cv.put("color10", formulario.getColor10());
+        cv.put("color11", formulario.getColor11());
+        cv.put("color12", formulario.getColor12());
+        cv.put("codigo", formulario.getCodigo());
         cv.put("caminhoImagem", formulario.getCaminhoImagem());
         cv.put("caminhoImagem2", formulario.getCaminhoImagem2());
         cv.put("caminhoImagem3", formulario.getCaminhoImagem3());
+        cv.put("caminhoImagem4", formulario.getCaminhoImagem4());
+        cv.put("caminhoImagem5", formulario.getCaminhoImagem5());
+        cv.put("caminhoImagem6", formulario.getCaminhoImagem6());
+        cv.put("caminhoImagem7", formulario.getCaminhoImagem7());
+        cv.put("caminhoImagem8", formulario.getCaminhoImagem8());
+        cv.put("caminhoImagem9", formulario.getCaminhoImagem9());
+        cv.put("caminhoImagem10", formulario.getCaminhoImagem10());
+        cv.put("caminhoImagem11", formulario.getCaminhoImagem11());
+        cv.put("caminhoImagem12", formulario.getCaminhoImagem12());
         cv.put("urlImagem", formulario.getUrlImagem());
         cv.put("urlImagem2", formulario.getUrlImagem2());
         cv.put("urlImagem3", formulario.getUrlImagem3());
+        cv.put("urlImagem4", formulario.getUrlImagem4());
+        cv.put("urlImagem5", formulario.getUrlImagem5());
+        cv.put("urlImagem6", formulario.getUrlImagem6());
+        cv.put("urlImagem7", formulario.getUrlImagem7());
+        cv.put("urlImagem8", formulario.getUrlImagem8());
+        cv.put("urlImagem9", formulario.getUrlImagem9());
+        cv.put("urlImagem10", formulario.getUrlImagem10());
+        cv.put("urlImagem11", formulario.getUrlImagem11());
+        cv.put("urlImagem12", formulario.getUrlImagem12());
 
         cv.put("data", formulario.getData());
         cv.put("endereco", formulario.getEndereco());
@@ -220,6 +226,7 @@ public class EnviadoDAO implements IFormularioDAO {
         cv.put("ferragemExposta", formulario.getFerragemExposta());
         cv.put("fletido", formulario.getFletido());
         cv.put("danificado", formulario.getDanificado());
+        cv.put("fletido", formulario.getFletido());
         cv.put("abalroado", formulario.getAbalroado());
         cv.put("trincado", formulario.getTrincado());
         cv.put("observacaoFisicas", formulario.getObservacaoFisicas());
@@ -253,7 +260,6 @@ public class EnviadoDAO implements IFormularioDAO {
         cv.put("quantidade24H3", formulario.getQuantidade24H3());
         cv.put("observacaoIP", formulario.getObservacaoIP());
 
-
         cv.put("ativos", formulario.getAtivos());
         cv.put("chkTrafoTrifasico", formulario.getChkTrafoTrifasico());
         cv.put("chkTrafoMono", formulario.getChkTrafoMono());
@@ -275,6 +281,8 @@ public class EnviadoDAO implements IFormularioDAO {
 
         cv.put("quantidadeCabos",formulario.getQuantidadeCabos());
         cv.put("tipoCabo", formulario.getTipoCabo());
+        cv.put("quantidadeCabosdois",formulario.getQuantidadeCabosdois());
+        cv.put("tipoCabodois", formulario.getTipoCabodois());
         cv.put("nomeEmpresa", formulario.getNome());
         cv.put("finalidade",formulario.getFinalidade());
         cv.put("ceans", formulario.getCeans());
@@ -285,60 +293,6 @@ public class EnviadoDAO implements IFormularioDAO {
         cv.put("descidaCabos", formulario.getDescidaCabos());
         cv.put("descricaoIrregularidade", formulario.getDescricaoIrregularidade());
         cv.put("observacaoMutuo",formulario.getObservacaoMutuo());
-
-        cv.put("quantidadeCabos2",formulario.getQuantidadeCabos2());
-        cv.put("tipoCabo2", formulario.getTipoCabo2());
-        cv.put("quantidadeCabos2dois",formulario.getQuantidadeCabos2dois());
-        cv.put("tipoCabo2dois", formulario.getTipoCabo2dois());
-        cv.put("nomeEmpresa2", formulario.getNome2());
-        cv.put("finalidade2",formulario.getFinalidade2());
-        cv.put("ceans2", formulario.getCeans2());
-        cv.put("tar2", formulario.getTar2());
-        cv.put("reservaTec2", formulario.getReservaTec2());
-        cv.put("backbone2", formulario.getBackbone2());
-        cv.put("placaIdent2", formulario.getPlacaIdent2());
-        cv.put("descidaCabos2", formulario.getDescidaCabos2());
-        cv.put("descricaoIrregularidade2", formulario.getDescricaoIrregularidade2());
-        cv.put("observacaoMutuo2",formulario.getObservacaoMutuo2());
-
-        cv.put("quantidadeCabos3",formulario.getQuantidadeCabos3());
-        cv.put("tipoCabo3", formulario.getTipoCabo3());
-        cv.put("nomeEmpresa3", formulario.getNome3());
-        cv.put("finalidade3",formulario.getFinalidade3());
-        cv.put("ceans3", formulario.getCeans3());
-        cv.put("tar3", formulario.getTar3());
-        cv.put("reservaTec3", formulario.getReservaTec3());
-        cv.put("backbone3", formulario.getBackbone3());
-        cv.put("placaIdent3", formulario.getPlacaIdent3());
-        cv.put("descidaCabos3", formulario.getDescidaCabos3());
-        cv.put("descricaoIrregularidade3", formulario.getDescricaoIrregularidade3());
-        cv.put("observacaoMutuo3",formulario.getObservacaoMutuo3());
-
-        cv.put("quantidadeCabos4",formulario.getQuantidadeCabos4());
-        cv.put("tipoCabo4", formulario.getTipoCabo4());
-        cv.put("nomeEmpresa4", formulario.getNome4());
-        cv.put("finalidade4",formulario.getFinalidade4());
-        cv.put("ceans4", formulario.getCeans4());
-        cv.put("tar4", formulario.getTar4());
-        cv.put("reservaTec4", formulario.getReservaTec4());
-        cv.put("backbone4", formulario.getBackbone4());
-        cv.put("placaIdent4", formulario.getPlacaIdent4());
-        cv.put("descidaCabos4", formulario.getDescidaCabos4());
-        cv.put("descricaoIrregularidade4", formulario.getDescricaoIrregularidade4());
-        cv.put("observacaoMutuo4",formulario.getObservacaoMutuo4());
-
-        cv.put("quantidadeCabos5",formulario.getQuantidadeCabos5());
-        cv.put("tipoCabo5", formulario.getTipoCabo5());
-        cv.put("nomeEmpresa5", formulario.getNome5());
-        cv.put("finalidade5",formulario.getFinalidade5());
-        cv.put("ceans5", formulario.getCeans5());
-        cv.put("tar5", formulario.getTar5());
-        cv.put("reservaTec5", formulario.getReservaTec());
-        cv.put("backbone5", formulario.getBackbone5());
-        cv.put("placaIdent5", formulario.getPlacaIdent5());
-        cv.put("descidaCabos5", formulario.getDescidaCabos5());
-        cv.put("descricaoIrregularidade5", formulario.getDescricaoIrregularidade5());
-        cv.put("observacaoMutuo5",formulario.getObservacaoMutuo5());
 
 
         cv.put("dimensaoVegetacao", formulario.getDimensaoVegetacao());
@@ -390,19 +344,51 @@ public class EnviadoDAO implements IFormularioDAO {
 
         while (c.moveToNext()){
             Long id = c.getLong(c.getColumnIndex("id"));
+            int contadorIp = c.getInt(c.getColumnIndex("contadorIp"));
+            int contadorAr = c.getInt(c.getColumnIndex("contadorAr"));
+            int contadorAt = c.getInt(c.getColumnIndex("contadorAt"));
 
             String codigo = c.getString(c.getColumnIndex("codigo"));
+
             String color = c.getString((c.getColumnIndex("color")));
             String color2 = c.getString((c.getColumnIndex("color2")));
             String color3 = c.getString((c.getColumnIndex("color3")));
+            String color4 = c.getString((c.getColumnIndex("color4")));
+            String color5 = c.getString((c.getColumnIndex("color5")));
+            String color6 = c.getString((c.getColumnIndex("color6")));
+            String color7 = c.getString((c.getColumnIndex("color7")));
+            String color8 = c.getString((c.getColumnIndex("color8")));
+            String color9 = c.getString((c.getColumnIndex("color9")));
+            String color10 = c.getString((c.getColumnIndex("color10")));
+            String color11 = c.getString((c.getColumnIndex("color11")));
+            String color12 = c.getString((c.getColumnIndex("color12")));
 
             String caminhoImagem = c.getString((c.getColumnIndex("caminhoImagem")));
             String caminhoImagem2 = c.getString((c.getColumnIndex("caminhoImagem2")));
             String caminhoImagem3 = c.getString((c.getColumnIndex("caminhoImagem3")));
+            String caminhoImagem4 = c.getString((c.getColumnIndex("caminhoImagem4")));
+            String caminhoImagem5 = c.getString((c.getColumnIndex("caminhoImagem5")));
+            String caminhoImagem6 = c.getString((c.getColumnIndex("caminhoImagem6")));
+            String caminhoImagem7 = c.getString((c.getColumnIndex("caminhoImagem7")));
+            String caminhoImagem8 = c.getString((c.getColumnIndex("caminhoImagem8")));
+            String caminhoImagem9 = c.getString((c.getColumnIndex("caminhoImagem9")));
+            String caminhoImagem10 = c.getString((c.getColumnIndex("caminhoImagem10")));
+            String caminhoImagem11 = c.getString((c.getColumnIndex("caminhoImagem11")));
+            String caminhoImagem12 = c.getString((c.getColumnIndex("caminhoImagem12")));
 
             String urlImagem = c.getString((c.getColumnIndex("urlImagem")));
             String urlImagem2 = c.getString((c.getColumnIndex("urlImagem2")));
             String urlImagem3 = c.getString((c.getColumnIndex("urlImagem3")));
+            String urlImagem4 = c.getString((c.getColumnIndex("urlImagem4")));
+            String urlImagem5 = c.getString((c.getColumnIndex("urlImagem5")));
+            String urlImagem6 = c.getString((c.getColumnIndex("urlImagem6")));
+            String urlImagem7 = c.getString((c.getColumnIndex("urlImagem7")));
+            String urlImagem8 = c.getString((c.getColumnIndex("urlImagem8")));
+            String urlImagem9 = c.getString((c.getColumnIndex("urlImagem9")));
+            String urlImagem10 = c.getString((c.getColumnIndex("urlImagem10")));
+            String urlImagem11 = c.getString((c.getColumnIndex("urlImagem11")));
+            String urlImagem12 = c.getString((c.getColumnIndex("urlImagem12")));
+
 
             String endereco = c.getString((c.getColumnIndex("endereco")));
             String data = c.getString(c.getColumnIndex("data"));
@@ -472,6 +458,8 @@ public class EnviadoDAO implements IFormularioDAO {
 
             String quantidadeCabos = c.getString(c.getColumnIndex("quantidadeCabos"));
             String tipoCabo = c.getString(c.getColumnIndex("tipoCabo"));
+            String quantidadeCabosdois = c.getString(c.getColumnIndex("quantidadeCabosdois"));
+            String tipoCabodois = c.getString(c.getColumnIndex("tipoCabodois"));
             String nomeEmpresa = c.getString(c.getColumnIndex("nomeEmpresa"));
             String finalidade = c.getString(c.getColumnIndex("finalidade"));
             String ceans = c.getString(c.getColumnIndex("ceans"));
@@ -483,60 +471,6 @@ public class EnviadoDAO implements IFormularioDAO {
             String descricaoIrregularidade = c.getString(c.getColumnIndex("descricaoIrregularidade"));
             String observacaoMutuo = c.getString(c.getColumnIndex("observacaoMutuo"));
 
-            String quantidadeCabos2 = c.getString(c.getColumnIndex("quantidadeCabos2"));
-            String tipoCabo2 = c.getString(c.getColumnIndex("tipoCabo2"));
-            String quantidadeCabos2dois = c.getString(c.getColumnIndex("quantidadeCabos2dois"));
-            String tipoCabo2dois = c.getString(c.getColumnIndex("tipoCabo2dois"));
-            String nomeEmpresa2 = c.getString(c.getColumnIndex("nomeEmpresa2"));
-            String finalidade2 = c.getString(c.getColumnIndex("finalidade2"));
-            String ceans2 = c.getString(c.getColumnIndex("ceans2"));
-            String tar2 = c.getString(c.getColumnIndex("tar2"));
-            String reservaTec2 = c.getString(c.getColumnIndex("reservaTec2"));
-            String backbone2 = c.getString(c.getColumnIndex("backbone2"));
-            String placaIdent2 = c.getString(c.getColumnIndex("placaIdent2"));
-            String descidaCabos2 = c.getString(c.getColumnIndex("descidaCabos2"));
-            String descricaoIrregularidade2 = c.getString(c.getColumnIndex("descricaoIrregularidade2"));
-            String observacaoMutuo2 = c.getString(c.getColumnIndex("observacaoMutuo2"));
-
-            String quantidadeCabos3 = c.getString(c.getColumnIndex("quantidadeCabos3"));
-            String tipoCabo3 = c.getString(c.getColumnIndex("tipoCabo3"));
-            String nomeEmpresa3 = c.getString(c.getColumnIndex("nomeEmpresa3"));
-            String finalidade3 = c.getString(c.getColumnIndex("finalidade3"));
-            String ceans3 = c.getString(c.getColumnIndex("ceans3"));
-            String tar3 = c.getString(c.getColumnIndex("tar3"));
-            String reservaTec3 = c.getString(c.getColumnIndex("reservaTec3"));
-            String backbone3 = c.getString(c.getColumnIndex("backbone3"));
-            String placaIdent3 = c.getString(c.getColumnIndex("placaIdent3"));
-            String descidaCabos3 = c.getString(c.getColumnIndex("descidaCabos3"));
-            String descricaoIrregularidade3 = c.getString(c.getColumnIndex("descricaoIrregularidade3"));
-            String observacaoMutuo3 = c.getString(c.getColumnIndex("observacaoMutuo3"));
-
-            String quantidadeCabos4 = c.getString(c.getColumnIndex("quantidadeCabos4"));
-            String tipoCabo4 = c.getString(c.getColumnIndex("tipoCabo4"));
-            String nomeEmpresa4 = c.getString(c.getColumnIndex("nomeEmpresa4"));
-            String finalidade4 = c.getString(c.getColumnIndex("finalidade4"));
-            String ceans4 = c.getString(c.getColumnIndex("ceans4"));
-            String tar4 = c.getString(c.getColumnIndex("tar4"));
-            String reservaTec4 = c.getString(c.getColumnIndex("reservaTec4"));
-            String backbone4 = c.getString(c.getColumnIndex("backbone4"));
-            String placaIdent4 = c.getString(c.getColumnIndex("placaIdent4"));
-            String descidaCabos4 = c.getString(c.getColumnIndex("descidaCabos4"));
-            String descricaoIrregularidade4 = c.getString(c.getColumnIndex("descricaoIrregularidade4"));
-            String observacaoMutuo4 = c.getString(c.getColumnIndex("observacaoMutuo4"));
-
-            String quantidadeCabos5 = c.getString(c.getColumnIndex("quantidadeCabos5"));
-            String tipoCabo5 = c.getString(c.getColumnIndex("tipoCabo5"));
-            String nomeEmpresa5 = c.getString(c.getColumnIndex("nomeEmpresa5"));
-            String finalidade5 = c.getString(c.getColumnIndex("finalidade5"));
-            String ceans5 = c.getString(c.getColumnIndex("ceans5"));
-            String tar5 = c.getString(c.getColumnIndex("tar5"));
-            String reservaTec5 = c.getString(c.getColumnIndex("reservaTec5"));
-            String backbone5 = c.getString(c.getColumnIndex("backbone5"));
-            String placaIdent5 = c.getString(c.getColumnIndex("placaIdent5"));
-            String descidaCabos5 = c.getString(c.getColumnIndex("descidaCabos5"));
-            String descricaoIrregularidade5 = c.getString(c.getColumnIndex("descricaoIrregularidade5"));
-            String observacaoMutuo5 = c.getString(c.getColumnIndex("observacaoMutuo5"));
-
 
             String dimensaoVegetacao = c.getString(c.getColumnIndex("dimensaoVegetacao"));
             String distanciaBaixa = c.getString(c.getColumnIndex("distanciaBaixa"));
@@ -547,17 +481,49 @@ public class EnviadoDAO implements IFormularioDAO {
             String observacaoVegetacao = c.getString(c.getColumnIndex("observacaoVegetacao"));
 
             Formulario formulario = new Formulario();
+
+            formulario.setContadorIp(contadorIp);
+            formulario.setContadorAr(contadorAr);
+            formulario.setContadorAt(contadorAt);
             formulario.setColor(color);
             formulario.setColor2(color2);
             formulario.setColor3(color3);
+            formulario.setColor4(color4);
+            formulario.setColor5(color5);
+            formulario.setColor6(color6);
+            formulario.setColor7(color7);
+            formulario.setColor8(color8);
+            formulario.setColor9(color9);
+            formulario.setColor10(color10);
+            formulario.setColor11(color11);
+            formulario.setColor12(color12);
 
             formulario.setCodigo(codigo);
             formulario.setCaminhoImagem(caminhoImagem);
             formulario.setCaminhoImagem2(caminhoImagem2);
             formulario.setCaminhoImagem3(caminhoImagem3);
+            formulario.setCaminhoImagem4(caminhoImagem4);
+            formulario.setCaminhoImagem5(caminhoImagem5);
+            formulario.setCaminhoImagem6(caminhoImagem6);
+            formulario.setCaminhoImagem7(caminhoImagem7);
+            formulario.setCaminhoImagem8(caminhoImagem8);
+            formulario.setCaminhoImagem9(caminhoImagem9);
+            formulario.setCaminhoImagem10(caminhoImagem10);
+            formulario.setCaminhoImagem11(caminhoImagem11);
+            formulario.setCaminhoImagem12(caminhoImagem12);
+
             formulario.setUrlImagem(urlImagem);
             formulario.setUrlImagem2(urlImagem2);
             formulario.setUrlImagem3(urlImagem3);
+            formulario.setUrlImagem4(urlImagem4);
+            formulario.setUrlImagem5(urlImagem5);
+            formulario.setUrlImagem6(urlImagem6);
+            formulario.setUrlImagem7(urlImagem7);
+            formulario.setUrlImagem8(urlImagem8);
+            formulario.setUrlImagem9(urlImagem9);
+            formulario.setUrlImagem10(urlImagem10);
+            formulario.setUrlImagem11(urlImagem11);
+            formulario.setUrlImagem12(urlImagem12);
 
             formulario.setId(id);
             formulario.setEndereco(endereco);
@@ -628,6 +594,8 @@ public class EnviadoDAO implements IFormularioDAO {
 
             formulario.setQuantidadeCabos(quantidadeCabos);
             formulario.setTipoCabo(tipoCabo);
+            formulario.setQuantidadeCabosdois(quantidadeCabosdois);
+            formulario.setTipoCabodois(tipoCabodois);
             formulario.setNome(nomeEmpresa);
             formulario.setFinalidade(finalidade);
             formulario.setCeans(ceans);
@@ -638,60 +606,6 @@ public class EnviadoDAO implements IFormularioDAO {
             formulario.setPlacaIdent(placaIdent);
             formulario.setDescricaoIrregularidade(descricaoIrregularidade);
             formulario.setObservacaoMutuo(observacaoMutuo);
-
-            formulario.setQuantidadeCabos2(quantidadeCabos2);
-            formulario.setTipoCabo2(tipoCabo2);
-            formulario.setQuantidadeCabos2dois(quantidadeCabos2dois);
-            formulario.setTipoCabo2dois(tipoCabo2dois);
-            formulario.setNome2(nomeEmpresa2);
-            formulario.setFinalidade2(finalidade2);
-            formulario.setCeans2(ceans2);
-            formulario.setTar2(tar2);
-            formulario.setReservaTec2(reservaTec2);
-            formulario.setBackbone2(backbone2);
-            formulario.setDescidaCabos2(descidaCabos2);
-            formulario.setPlacaIdent2(placaIdent2);
-            formulario.setDescricaoIrregularidade2(descricaoIrregularidade2);
-            formulario.setObservacaoMutuo2(observacaoMutuo2);
-
-            formulario.setQuantidadeCabos3(quantidadeCabos3);
-            formulario.setTipoCabo3(tipoCabo3);
-            formulario.setNome3(nomeEmpresa3);
-            formulario.setFinalidade3(finalidade3);
-            formulario.setCeans3(ceans3);
-            formulario.setTar3(tar3);
-            formulario.setReservaTec3(reservaTec3);
-            formulario.setBackbone3(backbone3);
-            formulario.setDescidaCabos3(descidaCabos3);
-            formulario.setPlacaIdent3(placaIdent3);
-            formulario.setDescricaoIrregularidade3(descricaoIrregularidade3);
-            formulario.setObservacaoMutuo3(observacaoMutuo3);
-
-            formulario.setQuantidadeCabos4(quantidadeCabos4);
-            formulario.setTipoCabo4(tipoCabo4);
-            formulario.setNome4(nomeEmpresa4);
-            formulario.setFinalidade4(finalidade4);
-            formulario.setCeans4(ceans4);
-            formulario.setTar4(tar4);
-            formulario.setReservaTec4(reservaTec4);
-            formulario.setBackbone4(backbone4);
-            formulario.setDescidaCabos4(descidaCabos4);
-            formulario.setPlacaIdent4(placaIdent4);
-            formulario.setDescricaoIrregularidade4(descricaoIrregularidade4);
-            formulario.setObservacaoMutuo4(observacaoMutuo4);
-
-            formulario.setQuantidadeCabos5(quantidadeCabos5);
-            formulario.setTipoCabo5(tipoCabo5);
-            formulario.setNome5(nomeEmpresa5);
-            formulario.setFinalidade5(finalidade5);
-            formulario.setCeans5(ceans5);
-            formulario.setTar5(tar5);
-            formulario.setReservaTec5(reservaTec5);
-            formulario.setBackbone5(backbone5);
-            formulario.setDescidaCabos5(descidaCabos5);
-            formulario.setPlacaIdent5(placaIdent5);
-            formulario.setDescricaoIrregularidade5(descricaoIrregularidade5);
-            formulario.setObservacaoMutuo5(observacaoMutuo5);
 
             formulario.setDimensaoVegetacao(dimensaoVegetacao);
             formulario.setDistaciaBaixa(distanciaBaixa);

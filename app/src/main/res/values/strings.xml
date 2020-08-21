@@ -145,7 +145,6 @@
 
     <string-array name="RamalSubt">
         <item>Ramal Substação</item>
-        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -160,7 +159,6 @@
 
     <string-array name="TrafoTrifasico">
         <item>Trafo Trifásico(KVA)</item>
-        <item>0</item>
         <item>15</item>
         <item>30</item>
         <item>45</item>
@@ -182,7 +180,6 @@
 
     <string-array name="TrafoMono">
         <item>Trafo Mono(KVA)</item>
-        <item>0</item>
         <item>5</item>
         <item>10</item>
         <item>15</item>
@@ -243,7 +240,6 @@
 
     <string-array name="ceans">
         <item>CEANS</item>
-        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -253,7 +249,6 @@
 
     <string-array name="tar">
         <item>TAR</item>
-        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -263,7 +258,6 @@
 
     <string-array name="reservaTec">
         <item>RESERVA TEC</item>
-        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -280,7 +274,6 @@
 
     <string-array name="backbone">
         <item>BACKBONE</item>
-        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>

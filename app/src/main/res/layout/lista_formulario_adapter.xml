@@ -59,6 +59,69 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="textEnd" />
+
+        <TextView
+            android:id="@+id/cadastroUpload4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="textEnd" />
+
+        <TextView
+            android:id="@+id/cadastroUpload5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="textEnd" />
+
+        <TextView
+            android:id="@+id/cadastroUpload6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="textEnd" />
+
+        <TextView
+            android:id="@+id/cadastroUpload7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="textEnd" />
+
+        <TextView
+            android:id="@+id/cadastroUpload8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="textEnd" />
+
+        <TextView
+            android:id="@+id/cadastroUpload9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="textEnd" />
+
+        <TextView
+            android:id="@+id/cadastroUpload10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="textEnd" />
+
+        <TextView
+            android:id="@+id/cadastroUpload11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="textEnd" />
+
+        <TextView
+            android:id="@+id/cadastroUpload12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="textEnd" />
     </LinearLayout>
 
     <TextView

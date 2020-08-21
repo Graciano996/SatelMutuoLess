@@ -1,19 +1,80 @@
 package com.example.satelprojetos.model;
 
+import com.google.firebase.database.Exclude;
+
 import java.io.Serializable;
 
 public class Formulario implements Serializable {
     private Long id;
     private String codigo;
+    @Exclude
     private String color;
+    @Exclude
     private String color2;
+    @Exclude
     private String color3;
+    @Exclude
+    private String color4;
+    @Exclude
+    private String color5;
+    @Exclude
+    private String color6;
+    @Exclude
+    private String color7;
+    @Exclude
+    private String color8;
+    @Exclude
+    private String color9;
+    @Exclude
+    private String color10;
+    @Exclude
+    private String color11;
+    @Exclude
+    private String color12;
+    @Exclude
     private String caminhoImagem;
+    @Exclude
     private String caminhoImagem2;
+    @Exclude
     private String caminhoImagem3;
+    @Exclude
+    private String caminhoImagem4;
+    @Exclude
+    private String caminhoImagem5;
+    @Exclude
+    private String caminhoImagem6;
+    @Exclude
+    private String caminhoImagem7;
+    @Exclude
+    private String caminhoImagem8;
+    @Exclude
+    private String caminhoImagem9;
+    @Exclude
+    private String caminhoImagem10;
+    @Exclude
+    private String caminhoImagem11;
+    @Exclude
+    private String caminhoImagem12;
+
     private String urlImagem;
     private String urlImagem2;
     private String urlImagem3;
+    private String urlImagem4;
+    private String urlImagem5;
+    private String urlImagem6;
+    private String urlImagem7;
+    private String urlImagem8;
+    private String urlImagem9;
+    private String urlImagem10;
+    private String urlImagem11;
+    private String urlImagem12;
+    @Exclude
+    private int contadorAt;
+    @Exclude
+    private int contadorIp;
+    @Exclude
+    private int contadorAr;
+
     private String data;
     private String endereco;
     private String municipio;
@@ -71,6 +132,8 @@ public class Formulario implements Serializable {
     private String quantidadeOcupantes;
     private String quantidadeCabos;
     private String tipoCabo;
+    private String quantidadeCabosdois;
+    private String tipoCabodois;
     private String nome;
     private String finalidade;
     private String ceans;
@@ -82,60 +145,6 @@ public class Formulario implements Serializable {
     private String descricaoIrregularidade;
     private String observacaoMutuo;
 
-    private String quantidadeCabos2;
-    private String tipoCabo2;
-    private String quantidadeCabos2dois;
-    private String tipoCabo2dois;
-    private String nome2;
-    private String finalidade2;
-    private String ceans2;
-    private String tar2;
-    private String reservaTec2;
-    private String backbone2;
-    private String placaIdent2;
-    private String descidaCabos2;
-    private String descricaoIrregularidade2;
-    private String observacaoMutuo2;
-
-    private String quantidadeCabos3;
-    private String tipoCabo3;
-    private String nome3;
-    private String finalidade3;
-    private String ceans3;
-    private String tar3;
-    private String reservaTec3;
-    private String backbone3;
-    private String placaIdent3;
-    private String descidaCabos3;
-    private String descricaoIrregularidade3;
-    private String observacaoMutuo3;
-
-    private String quantidadeCabos4;
-    private String tipoCabo4;
-    private String nome4;
-    private String finalidade4;
-    private String ceans4;
-    private String tar4;
-    private String reservaTec4;
-    private String backbone4;
-    private String placaIdent4;
-    private String descidaCabos4;
-    private String descricaoIrregularidade4;
-    private String observacaoMutuo4;
-
-    private String quantidadeCabos5;
-    private String tipoCabo5;
-    private String nome5;
-    private String finalidade5;
-    private String ceans5;
-    private String tar5;
-    private String reservaTec5;
-    private String backbone5;
-    private String placaIdent5;
-    private String descidaCabos5;
-    private String descricaoIrregularidade5;
-    private String observacaoMutuo5;
-
     private String dimensaoVegetacao;
     private String distaciaBaixa;
     private String distanciaMedia;
@@ -144,36 +153,44 @@ public class Formulario implements Serializable {
     private String localArvore;
     private String observacaoVegetacao;
 
+    public int getContadorAt() {
+        return contadorAt;
+    }
+
+    public void setContadorAt(int contadorAt) {
+        this.contadorAt = contadorAt;
+    }
+
+    public int getContadorIp() {
+        return contadorIp;
+    }
+
+    public void setContadorIp(int contadorIp) {
+        this.contadorIp = contadorIp;
+    }
+
+    public int getContadorAr() {
+        return contadorAr;
+    }
+
+    public void setContadorAr(int contadorAr) {
+        this.contadorAr = contadorAr;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getCodigo() {
         return codigo;
     }
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
-    }
-
-    public String getQuantidadeCabos2dois() {
-        return quantidadeCabos2dois;
-    }
-
-    public void setQuantidadeCabos2dois(String quantidadeCabos2dois) {
-        this.quantidadeCabos2dois = quantidadeCabos2dois;
-    }
-
-    public String getTipoCabo2dois() {
-        return tipoCabo2dois;
-    }
-
-    public void setTipoCabo2dois(String tipoCabo2dois) {
-        this.tipoCabo2dois = tipoCabo2dois;
-    }
-
-    public String getOutros() {
-        return outros;
-    }
-
-    public void setOutros(String outros) {
-        this.outros = outros;
     }
 
     public String getColor() {
@@ -200,6 +217,78 @@ public class Formulario implements Serializable {
         this.color3 = color3;
     }
 
+    public String getColor4() {
+        return color4;
+    }
+
+    public void setColor4(String color4) {
+        this.color4 = color4;
+    }
+
+    public String getColor5() {
+        return color5;
+    }
+
+    public void setColor5(String color5) {
+        this.color5 = color5;
+    }
+
+    public String getColor6() {
+        return color6;
+    }
+
+    public void setColor6(String color6) {
+        this.color6 = color6;
+    }
+
+    public String getColor7() {
+        return color7;
+    }
+
+    public void setColor7(String color7) {
+        this.color7 = color7;
+    }
+
+    public String getColor8() {
+        return color8;
+    }
+
+    public void setColor8(String color8) {
+        this.color8 = color8;
+    }
+
+    public String getColor9() {
+        return color9;
+    }
+
+    public void setColor9(String color9) {
+        this.color9 = color9;
+    }
+
+    public String getColor10() {
+        return color10;
+    }
+
+    public void setColor10(String color10) {
+        this.color10 = color10;
+    }
+
+    public String getColor11() {
+        return color11;
+    }
+
+    public void setColor11(String color11) {
+        this.color11 = color11;
+    }
+
+    public String getColor12() {
+        return color12;
+    }
+
+    public void setColor12(String color12) {
+        this.color12 = color12;
+    }
+
     public String getCaminhoImagem() {
         return caminhoImagem;
     }
@@ -222,6 +311,78 @@ public class Formulario implements Serializable {
 
     public void setCaminhoImagem3(String caminhoImagem3) {
         this.caminhoImagem3 = caminhoImagem3;
+    }
+
+    public String getCaminhoImagem4() {
+        return caminhoImagem4;
+    }
+
+    public void setCaminhoImagem4(String caminhoImagem4) {
+        this.caminhoImagem4 = caminhoImagem4;
+    }
+
+    public String getCaminhoImagem5() {
+        return caminhoImagem5;
+    }
+
+    public void setCaminhoImagem5(String caminhoImagem5) {
+        this.caminhoImagem5 = caminhoImagem5;
+    }
+
+    public String getCaminhoImagem6() {
+        return caminhoImagem6;
+    }
+
+    public void setCaminhoImagem6(String caminhoImagem6) {
+        this.caminhoImagem6 = caminhoImagem6;
+    }
+
+    public String getCaminhoImagem7() {
+        return caminhoImagem7;
+    }
+
+    public void setCaminhoImagem7(String caminhoImagem7) {
+        this.caminhoImagem7 = caminhoImagem7;
+    }
+
+    public String getCaminhoImagem8() {
+        return caminhoImagem8;
+    }
+
+    public void setCaminhoImagem8(String caminhoImagem8) {
+        this.caminhoImagem8 = caminhoImagem8;
+    }
+
+    public String getCaminhoImagem9() {
+        return caminhoImagem9;
+    }
+
+    public void setCaminhoImagem9(String caminhoImagem9) {
+        this.caminhoImagem9 = caminhoImagem9;
+    }
+
+    public String getCaminhoImagem10() {
+        return caminhoImagem10;
+    }
+
+    public void setCaminhoImagem10(String caminhoImagem10) {
+        this.caminhoImagem10 = caminhoImagem10;
+    }
+
+    public String getCaminhoImagem11() {
+        return caminhoImagem11;
+    }
+
+    public void setCaminhoImagem11(String caminhoImagem11) {
+        this.caminhoImagem11 = caminhoImagem11;
+    }
+
+    public String getCaminhoImagem12() {
+        return caminhoImagem12;
+    }
+
+    public void setCaminhoImagem12(String caminhoImagem12) {
+        this.caminhoImagem12 = caminhoImagem12;
     }
 
     public String getUrlImagem() {
@@ -248,12 +409,76 @@ public class Formulario implements Serializable {
         this.urlImagem3 = urlImagem3;
     }
 
-    public Long getId() {
-        return id;
+    public String getUrlImagem4() {
+        return urlImagem4;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUrlImagem4(String urlImagem4) {
+        this.urlImagem4 = urlImagem4;
+    }
+
+    public String getUrlImagem5() {
+        return urlImagem5;
+    }
+
+    public void setUrlImagem5(String urlImagem5) {
+        this.urlImagem5 = urlImagem5;
+    }
+
+    public String getUrlImagem6() {
+        return urlImagem6;
+    }
+
+    public void setUrlImagem6(String urlImagem6) {
+        this.urlImagem6 = urlImagem6;
+    }
+
+    public String getUrlImagem7() {
+        return urlImagem7;
+    }
+
+    public void setUrlImagem7(String urlImagem7) {
+        this.urlImagem7 = urlImagem7;
+    }
+
+    public String getUrlImagem8() {
+        return urlImagem8;
+    }
+
+    public void setUrlImagem8(String urlImagem8) {
+        this.urlImagem8 = urlImagem8;
+    }
+
+    public String getUrlImagem9() {
+        return urlImagem9;
+    }
+
+    public void setUrlImagem9(String urlImagem9) {
+        this.urlImagem9 = urlImagem9;
+    }
+
+    public String getUrlImagem10() {
+        return urlImagem10;
+    }
+
+    public void setUrlImagem10(String urlImagem10) {
+        this.urlImagem10 = urlImagem10;
+    }
+
+    public String getUrlImagem11() {
+        return urlImagem11;
+    }
+
+    public void setUrlImagem11(String urlImagem11) {
+        this.urlImagem11 = urlImagem11;
+    }
+
+    public String getUrlImagem12() {
+        return urlImagem12;
+    }
+
+    public void setUrlImagem12(String urlImagem12) {
+        this.urlImagem12 = urlImagem12;
     }
 
     public String getData() {
@@ -462,6 +687,14 @@ public class Formulario implements Serializable {
 
     public void setChFusivelReligador(String chFusivelReligador) {
         this.chFusivelReligador = chFusivelReligador;
+    }
+
+    public String getOutros() {
+        return outros;
+    }
+
+    public void setOutros(String outros) {
+        this.outros = outros;
     }
 
     public String getObservacaoAtivos() {
@@ -704,6 +937,22 @@ public class Formulario implements Serializable {
         this.tipoCabo = tipoCabo;
     }
 
+    public String getQuantidadeCabosdois() {
+        return quantidadeCabosdois;
+    }
+
+    public void setQuantidadeCabosdois(String quantidadeCabosdois) {
+        this.quantidadeCabosdois = quantidadeCabosdois;
+    }
+
+    public String getTipoCabodois() {
+        return tipoCabodois;
+    }
+
+    public void setTipoCabodois(String tipoCabodois) {
+        this.tipoCabodois = tipoCabodois;
+    }
+
     public String getNome() {
         return nome;
     }
@@ -782,390 +1031,6 @@ public class Formulario implements Serializable {
 
     public void setObservacaoMutuo(String observacaoMutuo) {
         this.observacaoMutuo = observacaoMutuo;
-    }
-
-    public String getQuantidadeCabos2() {
-        return quantidadeCabos2;
-    }
-
-    public void setQuantidadeCabos2(String quantidadeCabos2) {
-        this.quantidadeCabos2 = quantidadeCabos2;
-    }
-
-    public String getTipoCabo2() {
-        return tipoCabo2;
-    }
-
-    public void setTipoCabo2(String tipoCabo2) {
-        this.tipoCabo2 = tipoCabo2;
-    }
-
-    public String getNome2() {
-        return nome2;
-    }
-
-    public void setNome2(String nome2) {
-        this.nome2 = nome2;
-    }
-
-    public String getFinalidade2() {
-        return finalidade2;
-    }
-
-    public void setFinalidade2(String finalidade2) {
-        this.finalidade2 = finalidade2;
-    }
-
-    public String getCeans2() {
-        return ceans2;
-    }
-
-    public void setCeans2(String ceans2) {
-        this.ceans2 = ceans2;
-    }
-
-    public String getTar2() {
-        return tar2;
-    }
-
-    public void setTar2(String tar2) {
-        this.tar2 = tar2;
-    }
-
-    public String getReservaTec2() {
-        return reservaTec2;
-    }
-
-    public void setReservaTec2(String reservaTec2) {
-        this.reservaTec2 = reservaTec2;
-    }
-
-    public String getBackbone2() {
-        return backbone2;
-    }
-
-    public void setBackbone2(String backbone2) {
-        this.backbone2 = backbone2;
-    }
-
-    public String getPlacaIdent2() {
-        return placaIdent2;
-    }
-
-    public void setPlacaIdent2(String placaIdent2) {
-        this.placaIdent2 = placaIdent2;
-    }
-
-    public String getDescidaCabos2() {
-        return descidaCabos2;
-    }
-
-    public void setDescidaCabos2(String descidaCabos2) {
-        this.descidaCabos2 = descidaCabos2;
-    }
-
-    public String getDescricaoIrregularidade2() {
-        return descricaoIrregularidade2;
-    }
-
-    public void setDescricaoIrregularidade2(String descricaoIrregularidade2) {
-        this.descricaoIrregularidade2 = descricaoIrregularidade2;
-    }
-
-    public String getObservacaoMutuo2() {
-        return observacaoMutuo2;
-    }
-
-    public void setObservacaoMutuo2(String observacaoMutuo2) {
-        this.observacaoMutuo2 = observacaoMutuo2;
-    }
-
-    public String getQuantidadeCabos3() {
-        return quantidadeCabos3;
-    }
-
-    public void setQuantidadeCabos3(String quantidadeCabos3) {
-        this.quantidadeCabos3 = quantidadeCabos3;
-    }
-
-    public String getTipoCabo3() {
-        return tipoCabo3;
-    }
-
-    public void setTipoCabo3(String tipoCabo3) {
-        this.tipoCabo3 = tipoCabo3;
-    }
-
-    public String getNome3() {
-        return nome3;
-    }
-
-    public void setNome3(String nome3) {
-        this.nome3 = nome3;
-    }
-
-    public String getFinalidade3() {
-        return finalidade3;
-    }
-
-    public void setFinalidade3(String finalidade3) {
-        this.finalidade3 = finalidade3;
-    }
-
-    public String getCeans3() {
-        return ceans3;
-    }
-
-    public void setCeans3(String ceans3) {
-        this.ceans3 = ceans3;
-    }
-
-    public String getTar3() {
-        return tar3;
-    }
-
-    public void setTar3(String tar3) {
-        this.tar3 = tar3;
-    }
-
-    public String getReservaTec3() {
-        return reservaTec3;
-    }
-
-    public void setReservaTec3(String reservaTec3) {
-        this.reservaTec3 = reservaTec3;
-    }
-
-    public String getBackbone3() {
-        return backbone3;
-    }
-
-    public void setBackbone3(String backbone3) {
-        this.backbone3 = backbone3;
-    }
-
-    public String getPlacaIdent3() {
-        return placaIdent3;
-    }
-
-    public void setPlacaIdent3(String placaIdent3) {
-        this.placaIdent3 = placaIdent3;
-    }
-
-    public String getDescidaCabos3() {
-        return descidaCabos3;
-    }
-
-    public void setDescidaCabos3(String descidaCabos3) {
-        this.descidaCabos3 = descidaCabos3;
-    }
-
-    public String getDescricaoIrregularidade3() {
-        return descricaoIrregularidade3;
-    }
-
-    public void setDescricaoIrregularidade3(String descricaoIrregularidade3) {
-        this.descricaoIrregularidade3 = descricaoIrregularidade3;
-    }
-
-    public String getObservacaoMutuo3() {
-        return observacaoMutuo3;
-    }
-
-    public void setObservacaoMutuo3(String observacaoMutuo3) {
-        this.observacaoMutuo3 = observacaoMutuo3;
-    }
-
-    public String getQuantidadeCabos4() {
-        return quantidadeCabos4;
-    }
-
-    public void setQuantidadeCabos4(String quantidadeCabos4) {
-        this.quantidadeCabos4 = quantidadeCabos4;
-    }
-
-    public String getTipoCabo4() {
-        return tipoCabo4;
-    }
-
-    public void setTipoCabo4(String tipoCabo4) {
-        this.tipoCabo4 = tipoCabo4;
-    }
-
-    public String getNome4() {
-        return nome4;
-    }
-
-    public void setNome4(String nome4) {
-        this.nome4 = nome4;
-    }
-
-    public String getFinalidade4() {
-        return finalidade4;
-    }
-
-    public void setFinalidade4(String finalidade4) {
-        this.finalidade4 = finalidade4;
-    }
-
-    public String getCeans4() {
-        return ceans4;
-    }
-
-    public void setCeans4(String ceans4) {
-        this.ceans4 = ceans4;
-    }
-
-    public String getTar4() {
-        return tar4;
-    }
-
-    public void setTar4(String tar4) {
-        this.tar4 = tar4;
-    }
-
-    public String getReservaTec4() {
-        return reservaTec4;
-    }
-
-    public void setReservaTec4(String reservaTec4) {
-        this.reservaTec4 = reservaTec4;
-    }
-
-    public String getBackbone4() {
-        return backbone4;
-    }
-
-    public void setBackbone4(String backbone4) {
-        this.backbone4 = backbone4;
-    }
-
-    public String getPlacaIdent4() {
-        return placaIdent4;
-    }
-
-    public void setPlacaIdent4(String placaIdent4) {
-        this.placaIdent4 = placaIdent4;
-    }
-
-    public String getDescidaCabos4() {
-        return descidaCabos4;
-    }
-
-    public void setDescidaCabos4(String descidaCabos4) {
-        this.descidaCabos4 = descidaCabos4;
-    }
-
-    public String getDescricaoIrregularidade4() {
-        return descricaoIrregularidade4;
-    }
-
-    public void setDescricaoIrregularidade4(String descricaoIrregularidade4) {
-        this.descricaoIrregularidade4 = descricaoIrregularidade4;
-    }
-
-    public String getObservacaoMutuo4() {
-        return observacaoMutuo4;
-    }
-
-    public void setObservacaoMutuo4(String observacaoMutuo4) {
-        this.observacaoMutuo4 = observacaoMutuo4;
-    }
-
-    public String getQuantidadeCabos5() {
-        return quantidadeCabos5;
-    }
-
-    public void setQuantidadeCabos5(String quantidadeCabos5) {
-        this.quantidadeCabos5 = quantidadeCabos5;
-    }
-
-    public String getTipoCabo5() {
-        return tipoCabo5;
-    }
-
-    public void setTipoCabo5(String tipoCabo5) {
-        this.tipoCabo5 = tipoCabo5;
-    }
-
-    public String getNome5() {
-        return nome5;
-    }
-
-    public void setNome5(String nome5) {
-        this.nome5 = nome5;
-    }
-
-    public String getFinalidade5() {
-        return finalidade5;
-    }
-
-    public void setFinalidade5(String finalidade5) {
-        this.finalidade5 = finalidade5;
-    }
-
-    public String getCeans5() {
-        return ceans5;
-    }
-
-    public void setCeans5(String ceans5) {
-        this.ceans5 = ceans5;
-    }
-
-    public String getTar5() {
-        return tar5;
-    }
-
-    public void setTar5(String tar5) {
-        this.tar5 = tar5;
-    }
-
-    public String getReservaTec5() {
-        return reservaTec5;
-    }
-
-    public void setReservaTec5(String reservaTec5) {
-        this.reservaTec5 = reservaTec5;
-    }
-
-    public String getBackbone5() {
-        return backbone5;
-    }
-
-    public void setBackbone5(String backbone5) {
-        this.backbone5 = backbone5;
-    }
-
-    public String getPlacaIdent5() {
-        return placaIdent5;
-    }
-
-    public void setPlacaIdent5(String placaIdent5) {
-        this.placaIdent5 = placaIdent5;
-    }
-
-    public String getDescidaCabos5() {
-        return descidaCabos5;
-    }
-
-    public void setDescidaCabos5(String descidaCabos5) {
-        this.descidaCabos5 = descidaCabos5;
-    }
-
-    public String getDescricaoIrregularidade5() {
-        return descricaoIrregularidade5;
-    }
-
-    public void setDescricaoIrregularidade5(String descricaoIrregularidade5) {
-        this.descricaoIrregularidade5 = descricaoIrregularidade5;
-    }
-
-    public String getObservacaoMutuo5() {
-        return observacaoMutuo5;
-    }
-
-    public void setObservacaoMutuo5(String observacaoMutuo5) {
-        this.observacaoMutuo5 = observacaoMutuo5;
     }
 
     public String getDimensaoVegetacao() {
@@ -1291,84 +1156,8 @@ public class Formulario implements Serializable {
         else if (atributo.equals("backbone")){
             setBackbone(dado);
         }
-
-        else if (atributo.equals("tipoCabo2")){
-            setTipoCabo2(dado);
-        }
-        else if (atributo.equals("tipoCabo2dois")){
-            setTipoCabo2dois(dado);
-        }
-        else if (atributo.equals("finalidade2")){
-            setFinalidade2(dado);
-        }
-        else if (atributo.equals("ceans2")){
-            setCeans2(dado);
-        }
-        else if (atributo.equals("tar2")){
-            setTar2(dado);
-        }
-        else if (atributo.equals("reservaTec2")){
-            setReservaTec2(dado);
-        }
-        else if (atributo.equals("backbone2")){
-            setBackbone2(dado);
-        }
-
-        else if (atributo.equals("tipoCabo3")){
-            setTipoCabo3(dado);
-        }
-        else if (atributo.equals("finalidade3")){
-            setFinalidade3(dado);
-        }
-        else if (atributo.equals("ceans3")){
-            setCeans3(dado);
-        }
-        else if (atributo.equals("tar3")){
-            setTar3(dado);
-        }
-        else if (atributo.equals("reservaTec3")){
-            setReservaTec3(dado);
-        }
-        else if (atributo.equals("backbone3")){
-            setBackbone3(dado);
-        }
-
-        else if (atributo.equals("tipoCabo4")){
-            setTipoCabo4(dado);
-        }
-        else if (atributo.equals("finalidade4")){
-            setFinalidade4(dado);
-        }
-        else if (atributo.equals("ceans4")){
-            setCeans4(dado);
-        }
-        else if (atributo.equals("tar4")){
-            setTar4(dado);
-        }
-        else if (atributo.equals("reservaTec4")){
-            setReservaTec4(dado);
-        }
-        else if (atributo.equals("backbone4")){
-            setBackbone4(dado);
-        }
-
-        else if (atributo.equals("tipoCabo5")){
-            setTipoCabo5(dado);
-        }
-        else if (atributo.equals("finalidade5")){
-            setFinalidade5(dado);
-        }
-        else if (atributo.equals("ceans5")){
-            setCeans5(dado);
-        }
-        else if (atributo.equals("tar5")){
-            setTar5(dado);
-        }
-        else if (atributo.equals("reservaTec5")){
-            setReservaTec5(dado);
-        }
-        else if (atributo.equals("backbone5")){
-            setBackbone5(dado);
+        else if (atributo.equals("tipoCabodois")){
+            setTipoCabodois(dado);
         }
         else if (atributo.equals("dimensaoVegetacao")){
             setDimensaoVegetacao(dado);

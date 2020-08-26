@@ -34,8 +34,6 @@ public class FormularioDAO implements IFormularioDAO {
         cv.put("color2", formulario.getColor2());
         cv.put("color3", formulario.getColor3());
         cv.put("color4", formulario.getColor4());
-        cv.put("color5", formulario.getColor5());
-        cv.put("color6", formulario.getColor6());
         cv.put("color7", formulario.getColor7());
         cv.put("color8", formulario.getColor8());
         cv.put("color9", formulario.getColor9());
@@ -47,8 +45,6 @@ public class FormularioDAO implements IFormularioDAO {
         cv.put("caminhoImagem2", formulario.getCaminhoImagem2());
         cv.put("caminhoImagem3", formulario.getCaminhoImagem3());
         cv.put("caminhoImagem4", formulario.getCaminhoImagem4());
-        cv.put("caminhoImagem5", formulario.getCaminhoImagem5());
-        cv.put("caminhoImagem6", formulario.getCaminhoImagem6());
         cv.put("caminhoImagem7", formulario.getCaminhoImagem7());
         cv.put("caminhoImagem8", formulario.getCaminhoImagem8());
         cv.put("caminhoImagem9", formulario.getCaminhoImagem9());
@@ -59,8 +55,6 @@ public class FormularioDAO implements IFormularioDAO {
         cv.put("urlImagem2", formulario.getUrlImagem2());
         cv.put("urlImagem3", formulario.getUrlImagem3());
         cv.put("urlImagem4", formulario.getUrlImagem4());
-        cv.put("urlImagem5", formulario.getUrlImagem5());
-        cv.put("urlImagem6", formulario.getUrlImagem6());
         cv.put("urlImagem7", formulario.getUrlImagem7());
         cv.put("urlImagem8", formulario.getUrlImagem8());
         cv.put("urlImagem9", formulario.getUrlImagem9());
@@ -96,24 +90,6 @@ public class FormularioDAO implements IFormularioDAO {
         cv.put("ipAtivacao", formulario.getIpAtivacao());
         cv.put("vinteEQuatro", formulario.getVinteEQuatro());
         cv.put("quantidade24H", formulario.getQuantidade24H());
-
-        cv.put("ip2", formulario.getIp2());
-        cv.put("ipEstrutura2", formulario.getIpEstrutura2());
-        cv.put("quantidadeLampada2", formulario.getQuantidadeLampada2());
-        cv.put("tipoPot2", formulario.getTipoPot2());
-        cv.put("potReator2", formulario.getPotReator2());
-        cv.put("ipAtivacao2", formulario.getIpAtivacao2());
-        cv.put("vinteEQuatro2", formulario.getVinteEQuatro2());
-        cv.put("quantidade24H2", formulario.getQuantidade24H2());
-
-        cv.put("ip3", formulario.getIp3());
-        cv.put("ipEstrutura3", formulario.getIpEstrutura3());
-        cv.put("quantidadeLampada3", formulario.getQuantidadeLampada3());
-        cv.put("tipoPot3", formulario.getTipoPot3());
-        cv.put("potReator3", formulario.getPotReator3());
-        cv.put("ipAtivacao3", formulario.getIpAtivacao3());
-        cv.put("vinteEQuatro3", formulario.getVinteEQuatro3());
-        cv.put("quantidade24H3", formulario.getQuantidade24H3());
         cv.put("observacaoIP", formulario.getObservacaoIP());
 
         cv.put("ativos", formulario.getAtivos());
@@ -150,7 +126,7 @@ public class FormularioDAO implements IFormularioDAO {
         cv.put("descricaoIrregularidade", formulario.getDescricaoIrregularidade());
         cv.put("observacaoMutuo",formulario.getObservacaoMutuo());
 
-
+        cv.put("vegetacao", formulario.getVegetacao());
         cv.put("dimensaoVegetacao", formulario.getDimensaoVegetacao());
         cv.put("distanciaBaixa", formulario.getDistaciaBaixa());
         cv.put("distanciaMedia", formulario.getDistanciaMedia());
@@ -180,8 +156,6 @@ public class FormularioDAO implements IFormularioDAO {
         cv.put("color2", formulario.getColor2());
         cv.put("color3", formulario.getColor3());
         cv.put("color4", formulario.getColor4());
-        cv.put("color5", formulario.getColor5());
-        cv.put("color6", formulario.getColor6());
         cv.put("color7", formulario.getColor7());
         cv.put("color8", formulario.getColor8());
         cv.put("color9", formulario.getColor9());
@@ -193,8 +167,6 @@ public class FormularioDAO implements IFormularioDAO {
         cv.put("caminhoImagem2", formulario.getCaminhoImagem2());
         cv.put("caminhoImagem3", formulario.getCaminhoImagem3());
         cv.put("caminhoImagem4", formulario.getCaminhoImagem4());
-        cv.put("caminhoImagem5", formulario.getCaminhoImagem5());
-        cv.put("caminhoImagem6", formulario.getCaminhoImagem6());
         cv.put("caminhoImagem7", formulario.getCaminhoImagem7());
         cv.put("caminhoImagem8", formulario.getCaminhoImagem8());
         cv.put("caminhoImagem9", formulario.getCaminhoImagem9());
@@ -205,8 +177,6 @@ public class FormularioDAO implements IFormularioDAO {
         cv.put("urlImagem2", formulario.getUrlImagem2());
         cv.put("urlImagem3", formulario.getUrlImagem3());
         cv.put("urlImagem4", formulario.getUrlImagem4());
-        cv.put("urlImagem5", formulario.getUrlImagem5());
-        cv.put("urlImagem6", formulario.getUrlImagem6());
         cv.put("urlImagem7", formulario.getUrlImagem7());
         cv.put("urlImagem8", formulario.getUrlImagem8());
         cv.put("urlImagem9", formulario.getUrlImagem9());
@@ -242,24 +212,6 @@ public class FormularioDAO implements IFormularioDAO {
         cv.put("ipAtivacao", formulario.getIpAtivacao());
         cv.put("vinteEQuatro", formulario.getVinteEQuatro());
         cv.put("quantidade24H", formulario.getQuantidade24H());
-
-        cv.put("ip2", formulario.getIp2());
-        cv.put("ipEstrutura2", formulario.getIpEstrutura2());
-        cv.put("quantidadeLampada2", formulario.getQuantidadeLampada2());
-        cv.put("tipoPot2", formulario.getTipoPot2());
-        cv.put("potReator2", formulario.getPotReator2());
-        cv.put("ipAtivacao2", formulario.getIpAtivacao2());
-        cv.put("vinteEQuatro2", formulario.getVinteEQuatro2());
-        cv.put("quantidade24H2", formulario.getQuantidade24H2());
-
-        cv.put("ip3", formulario.getIp3());
-        cv.put("ipEstrutura3", formulario.getIpEstrutura3());
-        cv.put("quantidadeLampada3", formulario.getQuantidadeLampada3());
-        cv.put("tipoPot3", formulario.getTipoPot3());
-        cv.put("potReator3", formulario.getPotReator3());
-        cv.put("ipAtivacao3", formulario.getIpAtivacao3());
-        cv.put("vinteEQuatro3", formulario.getVinteEQuatro3());
-        cv.put("quantidade24H3", formulario.getQuantidade24H3());
         cv.put("observacaoIP", formulario.getObservacaoIP());
 
         cv.put("ativos", formulario.getAtivos());
@@ -296,7 +248,7 @@ public class FormularioDAO implements IFormularioDAO {
         cv.put("descricaoIrregularidade", formulario.getDescricaoIrregularidade());
         cv.put("observacaoMutuo",formulario.getObservacaoMutuo());
 
-
+        cv.put("vegetacao", formulario.getVegetacao());
         cv.put("dimensaoVegetacao", formulario.getDimensaoVegetacao());
         cv.put("distanciaBaixa", formulario.getDistaciaBaixa());
         cv.put("distanciaMedia", formulario.getDistanciaMedia());
@@ -355,8 +307,6 @@ public class FormularioDAO implements IFormularioDAO {
             String color2 = c.getString((c.getColumnIndex("color2")));
             String color3 = c.getString((c.getColumnIndex("color3")));
             String color4 = c.getString((c.getColumnIndex("color4")));
-            String color5 = c.getString((c.getColumnIndex("color5")));
-            String color6 = c.getString((c.getColumnIndex("color6")));
             String color7 = c.getString((c.getColumnIndex("color7")));
             String color8 = c.getString((c.getColumnIndex("color8")));
             String color9 = c.getString((c.getColumnIndex("color9")));
@@ -368,8 +318,6 @@ public class FormularioDAO implements IFormularioDAO {
             String caminhoImagem2 = c.getString((c.getColumnIndex("caminhoImagem2")));
             String caminhoImagem3 = c.getString((c.getColumnIndex("caminhoImagem3")));
             String caminhoImagem4 = c.getString((c.getColumnIndex("caminhoImagem4")));
-            String caminhoImagem5 = c.getString((c.getColumnIndex("caminhoImagem5")));
-            String caminhoImagem6 = c.getString((c.getColumnIndex("caminhoImagem6")));
             String caminhoImagem7 = c.getString((c.getColumnIndex("caminhoImagem7")));
             String caminhoImagem8 = c.getString((c.getColumnIndex("caminhoImagem8")));
             String caminhoImagem9 = c.getString((c.getColumnIndex("caminhoImagem9")));
@@ -381,8 +329,6 @@ public class FormularioDAO implements IFormularioDAO {
             String urlImagem2 = c.getString((c.getColumnIndex("urlImagem2")));
             String urlImagem3 = c.getString((c.getColumnIndex("urlImagem3")));
             String urlImagem4 = c.getString((c.getColumnIndex("urlImagem4")));
-            String urlImagem5 = c.getString((c.getColumnIndex("urlImagem5")));
-            String urlImagem6 = c.getString((c.getColumnIndex("urlImagem6")));
             String urlImagem7 = c.getString((c.getColumnIndex("urlImagem7")));
             String urlImagem8 = c.getString((c.getColumnIndex("urlImagem8")));
             String urlImagem9 = c.getString((c.getColumnIndex("urlImagem9")));
@@ -417,24 +363,6 @@ public class FormularioDAO implements IFormularioDAO {
             String ipAtivacao = c.getString(c.getColumnIndex("ipAtivacao"));
             String vinteEQuatro = c.getString(c.getColumnIndex("vinteEQuatro"));
             String quantidade24H = c.getString(c.getColumnIndex("quantidade24H"));
-
-            String ip2 = c.getString(c.getColumnIndex("ip2"));
-            String ipEstrutura2 = c.getString(c.getColumnIndex("ipEstrutura2"));
-            String quantidadeLampada2 = c.getString(c.getColumnIndex("quantidadeLampada2"));
-            String tipoPot2 = c.getString(c.getColumnIndex("tipoPot2"));
-            String potReator2 = c.getString(c.getColumnIndex("potReator2"));
-            String ipAtivacao2 = c.getString(c.getColumnIndex("ipAtivacao2"));
-            String vinteEQuatro2 = c.getString(c.getColumnIndex("vinteEQuatro2"));
-            String quantidade24H2 = c.getString(c.getColumnIndex("quantidade24H2"));
-
-            String ip3 = c.getString(c.getColumnIndex("ip3"));
-            String ipEstrutura3 = c.getString(c.getColumnIndex("ipEstrutura3"));
-            String quantidadeLampada3 = c.getString(c.getColumnIndex("quantidadeLampada3"));
-            String tipoPot3 = c.getString(c.getColumnIndex("tipoPot3"));
-            String potReator3 = c.getString(c.getColumnIndex("potReator3"));
-            String ipAtivacao3 = c.getString(c.getColumnIndex("ipAtivacao3"));
-            String vinteEQuatro3 = c.getString(c.getColumnIndex("vinteEQuatro3"));
-            String quantidade24H3 = c.getString(c.getColumnIndex("quantidade24H3"));
             String observacaoIP = c.getString(c.getColumnIndex("observacaoIP"));
 
             String ativos = c.getString(c.getColumnIndex("ativos"));
@@ -472,7 +400,7 @@ public class FormularioDAO implements IFormularioDAO {
             String descricaoIrregularidade = c.getString(c.getColumnIndex("descricaoIrregularidade"));
             String observacaoMutuo = c.getString(c.getColumnIndex("observacaoMutuo"));
 
-
+            String vegetacao = c.getString(c.getColumnIndex("vegetacao"));
             String dimensaoVegetacao = c.getString(c.getColumnIndex("dimensaoVegetacao"));
             String distanciaBaixa = c.getString(c.getColumnIndex("distanciaBaixa"));
             String distanciaMedia = c.getString(c.getColumnIndex("distanciaMedia"));
@@ -489,8 +417,6 @@ public class FormularioDAO implements IFormularioDAO {
             formulario.setColor2(color2);
             formulario.setColor3(color3);
             formulario.setColor4(color4);
-            formulario.setColor5(color5);
-            formulario.setColor6(color6);
             formulario.setColor7(color7);
             formulario.setColor8(color8);
             formulario.setColor9(color9);
@@ -503,8 +429,6 @@ public class FormularioDAO implements IFormularioDAO {
             formulario.setCaminhoImagem2(caminhoImagem2);
             formulario.setCaminhoImagem3(caminhoImagem3);
             formulario.setCaminhoImagem4(caminhoImagem4);
-            formulario.setCaminhoImagem5(caminhoImagem5);
-            formulario.setCaminhoImagem6(caminhoImagem6);
             formulario.setCaminhoImagem7(caminhoImagem7);
             formulario.setCaminhoImagem8(caminhoImagem8);
             formulario.setCaminhoImagem9(caminhoImagem9);
@@ -516,8 +440,6 @@ public class FormularioDAO implements IFormularioDAO {
             formulario.setUrlImagem2(urlImagem2);
             formulario.setUrlImagem3(urlImagem3);
             formulario.setUrlImagem4(urlImagem4);
-            formulario.setUrlImagem5(urlImagem5);
-            formulario.setUrlImagem6(urlImagem6);
             formulario.setUrlImagem7(urlImagem7);
             formulario.setUrlImagem8(urlImagem8);
             formulario.setUrlImagem9(urlImagem9);
@@ -552,24 +474,6 @@ public class FormularioDAO implements IFormularioDAO {
             formulario.setIpAtivacao(ipAtivacao);
             formulario.setVinteEQuatro(vinteEQuatro);
             formulario.setQuantidade24H(quantidade24H);
-
-            formulario.setIp2(ip2);
-            formulario.setIpEstrutura2(ipEstrutura2);
-            formulario.setQuantidadeLampada2(quantidadeLampada2);
-            formulario.setTipoPot2(tipoPot2);
-            formulario.setPotReator2(potReator2);
-            formulario.setIpAtivacao2(ipAtivacao2);
-            formulario.setVinteEQuatro2(vinteEQuatro2);
-            formulario.setQuantidade24H2(quantidade24H2);
-
-            formulario.setIp3(ip3);
-            formulario.setIpEstrutura3(ipEstrutura3);
-            formulario.setQuantidadeLampada3(quantidadeLampada3);
-            formulario.setTipoPot3(tipoPot3);
-            formulario.setPotReator3(potReator3);
-            formulario.setIpAtivacao3(ipAtivacao3);
-            formulario.setVinteEQuatro3(vinteEQuatro3);
-            formulario.setQuantidade24H3(quantidade24H3);
             formulario.setObservacaoIP(observacaoIP);
 
 
@@ -607,6 +511,7 @@ public class FormularioDAO implements IFormularioDAO {
             formulario.setDescricaoIrregularidade(descricaoIrregularidade);
             formulario.setObservacaoMutuo(observacaoMutuo);
 
+            formulario.setVegetacao(vegetacao);
             formulario.setDimensaoVegetacao(dimensaoVegetacao);
             formulario.setDistaciaBaixa(distanciaBaixa);
             formulario.setDistanciaMedia(distanciaMedia);

@@ -99,6 +99,7 @@ public class MapsFragment extends Fragment {
         public void onMapReady(final GoogleMap googleMap) {
             locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
             googleMap2 = googleMap;
+            ThreadGS threadGS = new ThreadGS();
             boolean connected = false;
             try {
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(localizacao.getLatitude(),localizacao.getLongitude())));
@@ -107,16 +108,14 @@ public class MapsFragment extends Fragment {
 
             }
             ConnectivityManager connectivityManager = (ConnectivityManager) requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-            if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
-                    connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
-                //we are connected to a network
-                connected = true;
-            } else
-                connected = false;
+            //we are connected to a network
+            connected = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                    connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED;
             if (connected) {
                 MapaDAO mapaDAO = new MapaDAO(getActivity().getApplicationContext());
                 mapaDAO.deletarTudo();
-                getItems();
+                threadGS.start();
+                //getItems();
 
             } else {
                 MapaDAO mapaDAO = new MapaDAO(getActivity().getApplicationContext());
@@ -157,6 +156,7 @@ public class MapsFragment extends Fragment {
                     }
                 }
             }
+            //progressDialog.dismiss();
             try {
                 for (int i = 0; i < listaFormularioCadastro.size(); i++) {
                     LatLng local = new LatLng(Double.parseDouble(listaFormularioCadastro.get(i).getLatitude().replace(",", ".")), Double.parseDouble(listaFormularioCadastro.get(i).getLongitude().replace(",", ".")));
@@ -338,13 +338,18 @@ public class MapsFragment extends Fragment {
         }
     }
     private void getItems() {
+        requireActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog = new ProgressDialog(requireContext(),R.style.LightDialogTheme);
+                progressDialog.setMessage("Carregando dados..."); // Setting Message
+                progressDialog.setTitle("Por favor Espere"); // Setting Title
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
+                progressDialog.show(); // Display Progress Dialog
+                progressDialog.setCancelable(false);
+            }
+        });
 
-        progressDialog = new ProgressDialog(requireContext(),R.style.LightDialogTheme);
-        progressDialog.setMessage("Carregando dados..."); // Setting Message
-        progressDialog.setTitle("Por favor Espere"); // Setting Title
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
-        progressDialog.show(); // Display Progress Dialog
-        progressDialog.setCancelable(false);
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbzZJUnvHaDYfO13T9t7NyhLcweYuuYp38D1n0JzH0Hs4FVR0mrO/exec?action=getItems&email=" + FirebaseAuth.getInstance().getCurrentUser().getEmail(),
                 new Response.Listener<String>() {
@@ -483,13 +488,18 @@ public class MapsFragment extends Fragment {
                         }
                     }
                 }
-
+            requireActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    progressDialog.dismiss();
+                }
+            });
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        progressDialog.dismiss();
+       //progressDialog.dismiss();
     }
 
 
@@ -547,7 +557,12 @@ public class MapsFragment extends Fragment {
         queue.add(stringRequest);
     }
 
-
+class ThreadGS extends Thread{
+    @Override
+    public void run() {
+        getItems();
+    }
+}
 
 
 }

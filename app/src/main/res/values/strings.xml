@@ -30,8 +30,8 @@
     <string-array name="vinteEQuatro">
         <item>24H</item>
         <item>1</item>
-        <item>1/2</item>
-        <item>1/4</item>
+        <item><![CDATA[&#189;]]></item>
+        <item><![CDATA[&#188;]]></item>
     </string-array>
 
     <string-array name="vegetacao">
@@ -39,7 +39,6 @@
         <item>GRANDE PORTE</item>
         <item>MÉDIO PORTE</item>
         <item>PEQUENO PORTE</item>
-        <item>SEM VEGETAÇÃO</item>
     </string-array>
 
     <string-array name="Placa">
@@ -138,9 +137,7 @@
     <string-array name="TipoAtivacao">
         <item>Tipo de Ativação</item>
         <item>RELÉ</item>
-        <item>INTERRUPTOR</item>
-        <item>NÃO IDENTIFICADO</item>
-        <item>N/A</item>
+        <item>COMANDO</item>
     </string-array>
 
     <string-array name="RamalSubt">
@@ -152,6 +149,13 @@
 
     <string-array name="TipoCaboMutuo">
         <item>Tipo de Cabo</item>
+        <item>FIBRA</item>
+        <item>CTP-APL</item>
+        <item>SEM INDENTIFICAÇÃO</item>
+    </string-array>
+
+    <string-array name="TipoCaboMutuo2">
+        <item>Tipo de Cabo 2</item>
         <item>FIBRA</item>
         <item>CTP-APL</item>
         <item>SEM INDENTIFICAÇÃO</item>
@@ -178,6 +182,24 @@
         <item>5</item>
     </string-array>
 
+    <string-array name="ChFaca">
+        <item>Chave Faca</item>
+        <item>3</item>
+        <item>6</item>
+        <item>9</item>
+    </string-array>
+
+    <string-array name="Banco">
+        <item>Banco de Capacitores</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
+
     <string-array name="TrafoMono">
         <item>Trafo Mono(KVA)</item>
         <item>5</item>
@@ -188,14 +210,12 @@
 
     <string-array name="EstadoArvore">
         <item>Estado da Árvore</item>
-        <item>NÃO APLICA</item>
         <item>SAUDÁVEL</item>
         <item>MORTA</item>
     </string-array>
 
     <string-array name="LocalArvore">
         <item>Local</item>
-        <item>NÃO APLICA</item>
         <item>RUA</item>
         <item>RESIDÊNCIA</item>
     </string-array>
@@ -206,7 +226,6 @@
         <item>ATÉ 100CM</item>
         <item>DE 100CM A 200CM</item>
         <item>MAIS DE 200CM</item>
-        <item>VEGETAÇÃO SOBRE O POSTE</item>
         <item>EM CONTATO</item>
     </string-array>
 
@@ -216,7 +235,6 @@
         <item>ATÉ 100CM</item>
         <item>DE 100CM A 200CM</item>
         <item>MAIS DE 200CM</item>
-        <item>VEGETAÇÃO SOBRE O POSTE</item>
         <item>EM CONTATO</item>
     </string-array>
 
@@ -242,18 +260,12 @@
         <item>CEANS</item>
         <item>1</item>
         <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
     </string-array>
 
     <string-array name="tar">
         <item>TAR</item>
         <item>1</item>
         <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
     </string-array>
 
     <string-array name="reservaTec">
@@ -268,17 +280,12 @@
         <item>8</item>
         <item>9</item>
         <item>10</item>
-        <item>11</item>
-        <item>12</item>
     </string-array>
 
     <string-array name="backbone">
         <item>BACKBONE</item>
         <item>1</item>
         <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
     </string-array>
 
     <string name="cadastro_municipio">Município</string>

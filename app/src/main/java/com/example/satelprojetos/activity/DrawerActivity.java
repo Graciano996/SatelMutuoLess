@@ -1,10 +1,12 @@
 package com.example.satelprojetos.activity;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -22,6 +24,8 @@ import com.example.satelprojetos.ui.cadastro.CadastroFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
@@ -41,6 +45,7 @@ import static java.lang.Integer.valueOf;
 public class DrawerActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private static final int REQUEST_CODE = 1;
     private CadastroFragment cadastroFragment;
     private TextView navEmail;
     private static final String SESSION_ID = "sessionId";
@@ -51,6 +56,7 @@ public class DrawerActivity extends AppCompatActivity {
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        verificarPermissaoLocaliza();
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -128,5 +134,22 @@ public class DrawerActivity extends AppCompatActivity {
             getSupportFragmentManager().popBackStack();
         }
 
+    }
+    public Boolean verificarPermissaoLocaliza() {
+        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION};
+
+        if(ContextCompat.checkSelfPermission(getApplicationContext(),
+                permissions[0]) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(getApplicationContext(),
+                permissions[1]) == PackageManager.PERMISSION_GRANTED
+        ){
+            return true;
+
+
+        }else{
+            ActivityCompat.requestPermissions(this,permissions,REQUEST_CODE);
+            return false;
+        }
     }
 }

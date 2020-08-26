@@ -21,6 +21,7 @@ import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -38,8 +39,10 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.ThemedSpinnerAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -94,30 +97,26 @@ import static com.bumptech.glide.load.resource.bitmap.TransformationUtils.rotate
 
 public class CadastroFragment extends Fragment {
     private static final int REQUEST_CODE = 1;
-    private static final int IMAGE_CAPTURE_CODE = 2;
-    private static final int IMAGE_PICK_CODE = 3;
-    private static final int IMAGE_CAPTURE_CODE2 = 4;
-    private static final int IMAGE_PICK_CODE2 = 5;
-    private static final int IMAGE_CAPTURE_CODE3 = 6;
-    private static final int IMAGE_PICK_CODE3 = 7;
-    private static final int IMAGE_CAPTURE_CODE4 = 8;
-    private static final int IMAGE_PICK_CODE4 = 9;
-    private static final int IMAGE_CAPTURE_CODE7 = 14;
-    private static final int IMAGE_PICK_CODE7 = 15;
-    private static final int IMAGE_CAPTURE_CODE10 = 20;
-    private static final int IMAGE_PICK_CODE10 = 21;
-    private static final int IMAGE_CAPTURE_CODE13 = 26;
-    private static final int IMAGE_PICK_CODE13 = 27;
-    private static final int IMAGE_CAPTURE_CODE14 = 28;
-    private static final int IMAGE_PICK_CODE14 = 29;
-    private static final int IMAGE_CAPTURE_CODE15 = 30;
-    private static final int IMAGE_PICK_CODE15 = 31;
-    private static final int IMAGE_CAPTURE_CODE16 = 32;
-    private static final int IMAGE_PICK_CODE16 = 33;
-    private static final int IMAGE_CAPTURE_CODE17 = 34;
-    private static final int IMAGE_PICK_CODE17 = 35;
-    private static final int IMAGE_CAPTURE_CODE30 = 60;
-    private static final int IMAGE_PICK_CODE30 = 61;
+    private static final int IMAGE_CAPTURE_CODE_PAN = 2;
+    private static final int IMAGE_PICK_CODE_PAN = 3;
+    private static final int IMAGE_CAPTURE_CODE_ALT = 4;
+    private static final int IMAGE_PICK_CODE_ALT = 5;
+    private static final int IMAGE_CAPTURE_CODE_QUALIDADE = 6;
+    private static final int IMAGE_PICK_CODE_QUALIDADE = 7;
+    private static final int IMAGE_CAPTURE_CODE_IP = 8;
+    private static final int IMAGE_PICK_CODE_IP = 9;
+    private static final int IMAGE_CAPTURE_CODE_ATIVOS = 10;
+    private static final int IMAGE_PICK_CODE_ATIVOS = 11;
+    private static final int IMAGE_CAPTURE_CODE_ATIVOS2 = 12;
+    private static final int IMAGE_PICK_CODE_ATIVOS2 = 13;
+    private static final int IMAGE_CAPTURE_CODE_MUTUO = 14;
+    private static final int IMAGE_PICK_CODE_MUTUO = 15;
+    private static final int IMAGE_CAPTURE_CODE_MUTUO2 = 16;
+    private static final int IMAGE_PICK_CODE_MUTUO2 = 17;
+    private static final int IMAGE_CAPTURE_CODE_MUTUO3 = 18;
+    private static final int IMAGE_PICK_CODE_MUTUO3 = 19;
+    private static final int IMAGE_CAPTURE_CODE_VEG = 20;
+    private static final int IMAGE_PICK_CODE_VEG= 21;
     private LocationManager locationManager;
     private LocationListener locationListener;
     private StorageReference storageReference;
@@ -125,45 +124,44 @@ public class CadastroFragment extends Fragment {
     private ProgressDialog progressDialog;
     Geocoder geocoder;
     List<Address> addresses;
+
+    private RelativeLayout relativeChFaca,relativeBanco,relativeRamal, relativeIPTipoEstrutura,
+                            relativeIPTipoLampada,relativeIPTipoAtivacao, relativeFinalidade,
+    relativeCeans, relativeTar, relativeReservaTec, relativeBackbone,relativeTipoCabo,relativeTipoCabodois,
+    relativeDimensaoVegetacao, relativeBaixa, relativeMedia, relativeEstadoArvore, relativeLocalArvore;
+    private TextView textOutros, textLampada, textFusivel, textFusivelReligador, textQuantidadeCabo,
+    textQuantidadeCabodois, textNome, textIrregularidade;
     private EditText codigo, endereco, latitude, longitude, observacaoFisicas,
-            observacaoAtivos, quantidadeLampada, quantidadeLampada2, quantidadeLampada3,
-            potReator, potReator2, potReator3, quantidade24H, quantidade24H2, quantidade24H3,
-            observacaoVegetacao, observacaoIP,outros, quantidadeOcupantes,
+            observacaoAtivos, quantidadeLampada,
+            potReator, quantidade24H,
+            observacaoVegetacao, observacaoIP,outros, quantidadeOcupantes, chFusivel,chFusivelReligador,
             quantidadeCabos, quantidadeCabosdois, nome,  descricaoIrregularidade, observacaoMutuo;
-    private Spinner municipio, alturaCarga, tipoPoste, ipEstrutura, ipEstrutura2, ipEstrutura3, tipoPot,
-            tipoPot2, tipoPot3, dimensaoVegetacao, ipAtivacao, ipAtivacao2, ipAtivacao3,
+    private Spinner municipio, alturaCarga, tipoPoste, ipEstrutura, tipoPot,
+            dimensaoVegetacao, ipAtivacao,
             trafoTrifasico, trafoMono, ramalSubt,
             tipoCabo, tipoCabodois, distaciaBaixa, distanciaMedia, estadoArvore,
-            localArvore, finalidade, ceans,tar,reservaTec,backbone;
+            localArvore, finalidade, ceans,tar,reservaTec,backbone,chBanco,chFaca;
     private CheckBox normal, ferragemExposta, fletido, danificado, abalroado, trincado, religador, medicao,
-            chFusivel, chFaca, vinteEQuatro, vinteEQuatro2, vinteEQuatro3,
-            ativos, chkTrafoTrifasico, chkTrafoMono, ip, ip2, ip3, chFusivelReligador, chBanco, mutuo,
-            placaIdentificadora, descidaCabos, quedaArvore, posteNovo;
+            vinteEQuatro,
+            ativos, chkTrafoTrifasico, chkTrafoMono, ip, mutuo,
+            placaIdentificadora, descidaCabos, quedaArvore,chkVegetacao;
     private Formulario formularioAtual;
     private Boolean controle = false;
-    private TextView mutuo2, mutuo3, mutuo4, mutuo5;
-    private List<ImageView> listaLatitude = new ArrayList<>();
     private File photoFile = null;
-    private List<Bitmap> imagemF = new ArrayList<>();
-    private List<Uri> urlF = new ArrayList<>();
-    private List<Boolean> novoU = new ArrayList<>();
     private Location localizacao;
     private String codigoEnergisa ="";
     public int contadorIp = 1, contadorAt = 1, contadorAr = 1;
-    public int codigoSetorUpload;
-    private ImageView foto, foto2, foto3, foto4, foto7, foto10,foto13, foto14,foto15, foto16, foto17,foto30;
-    private Uri urlFoto, urlFoto2, urlFoto3, urlFoto4, urlFoto7,urlFoto10,
-            urlFoto13, urlFoto14, urlFoto15, urlFoto16, urlFoto17,urlFoto30;
-
-    private Bitmap imagem, imagem2, imagem3, imagem4, imagem7,
-            imagem10, imagem13, imagem14, imagem15, imagem16, imagem17,imagem30;
-
-    private String imgPath, imgPath2, imgPath3,imgPath4, imgPath7,imgPath10, imgPath13, imgPath14,
-            imgPath15, imgPath16, imgPath17,imgPath30;
-
-    private Boolean novoUpload = false, novoUpload2 = false, novoUpload3 = false, novoUpload4 = false,
-             novoUpload7 = false, novoUpload10 = false, novoUpload13 = false, novoUpload14 = false
-            , novoUpload15 = false, novoUpload16 = false, novoUpload17 = false, novoUpload30 = false;
+    private ImageView fotoPan, fotoAlt, fotoQualidade, fotoIP,fotoAtivos, fotoAtivos2,fotoMutuo, 
+            fotoMutuo2, fotoMutuo3,fotoVeg;
+    private Uri urlFotoPan, urlFotoAlt, urlFotoQualidade, urlFotoIP,
+            urlFotoAtivos, urlFotoAtivos2, urlFotoMutuo, urlFotoMutuo2, urlFotoMutuo3,urlFotoVeg;
+    private Bitmap imagemPan, imagemAlt, imagemQualidade, imagemIP, imagemAtivos, imagemAtivos2,
+            imagemMutuo, imagemMutuo2, imagemMutuo3,imagemVeg;
+    private String imgPathPan, imgPathAlt, imgPathQualidade,imgPathIP, imgPathAtivos,
+            imgPathAtivos2, imgPathMutuo, imgPathMutuo2, imgPathMutuo3,imgPathVeg;
+    public Button btnUpload, btn, btnFoto4, btnFoto13,btnFoto14,btnFoto15,btnFoto16,btnFoto17,
+    btnFoto30, btnUpload4,btnUpload13,btnUpload14,btnUpload15,btnUpload16,btnUpload17,btnUpload30;
+    public View root;
 
 
 
@@ -171,36 +169,31 @@ public class CadastroFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
 
-        final View root = inflater.inflate(R.layout.fragment_cadastro, container, false);
+        root = inflater.inflate(R.layout.fragment_cadastro, container, false);
         codigo = root.findViewById(R.id.textCadastroCodigo);
-        foto = root.findViewById(R.id.imageCadastroFoto);
-        foto2 = root.findViewById(R.id.imageCadastroFoto2);
-        foto3 = root.findViewById(R.id.imageCadastroFoto3);
-        foto4 = root.findViewById(R.id.imageCadastroFoto4);
-        foto7 = root.findViewById(R.id.imageCadastroFoto7);
-        foto10 = root.findViewById(R.id.imageCadastroFoto10);
-        foto13 = root.findViewById(R.id.imageCadastroFoto13);
-        foto14 = root.findViewById(R.id.imageCadastroFoto14);
-        foto15 = root.findViewById(R.id.imageCadastroFoto15);
-        foto16 = root.findViewById(R.id.imageCadastroFoto16);
-        foto17 = root.findViewById(R.id.imageCadastroFoto17);
-        foto30 = root.findViewById(R.id.imageCadastroFoto30);
+        fotoPan = root.findViewById(R.id.imageCadastroFoto);
+        fotoAlt = root.findViewById(R.id.imageCadastroFoto2);
+        fotoQualidade = root.findViewById(R.id.imageCadastroFoto3);
+        fotoIP = root.findViewById(R.id.imageCadastroFoto4);
+        fotoAtivos = root.findViewById(R.id.imageCadastroFoto13);
+        fotoAtivos2 = root.findViewById(R.id.imageCadastroFoto14);
+        fotoMutuo = root.findViewById(R.id.imageCadastroFoto15);
+        fotoMutuo2 = root.findViewById(R.id.imageCadastroFoto16);
+        fotoMutuo3 = root.findViewById(R.id.imageCadastroFoto17);
+        fotoVeg = root.findViewById(R.id.imageCadastroFoto30);
         locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                Log.i("TESTE", "ENTREI AQUI2");
                 localizacao = location;
             }
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
-                Log.i("TESTE", "ENTREI AQUI3");
             }
 
             @Override
             public void onProviderEnabled(String provider) {
-                Log.i("TESTE", "ENTREI AQUI4");
             }
 
             @Override
@@ -212,7 +205,6 @@ public class CadastroFragment extends Fragment {
         if (verificarPermissaoLocaliza()) {
 
             if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                Log.i("TESTE", "ENTREI AQUI");
                 locationManager.requestLocationUpdates(
                         LocationManager.GPS_PROVIDER,
                         5000,
@@ -259,20 +251,19 @@ public class CadastroFragment extends Fragment {
                     dialog.setPositiveButton("Tirar foto", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            chamarCamera(IMAGE_CAPTURE_CODE);
+                            chamarCamera(IMAGE_CAPTURE_CODE_PAN);
 
                         }
                     });
                     dialog.setNegativeButton("Escolher na galeria", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            chamarGaleria(IMAGE_PICK_CODE);
+                            chamarGaleria(IMAGE_PICK_CODE_PAN);
                         }
                     });
                     dialog.create();
                     dialog.show();
                 }
-                ;
             }
         });
 
@@ -285,20 +276,21 @@ public class CadastroFragment extends Fragment {
                     dialog.setPositiveButton("Tirar foto", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            chamarCamera(IMAGE_CAPTURE_CODE2);
+                            chamarCamera(IMAGE_CAPTURE_CODE_ALT);
+
 
                         }
                     });
                     dialog.setNegativeButton("Escolher na galeria", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            chamarGaleria(IMAGE_PICK_CODE2);
+                            chamarGaleria(IMAGE_PICK_CODE_ALT);
+
                         }
                     });
                     dialog.create();
                     dialog.show();
                 }
-                ;
             }
         });
         Button btnFoto3 = root.findViewById(R.id.btnFoto3);
@@ -310,24 +302,23 @@ public class CadastroFragment extends Fragment {
                     dialog.setPositiveButton("Tirar foto", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            chamarCamera(IMAGE_CAPTURE_CODE3);
+                            chamarCamera(IMAGE_CAPTURE_CODE_QUALIDADE);
 
                         }
                     });
                     dialog.setNegativeButton("Escolher na galeria", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            chamarGaleria(IMAGE_PICK_CODE3);
+                            chamarGaleria(IMAGE_PICK_CODE_QUALIDADE);
                         }
                     });
                     dialog.create();
                     dialog.show();
                 }
-                ;
             }
         });
 
-        final Button btnFoto4 = root.findViewById(R.id.btnFoto4);
+        btnFoto4 = root.findViewById(R.id.btnFoto4);
         btnFoto4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -336,73 +327,23 @@ public class CadastroFragment extends Fragment {
                     dialog.setPositiveButton("Tirar foto", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            chamarCamera(IMAGE_CAPTURE_CODE4);
+                            chamarCamera(IMAGE_CAPTURE_CODE_IP);
 
                         }
                     });
                     dialog.setNegativeButton("Escolher na galeria", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            chamarGaleria(IMAGE_PICK_CODE4);
+                            chamarGaleria(IMAGE_PICK_CODE_IP);
                         }
                     });
                     dialog.create();
                     dialog.show();
                 }
-                ;
-            }
-        });
-        final Button btnFoto7 = root.findViewById(R.id.btnFoto7);
-        btnFoto7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (verificarPermissao()) {
-                    final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.LightDialogTheme);
-                    dialog.setPositiveButton("Tirar foto", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            chamarCamera(IMAGE_CAPTURE_CODE7);
 
-                        }
-                    });
-                    dialog.setNegativeButton("Escolher na galeria", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            chamarGaleria(IMAGE_PICK_CODE7);
-                        }
-                    });
-                    dialog.create();
-                    dialog.show();
-                }
-                ;
             }
         });
-        final Button btnFoto10 = root.findViewById(R.id.btnFoto10);
-        btnFoto10.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (verificarPermissao()) {
-                    final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.LightDialogTheme);
-                    dialog.setPositiveButton("Tirar foto", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            chamarCamera(IMAGE_CAPTURE_CODE10);
-
-                        }
-                    });
-                    dialog.setNegativeButton("Escolher na galeria", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            chamarGaleria(IMAGE_PICK_CODE10);
-                        }
-                    });
-                    dialog.create();
-                    dialog.show();
-                }
-                ;
-            }
-        });
-        final Button btnFoto13 = root.findViewById(R.id.btnFoto13);
+        btnFoto13 = root.findViewById(R.id.btnFoto13);
         btnFoto13.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -411,24 +352,23 @@ public class CadastroFragment extends Fragment {
                     dialog.setPositiveButton("Tirar foto", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            chamarCamera(IMAGE_CAPTURE_CODE13);
+                            chamarCamera(IMAGE_CAPTURE_CODE_ATIVOS);
 
                         }
                     });
                     dialog.setNegativeButton("Escolher na galeria", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            chamarGaleria(IMAGE_PICK_CODE13);
+                            chamarGaleria(IMAGE_PICK_CODE_ATIVOS);
                         }
                     });
                     dialog.create();
                     dialog.show();
                 }
-                ;
             }
         });
 
-        final Button btnFoto14 = root.findViewById(R.id.btnFoto14);
+        btnFoto14 = root.findViewById(R.id.btnFoto14);
         btnFoto14.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -437,24 +377,23 @@ public class CadastroFragment extends Fragment {
                     dialog.setPositiveButton("Tirar foto", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            chamarCamera(IMAGE_CAPTURE_CODE14);
+                            chamarCamera(IMAGE_CAPTURE_CODE_ATIVOS2);
 
                         }
                     });
                     dialog.setNegativeButton("Escolher na galeria", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            chamarGaleria(IMAGE_PICK_CODE14);
+                            chamarGaleria(IMAGE_PICK_CODE_ATIVOS2);
                         }
                     });
                     dialog.create();
                     dialog.show();
                 }
-                ;
             }
         });
 
-        final Button btnFoto15 = root.findViewById(R.id.btnFoto15);
+        btnFoto15 = root.findViewById(R.id.btnFoto15);
         btnFoto15.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -463,24 +402,23 @@ public class CadastroFragment extends Fragment {
                     dialog.setPositiveButton("Tirar foto", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            chamarCamera(IMAGE_CAPTURE_CODE15);
+                            chamarCamera(IMAGE_CAPTURE_CODE_MUTUO);
 
                         }
                     });
                     dialog.setNegativeButton("Escolher na galeria", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            chamarGaleria(IMAGE_PICK_CODE15);
+                            chamarGaleria(IMAGE_PICK_CODE_MUTUO);
                         }
                     });
                     dialog.create();
                     dialog.show();
                 }
-                ;
             }
         });
 
-        final Button btnFoto16 = root.findViewById(R.id.btnFoto16);
+        btnFoto16 = root.findViewById(R.id.btnFoto16);
         btnFoto16.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -489,24 +427,23 @@ public class CadastroFragment extends Fragment {
                     dialog.setPositiveButton("Tirar foto", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            chamarCamera(IMAGE_CAPTURE_CODE16);
+                            chamarCamera(IMAGE_CAPTURE_CODE_MUTUO2);
 
                         }
                     });
                     dialog.setNegativeButton("Escolher na galeria", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            chamarGaleria(IMAGE_PICK_CODE16);
+                            chamarGaleria(IMAGE_PICK_CODE_MUTUO2);
                         }
                     });
                     dialog.create();
                     dialog.show();
                 }
-                ;
             }
         });
 
-        final Button btnFoto17 = root.findViewById(R.id.btnFoto17);
+        btnFoto17 = root.findViewById(R.id.btnFoto17);
         btnFoto17.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -515,24 +452,23 @@ public class CadastroFragment extends Fragment {
                     dialog.setPositiveButton("Tirar foto", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            chamarCamera(IMAGE_CAPTURE_CODE17);
+                            chamarCamera(IMAGE_CAPTURE_CODE_MUTUO3);
 
                         }
                     });
                     dialog.setNegativeButton("Escolher na galeria", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            chamarGaleria(IMAGE_PICK_CODE17);
+                            chamarGaleria(IMAGE_PICK_CODE_MUTUO3);
                         }
                     });
                     dialog.create();
                     dialog.show();
                 }
-                ;
             }
         });
 
-        final Button btnFoto30 = root.findViewById(R.id.btnFoto30);
+        btnFoto30 = root.findViewById(R.id.btnFoto30);
         btnFoto30.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -541,176 +477,122 @@ public class CadastroFragment extends Fragment {
                     dialog.setPositiveButton("Tirar foto", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            chamarCamera(IMAGE_CAPTURE_CODE30);
+                            chamarCamera(IMAGE_CAPTURE_CODE_VEG);
 
                         }
                     });
                     dialog.setNegativeButton("Escolher na galeria", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            chamarGaleria(IMAGE_PICK_CODE30);
+                            chamarGaleria(IMAGE_PICK_CODE_VEG);
                         }
                     });
                     dialog.create();
                     dialog.show();
                 }
-                ;
             }
         });
 
-        final Button btnUpload = root.findViewById(R.id.btnUpload);
+        btnUpload = root.findViewById(R.id.btnUpload);
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (formularioAtual != null) {
-                    upload(imagem, imgPath, codigo, contadorAt, 1, true, "CS");
-                } else {
-                    Log.i("UPLOAD", "AAQUI");
-                    upload(imagem, imgPath, codigo, contadorAt, 1, false, "CS");
-                }
+                btn = btnUpload;
+                ThreadUpload threadUpload = new ThreadUpload(imagemPan, imgPathPan, codigo, contadorAt, 1, "CS");
+                threadUpload.start();
+                    //upload(imagemPan, imgPathPan, codigo, contadorAt, 1, "CS");
+
             }
         });
 
-        Button btnUpload2 = root.findViewById(R.id.btnUpload2);
+        final Button btnUpload2 = root.findViewById(R.id.btnUpload2);
         btnUpload2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (formularioAtual != null) {
-                    upload(imagem2, imgPath2, codigo, contadorAt, 2, true, "CS");
-                } else {
-                    Log.i("UPLOAD", "AAQUI");
-                    upload(imagem2, imgPath2, codigo, contadorAt, 2, false, "CS");
-                }
-            }
-        });
+                btn = btnUpload2;
+                ThreadUpload threadUpload = new ThreadUpload(imagemAlt, imgPathAlt, codigo, contadorAt, 2, "CS");
+                threadUpload.start();
+                    //upload(imagemAlt, imgPathAlt, codigo, contadorAt, 2, "CS");
 
-        Button btnUpload3 = root.findViewById(R.id.btnUpload3);
+        }});
+
+        final Button btnUpload3 = root.findViewById(R.id.btnUpload3);
         btnUpload3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (formularioAtual != null) {
-                    upload(imagem3, imgPath3, codigo, contadorAt, 3, true, "CS");
-                } else {
-                    Log.i("UPLOAD", "AAQUI");
-                    upload(imagem3, imgPath3, codigo, contadorAt, 3, false, "CS");
-                }
+                btn = btnUpload3;
+                ThreadUpload threadUpload = new ThreadUpload(imagemQualidade, imgPathQualidade, codigo, contadorAt, 3, "CS");
+                threadUpload.start();
+                    //upload(imagemQualidade, imgPathQualidade, codigo, contadorAt, 3, "CS");
             }
         });
 
-        final Button btnUpload4 = root.findViewById(R.id.btnUpload4);
+        btnUpload4 = root.findViewById(R.id.btnUpload4);
         btnUpload4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (formularioAtual != null) {
-                    upload(imagem4, imgPath4, codigo, contadorIp, 4, true, "IP");
-                } else {
-                    Log.i("UPLOAD", "AAQUI");
-                    upload(imagem4, imgPath4, codigo, contadorIp, 4, false, "IP");
-                }
+                btn = btnUpload4;
+                ThreadUpload threadUpload = new ThreadUpload(imagemIP, imgPathIP, codigo, contadorIp, 4, "IP");
+                threadUpload.start();
             }
         });
 
-
-        final Button btnUpload7 = root.findViewById(R.id.btnUpload7);
-        btnUpload7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (formularioAtual != null) {
-                    upload(imagem7, imgPath7, codigo, contadorIp, 7, true, "IP");
-                } else {
-                    Log.i("UPLOAD", "AAQUI");
-                    upload(imagem7, imgPath7, codigo, contadorIp, 7, false, "IP");
-                }
-            }
-        });
-
-        final Button btnUpload10 = root.findViewById(R.id.btnUpload10);
-        btnUpload10.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (formularioAtual != null) {
-                    upload(imagem10, imgPath10, codigo, contadorIp, 10, true, "IP");
-                } else {
-                    Log.i("UPLOAD", "AAQUI");
-                    upload(imagem10, imgPath10, codigo, contadorIp, 10, false, "IP");
-                }
-            }
-        });
-
-        final Button btnUpload13 = root.findViewById(R.id.btnUpload13);
+        btnUpload13 = root.findViewById(R.id.btnUpload13);
         btnUpload13.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (formularioAtual != null) {
-                    upload(imagem13, imgPath13, codigo, contadorAt, 13, true, "CS");
-                } else {
-                    Log.i("UPLOAD", "AAQUI");
-                    upload(imagem13, imgPath13, codigo, contadorAt, 13, false, "CS");
-                }
+                btn = btnUpload13;
+                ThreadUpload threadUpload = new ThreadUpload(imagemAtivos, imgPathAtivos, codigo, contadorAt, 5, "CS");
+                threadUpload.start();
             }
         });
-        final Button btnUpload14 = root.findViewById(R.id.btnUpload14);
+        btnUpload14 = root.findViewById(R.id.btnUpload14);
         btnUpload14.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (formularioAtual != null) {
-                    upload(imagem14, imgPath14, codigo, contadorAt, 14, true, "CS");
-                } else {
-                    Log.i("UPLOAD", "AAQUI");
-                    upload(imagem14, imgPath14, codigo, contadorAt, 14, false, "CS");
-                }
+                btn = btnUpload14;
+                ThreadUpload threadUpload = new ThreadUpload(imagemAtivos2, imgPathAtivos2, codigo, contadorAt, 6, "CS");
+                threadUpload.start();
             }
         });
 
-        final Button btnUpload15 = root.findViewById(R.id.btnUpload15);
+        btnUpload15 = root.findViewById(R.id.btnUpload15);
         btnUpload15.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (formularioAtual != null) {
-                    upload(imagem15, imgPath15, codigo, contadorAt, 15, true, "CS");
-                } else {
-                    Log.i("UPLOAD", "AAQUI");
-                    upload(imagem15, imgPath15, codigo, contadorAt, 15, false, "CS");
-                }
+                btn = btnUpload15;
+                ThreadUpload threadUpload = new ThreadUpload(imagemMutuo, imgPathMutuo, codigo, contadorAt, 7, "CS");
+                threadUpload.start();
             }
         });
 
-        final Button btnUpload16 = root.findViewById(R.id.btnUpload16);
+        btnUpload16 = root.findViewById(R.id.btnUpload16);
         btnUpload16.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (formularioAtual != null) {
-                    upload(imagem16, imgPath16, codigo, contadorAt, 16, true, "CS");
-                } else {
-                    Log.i("UPLOAD", "AAQUI");
-                    upload(imagem16, imgPath16, codigo, contadorAt, 16, false, "CS");
-                }
+                btn = btnUpload16;
+                ThreadUpload threadUpload = new ThreadUpload(imagemMutuo2, imgPathMutuo2, codigo, contadorAt, 8, "CS");
+                threadUpload.start();
             }
         });
 
-        final Button btnUpload17 = root.findViewById(R.id.btnUpload17);
+        btnUpload17 = root.findViewById(R.id.btnUpload17);
         btnUpload17.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (formularioAtual != null) {
-                    upload(imagem17, imgPath17, codigo, contadorAt, 17, true, "CS");
-                } else {
-                    Log.i("UPLOAD", "AAQUI");
-                    upload(imagem17, imgPath17, codigo, contadorAt, 17, false, "CS");
-                }
+                btn = btnUpload17;
+                ThreadUpload threadUpload = new ThreadUpload(imagemMutuo3, imgPathMutuo3, codigo, contadorAt, 9, "CS");
+                threadUpload.start();
             }
         });
 
-        final Button btnUpload30 = root.findViewById(R.id.btnUpload30);
+        btnUpload30 = root.findViewById(R.id.btnUpload30);
         btnUpload30.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (formularioAtual != null) {
-                    upload(imagem30, imgPath30, codigo, contadorAr, 30, true, "Ar");
-                } else {
-                    Log.i("UPLOAD", "AAQUI");
-                    upload(imagem30, imgPath30, codigo, contadorAr, 30, false, "Ar");
-                }
+                btn = btnUpload30;
+                ThreadUpload threadUpload = new ThreadUpload(imagemVeg, imgPathVeg, codigo, contadorAr, 10, "Ar");
+                threadUpload.start();
             }
         });
 
@@ -733,9 +615,12 @@ public class CadastroFragment extends Fragment {
 
         //Iluminação
         ip = root.findViewById(R.id.chkCadastroIP);
+        textLampada = root.findViewById(R.id.textView17);
+        relativeIPTipoEstrutura = root.findViewById(R.id.relativeSpinIluminacaoTipo);
         ipEstrutura = root.findViewById(R.id.spinCadastroIPEstrutura);
         quantidadeLampada = root.findViewById(R.id.textCadastroQuantidadeLampada);
         ipEstrutura.setEnabled(false);
+        relativeIPTipoLampada = root.findViewById(R.id.relativeSpinIluminacaoTipoPot);
         tipoPot = root.findViewById(R.id.spinCadastroTipoPot);
         tipoPot.setEnabled(false);
         potReator = root.findViewById(R.id.textCadastroPotReator);
@@ -756,68 +641,11 @@ public class CadastroFragment extends Fragment {
 
             }
         });
+        relativeIPTipoAtivacao = root.findViewById(R.id.relativeSpinIPAtivacao);
         ipAtivacao = root.findViewById(R.id.spinCadastroIPAtivacao);
         ipAtivacao.setEnabled(false);
         vinteEQuatro = root.findViewById(R.id.chkCadastroVinteEQuatro);
         quantidade24H = root.findViewById(R.id.txtCadastroQuantidade24H);
-
-        ip2 = root.findViewById(R.id.chkCadastroIP2);
-        ipEstrutura2 = root.findViewById(R.id.spinCadastroIPEstrutura2);
-        quantidadeLampada2 = root.findViewById(R.id.textCadastroQuantidadeLampada2);
-        ipEstrutura2.setEnabled(false);
-        tipoPot2 = root.findViewById(R.id.spinCadastroTipoPot2);
-        tipoPot2.setEnabled(false);
-        potReator2 = root.findViewById(R.id.textCadastroPotReator2);
-        potReator2.setEnabled(false);
-        tipoPot2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String[] texto = tipoPot2.getSelectedItem().toString().split(" ");
-                try {
-                    potReator2.setText(texto[1]);
-                } catch (Exception e) {
-
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        ipAtivacao2 = root.findViewById(R.id.spinCadastroIPAtivacao2);
-        ipAtivacao2.setEnabled(false);
-        vinteEQuatro2 = root.findViewById(R.id.chkCadastroVinteEQuatro2);
-        quantidade24H2 = root.findViewById(R.id.txtCadastroQuantidade24H2);
-
-        ip3 = root.findViewById(R.id.chkCadastroIP3);
-        ipEstrutura3 = root.findViewById(R.id.spinCadastroIPEstrutura3);
-        quantidadeLampada3 = root.findViewById(R.id.textCadastroQuantidadeLampada3);
-        ipEstrutura3.setEnabled(false);
-        tipoPot3 = root.findViewById(R.id.spinCadastroTipoPot3);
-        tipoPot3.setEnabled(false);
-        potReator3 = root.findViewById(R.id.textCadastroPotReator3);
-        potReator3.setEnabled(false);
-        tipoPot3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String[] texto = tipoPot3.getSelectedItem().toString().split(" ");
-                try {
-                    potReator3.setText(texto[1]);
-                } catch (Exception e) {
-
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        ipAtivacao3 = root.findViewById(R.id.spinCadastroIPAtivacao3);
-        ipAtivacao3.setEnabled(false);
-        vinteEQuatro3 = root.findViewById(R.id.chkCadastroVinteEQuatro3);
-        quantidade24H3 = root.findViewById(R.id.txtCadastroQuantidade24H3);
         observacaoIP = root.findViewById(R.id.textCadastroObservacaoIP);
 
         //TRAFO
@@ -830,42 +658,100 @@ public class CadastroFragment extends Fragment {
         trafoMono.setEnabled(false);
         religador = root.findViewById(R.id.chkCadastroReligador);
         medicao = root.findViewById(R.id.chkCadastroMedicao);
-        chFusivel = root.findViewById(R.id.chkCadastroFusivel);
-        chFaca = root.findViewById(R.id.chkCadastroFaca);
-        chBanco = root.findViewById(R.id.chkCadastroBanco);
-        chFusivelReligador = root.findViewById(R.id.chkCadastroFusivelReligador);
+        textFusivel = root.findViewById(R.id.textView18);
+        chFusivel = root.findViewById(R.id.textChaveFusivel);
+        relativeChFaca = root.findViewById(R.id.relativeChFaca);
+        chFaca = root.findViewById(R.id.spinCadastroChFaca);
+        relativeBanco = root.findViewById(R.id.relativeBanco);
+        chBanco = root.findViewById(R.id.spinCadastroBanco);
+        textFusivelReligador = root.findViewById(R.id.textView19);
+        chFusivelReligador = root.findViewById(R.id.textChaveFusivelReligador);
+        relativeRamal = root.findViewById(R.id.relativeSpinRamalSubt);
         ramalSubt = root.findViewById(R.id.spinCadastroRamalSubt);
         ramalSubt.setEnabled(false);
+        textOutros = root.findViewById(R.id.textViewOutros);
         outros = root.findViewById(R.id.textCadastroOutrosAtivos);
         observacaoAtivos = root.findViewById(R.id.textCadastroObservacaoAtivo);
 
         //MUTUO
         mutuo = root.findViewById(R.id.chkCadastroMutuo);
         quantidadeOcupantes = root.findViewById(R.id.textCadastroQuantidadeMutuo);
+        textQuantidadeCabo = root.findViewById(R.id.textViewQuantidadeMutuodois);
         quantidadeCabos = root.findViewById(R.id.textCadastroMutuoQuantidadeCabos);
+        textQuantidadeCabodois = root.findViewById(R.id.textViewQuantidadeMutuo);
         quantidadeCabosdois = root.findViewById(R.id.textCadastroMutuoQuantidadeCabosdois);
+        relativeTipoCabo = root.findViewById(R.id.relativeSpinTipoCabo);
         tipoCabo = root.findViewById(R.id.spinCadastroMutuoTipoCabo);
+        relativeTipoCabodois = root.findViewById(R.id.relativeSpinTipoCabodois);
         tipoCabodois = root.findViewById(R.id.spinCadastroMutuoTipoCabodois);
-
+        textNome = root.findViewById(R.id.textViewNome);
         nome = root.findViewById(R.id.textCadastroNome);
+        relativeFinalidade = root.findViewById(R.id.relativeSpinFinalidade);
         finalidade = root.findViewById(R.id.spinCadastroFinalidade);
+        relativeCeans = root.findViewById(R.id.relativeSpinCeans);
         ceans = root.findViewById(R.id.spinCadastroCeans);
+        relativeTar = root.findViewById(R.id.relativeSpinTar);
         tar = root.findViewById(R.id.spinCadastroTar);
+        relativeReservaTec = root.findViewById(R.id.relativeSpinReservaTec);
         reservaTec = root.findViewById(R.id.spinCadastroReservaTec);
+        relativeBackbone = root.findViewById(R.id.relativeSpinBackbone);
         backbone = root.findViewById(R.id.spinCadastroBackbone);
         placaIdentificadora = root.findViewById(R.id.chkCadastroPlaca);
         descidaCabos = root.findViewById(R.id.chkCadastroDescidaCabos);
+        textIrregularidade = root.findViewById(R.id.textViewIrregularidade);
         descricaoIrregularidade = root.findViewById(R.id.textCadastroDescricao);
         observacaoMutuo = root.findViewById(R.id.textCadastroObservacaoMutuo);
 
         //VEGETAÇÃO
+        chkVegetacao = root.findViewById(R.id.chkCadastroVegetacao);
+        relativeDimensaoVegetacao = root.findViewById(R.id.relativeSpinDimensaoVegetacao);
         dimensaoVegetacao = root.findViewById(R.id.spinCadastroDimensaoVegetacao);
+        relativeBaixa = root.findViewById(R.id.relativeSpinBaixa);
         distaciaBaixa = root.findViewById(R.id.spinCadastroBaixa);
+        relativeMedia = root.findViewById(R.id.relativeSpinMedia);
         distanciaMedia = root.findViewById(R.id.spinCadastroMedia);
+        relativeEstadoArvore = root.findViewById(R.id.relativeSpinEstadoArvore);
         estadoArvore = root.findViewById(R.id.spinCadastroEstadoArvore);
         quedaArvore = root.findViewById(R.id.chkCadastroQuedaArvore);
+        relativeLocalArvore = root.findViewById(R.id.relativeSpinLocalArvore);
         localArvore = root.findViewById(R.id.spinCadastroLocalArvore);
         observacaoVegetacao = root.findViewById(R.id.textCadastroObservacaoVegetacao);
+        chkVegetacao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(chkVegetacao.isChecked()){
+                    dimensaoVegetacao.setVisibility(View.VISIBLE);
+                    distaciaBaixa.setVisibility(View.VISIBLE);
+                    distanciaMedia.setVisibility(View.VISIBLE);
+                    estadoArvore.setVisibility(View.VISIBLE);
+                    quedaArvore.setVisibility(View.VISIBLE);
+                    localArvore.setVisibility(View.VISIBLE);
+                    fotoVeg.setVisibility(View.VISIBLE);
+                    btnFoto30.setVisibility(View.VISIBLE);
+                    btnUpload30.setVisibility(View.VISIBLE);
+                    relativeDimensaoVegetacao.setVisibility(View.VISIBLE);
+                    relativeBaixa.setVisibility(View.VISIBLE);
+                    relativeMedia.setVisibility(View.VISIBLE);
+                    relativeEstadoArvore.setVisibility(View.VISIBLE);
+                    relativeLocalArvore.setVisibility(View.VISIBLE);
+                }else{
+                    dimensaoVegetacao.setVisibility(View.GONE);
+                    distaciaBaixa.setVisibility(View.GONE);
+                    distanciaMedia.setVisibility(View.GONE);
+                    estadoArvore.setVisibility(View.GONE);
+                    quedaArvore.setVisibility(View.GONE);
+                    localArvore.setVisibility(View.GONE);
+                    fotoVeg.setVisibility(View.GONE);
+                    btnFoto30.setVisibility(View.GONE);
+                    btnUpload30.setVisibility(View.GONE);
+                    relativeDimensaoVegetacao.setVisibility(View.GONE);
+                    relativeBaixa.setVisibility(View.GONE);
+                    relativeMedia.setVisibility(View.GONE);
+                    relativeEstadoArvore.setVisibility(View.GONE);
+                    relativeLocalArvore.setVisibility(View.GONE);
+                }
+            }
+        });
         try {
             assert this.getArguments() != null;
             codigoEnergisa = (String) this.getArguments().getSerializable("codigoEnergisa");
@@ -873,694 +759,56 @@ public class CadastroFragment extends Fragment {
                 codigo.setText(codigoEnergisa);
             }
         } catch (Exception e) {
-
         }
         Button buttonCadastrar = root.findViewById(R.id.btnCadastroSalvar);
         try {
             assert this.getArguments() != null;
             formularioAtual = (Formulario) this.getArguments().getSerializable("formularioSelecionado");
             if (formularioAtual != null) {
-                posteNovo = root.findViewById(R.id.chkCadastroPosteNovo);
-                posteNovo.setVisibility(View.VISIBLE);
-                posteNovo.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        if(formularioAtual.getCodigo().equals(codigo.getText().toString())){
-                            Toast.makeText(requireActivity().getApplicationContext(), "Um novo poste precisa de um código novo", Toast.LENGTH_SHORT).show();
-                            posteNovo.setChecked(false);
-                        }else {
-                            final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.LightDialogTheme);
-                            dialog.setMessage("Deseja realmente cadastrar um novo poste?");
-                            dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    contadorIp = 1;
-                                    contadorAr =1;
-                                    contadorAt = 1;
-                                    Button btnNovoPoste = root.findViewById(R.id.btnNovoPoste);
-                                    btnNovoPoste.setText("Novo Poste");
-                                    foto.setImageResource(R.drawable.ic_menu_camera);
-                                    foto2.setImageResource(R.drawable.ic_menu_camera);
-                                    foto3.setImageResource(R.drawable.ic_menu_camera);
-                                    foto4.setImageResource(R.drawable.ic_menu_camera);
-                                    foto7.setImageResource(R.drawable.ic_menu_camera);
-                                    foto10.setImageResource(R.drawable.ic_menu_camera);
-                                    foto13.setImageResource(R.drawable.ic_menu_camera);
-                                    foto14.setImageResource(R.drawable.ic_menu_camera);
-                                    foto15.setImageResource(R.drawable.ic_menu_camera);
-                                    foto16.setImageResource(R.drawable.ic_menu_camera);
-                                    foto17.setImageResource(R.drawable.ic_menu_camera);
-                                    foto30.setImageResource(R.drawable.ic_menu_camera);
-                                }
-                            });
-                            dialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    posteNovo.setChecked(false);
+                final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.LightDialogTheme);
+                dialog.setMessage("O que deseja fazer:");
+                dialog.setPositiveButton("Editar/Recuperar Dados Para Novo Poste", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        final AlertDialog.Builder dialog2 = new AlertDialog.Builder(getActivity(), R.style.LightDialogTheme);
+                        dialog2.setMessage("Escolha uma opção?");
+                        dialog2.setPositiveButton("Novo Poste", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                new NovoPosteTask().execute();
 
-                                }
-                            });
-                            dialog.create();
-                            dialog.show();
-                        }
+
+
+                            }
+                        });
+                        dialog2.setNegativeButton("Editar Dados No Mesmo Poste", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                new MesmoPosteTask().execute();
+
+                            }
+                        });
+                        dialog2.create();
+                        dialog2.show();
                     }
                 });
+                dialog.setNegativeButton("Inisirir Outro Ocupante Ao Mesmo Poste", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new OutroOcupanteTask().execute();
+
+                    }
+                });
+                dialog.create();
+                dialog.show();
+                try {
+                    progressDialog.dismiss();
+                }catch (Exception e){
+
+                }
 
                 //LOCALIZAÇÃO
-                controle = true;
-                contadorAr = formularioAtual.getContadorAr();
-                contadorAt = formularioAtual.getContadorAt();
-                contadorIp = formularioAtual.getContadorIp();
-                codigo.setText(formularioAtual.getCodigo());
 
-                imgPath = formularioAtual.getCaminhoImagem();
-                if(imgPath == null || imgPath.equals("")){
-
-                }else {
-                    foto.setImageBitmap(BitmapFactory.decodeFile(imgPath));
-                    imagem = BitmapFactory.decodeFile(imgPath);
-                }
-                imgPath2 = formularioAtual.getCaminhoImagem2();
-                if(imgPath2 == null || imgPath2.equals("")){
-
-                }else {
-                    imgPath2 = formularioAtual.getCaminhoImagem2();
-                    foto2.setImageBitmap(BitmapFactory.decodeFile(imgPath2));
-                    imagem2 = BitmapFactory.decodeFile(imgPath2);
-                }
-
-                imgPath3 = formularioAtual.getCaminhoImagem3();
-                if(imgPath3 == null || imgPath3.equals("")){
-
-                }else {
-                    imgPath3 = formularioAtual.getCaminhoImagem3();
-                    foto3.setImageBitmap(BitmapFactory.decodeFile(imgPath3));
-                    imagem3 = BitmapFactory.decodeFile(imgPath3);
-                }
-
-                imgPath4 = formularioAtual.getCaminhoImagem4();
-                if(imgPath4 == null || imgPath4.equals("")){
-
-                }else {
-                    imgPath4 = formularioAtual.getCaminhoImagem4();
-                    foto4.setImageBitmap(BitmapFactory.decodeFile(imgPath4));
-                    imagem4 = BitmapFactory.decodeFile(imgPath4);
-                }
-
-                imgPath7 = formularioAtual.getCaminhoImagem5();
-                if(imgPath7 == null || imgPath7.equals("")){
-
-                }else {
-                    imgPath7 = formularioAtual.getCaminhoImagem5();
-                    foto7.setImageBitmap(BitmapFactory.decodeFile(imgPath7));
-                    imagem7 = BitmapFactory.decodeFile(imgPath7);
-                }
-
-                imgPath10 = formularioAtual.getCaminhoImagem6();
-                if(imgPath10 == null || imgPath10.equals("")){
-
-                }else {
-                    imgPath10 = formularioAtual.getCaminhoImagem6();
-                    foto10.setImageBitmap(BitmapFactory.decodeFile(imgPath10));
-                    imagem10 = BitmapFactory.decodeFile(imgPath10);
-                }
-
-                imgPath13 = formularioAtual.getCaminhoImagem7();
-                if(imgPath13 == null || imgPath13.equals("")){
-
-                }else {
-                    imgPath13 = formularioAtual.getCaminhoImagem7();
-                    foto13.setImageBitmap(BitmapFactory.decodeFile(imgPath13));
-                    imagem13 = BitmapFactory.decodeFile(imgPath13);
-                }
-
-
-                if(imgPath14 == null || imgPath14.equals("")){
-                    imgPath14 = formularioAtual.getCaminhoImagem8();
-                }else {
-                    imgPath14 = formularioAtual.getCaminhoImagem8();
-                    foto14.setImageBitmap(BitmapFactory.decodeFile(imgPath14));
-                    imagem14 = BitmapFactory.decodeFile(imgPath14);
-                }
-
-                imgPath15 = formularioAtual.getCaminhoImagem9();
-                if(imgPath15 == null || imgPath15.equals("")){
-
-                }else {
-                    imgPath15 = formularioAtual.getCaminhoImagem9();
-                    foto15.setImageBitmap(BitmapFactory.decodeFile(imgPath15));
-                    imagem15 = BitmapFactory.decodeFile(imgPath15);
-                }
-
-                imgPath16 = formularioAtual.getCaminhoImagem10();
-                if(imgPath16 == null || imgPath16.equals("")){
-
-                }else {
-                    imgPath16 = formularioAtual.getCaminhoImagem10();
-                    foto16.setImageBitmap(BitmapFactory.decodeFile(imgPath16));
-                    imagem16 = BitmapFactory.decodeFile(imgPath16);
-                }
-
-                imgPath17 = formularioAtual.getCaminhoImagem11();
-                if(imgPath17 == null || imgPath17.equals("")){
-
-                }else {
-                    imgPath17 = formularioAtual.getCaminhoImagem11();
-                    foto17.setImageBitmap(BitmapFactory.decodeFile(imgPath17));
-                    imagem17 = BitmapFactory.decodeFile(imgPath17);
-                }
-
-                imgPath30 = formularioAtual.getCaminhoImagem12();
-                if(imgPath30 == null || imgPath30.equals("")){
-
-                }else {
-                    imgPath30 = formularioAtual.getCaminhoImagem12();
-                    foto30.setImageBitmap(BitmapFactory.decodeFile(imgPath30));
-                    imagem30 = BitmapFactory.decodeFile(imgPath30);
-                }
-                endereco.setText(formularioAtual.getEndereco());
-                urlFoto = Uri.parse(formularioAtual.getUrlImagem());
-                urlFoto2 = Uri.parse(formularioAtual.getUrlImagem2());
-                urlFoto3 = Uri.parse(formularioAtual.getUrlImagem3());
-                urlFoto4 = Uri.parse(formularioAtual.getUrlImagem4());
-                urlFoto7 = Uri.parse(formularioAtual.getUrlImagem5());
-                urlFoto10 = Uri.parse(formularioAtual.getUrlImagem6());
-                urlFoto13 = Uri.parse(formularioAtual.getUrlImagem7());
-                urlFoto14 = Uri.parse(formularioAtual.getUrlImagem8());
-                urlFoto15 = Uri.parse(formularioAtual.getUrlImagem9());
-                urlFoto16 = Uri.parse(formularioAtual.getUrlImagem10());
-                urlFoto17 = Uri.parse(formularioAtual.getUrlImagem11());
-                urlFoto30 = Uri.parse(formularioAtual.getUrlImagem12());
-                if (formularioAtual.getMunicipio().equals("-")) {
-                    municipio.setSelection(0);
-                } else {
-                    for (int i = 0; i < municipio.getAdapter().getCount(); i++) {
-                        municipio.setSelection(i);
-                        if (municipio.getSelectedItem().toString().equals(formularioAtual.getMunicipio())) {
-                            break;
-                        }
-                    }
-                }
-                latitude.setText(formularioAtual.getLatitude());
-                longitude.setText(formularioAtual.getLongitude());
-                if (formularioAtual.getAlturaCarga().equals("-")) {
-                    alturaCarga.setSelection(0);
-                } else {
-                    for (int i = 0; i < alturaCarga.getAdapter().getCount(); i++) {
-                        alturaCarga.setSelection(i);
-                        if (alturaCarga.getSelectedItem().toString().equals(formularioAtual.getAlturaCarga())) {
-                            break;
-                        }
-                    }
-                }
-
-
-                //CARACTERISTICAS FÍSICAS
-
-                if (formularioAtual.getTipoPoste().equals("-")) {
-                    tipoPoste.setSelection(0);
-                } else {
-                    for (int i = 0; i < tipoPoste.getAdapter().getCount(); i++) {
-                        tipoPoste.setSelection(i);
-                        if (tipoPoste.getSelectedItem().toString().equals(formularioAtual.getTipoPoste())) {
-                            break;
-                        }
-                    }
-                }
-                if (formularioAtual.getNormal().equals("Sim")) {
-                    normal.setChecked(true);
-                } else {
-                    normal.setChecked(false);
-                    ferragemExposta.setEnabled(true);
-                    fletido.setEnabled(true);
-                    abalroado.setEnabled(true);
-                    trincado.setEnabled(true);
-                    danificado.setEnabled(true);
-                }
-                if (formularioAtual.getFerragemExposta().equals("Sim")) {
-                    ferragemExposta.setChecked(true);
-                }
-                if (formularioAtual.getFletido().equals("Sim")) {
-                    fletido.setChecked(true);
-                }
-                if (formularioAtual.getDanificado().equals("Sim")) {
-                    danificado.setChecked(true);
-                }
-                if (formularioAtual.getAbalroado().equals("Sim")) {
-                    abalroado.setChecked(true);
-                }
-                if (formularioAtual.getTrincado().equals("Sim")) {
-                    trincado.setChecked(true);
-                }
-                observacaoFisicas.setText(formularioAtual.getObservacaoFisicas());
-
-
-                //ILUMINAÇÃO
-
-                if (formularioAtual.getIp().equals("Sim")) {
-                    ip.setChecked(true);
-                    ipEstrutura.setVisibility(View.VISIBLE);
-                    tipoPot.setVisibility(View.VISIBLE);
-                    potReator.setVisibility(View.VISIBLE);
-                    quantidadeLampada.setVisibility(View.VISIBLE);
-                    ipAtivacao.setVisibility(View.VISIBLE);
-                    vinteEQuatro.setVisibility(View.VISIBLE);
-                    quantidade24H.setVisibility(View.VISIBLE);
-                    ip2.setVisibility(View.VISIBLE);
-                    foto4.setVisibility(View.VISIBLE);
-                    btnFoto4.setVisibility(View.VISIBLE);
-                    btnUpload4.setVisibility(View.VISIBLE);
-                    if (formularioAtual.getIpEstrutura().equals("-")) {
-                        ipEstrutura.setSelection(0);
-                    } else {
-                        for (int i = 0; i < ipEstrutura.getAdapter().getCount(); i++) {
-                            ipEstrutura.setSelection(i);
-                            if (ipEstrutura.getSelectedItem().toString().equals(formularioAtual.getIpEstrutura())) {
-                                break;
-                            }
-                        }
-                    }
-                    quantidadeLampada.setText(formularioAtual.getQuantidadeLampada());
-                    if (formularioAtual.getTipoPot().equals("-")) {
-                        tipoPot.setSelection(0);
-                    } else {
-                        for (int i = 0; i < tipoPot.getAdapter().getCount(); i++) {
-                            tipoPot.setSelection(i);
-                            if (tipoPot.getSelectedItem().toString().equals(formularioAtual.getTipoPot())) {
-                                break;
-                            }
-                        }
-                    }
-                    potReator.setText(formularioAtual.getPotReator());
-                    if (formularioAtual.getIpAtivacao().equals("-")) {
-                        ipAtivacao.setSelection(0);
-                    } else {
-                        for (int i = 0; i < ipAtivacao.getAdapter().getCount(); i++) {
-                            ipAtivacao.setSelection(i);
-                            if (ipAtivacao.getSelectedItem().toString().equals(formularioAtual.getIpAtivacao())) {
-                                break;
-                            }
-                        }
-                    }
-                    if (formularioAtual.getVinteEQuatro().equals("Sim")) {
-                        vinteEQuatro.setChecked(true);
-                        quantidade24H.setEnabled(true);
-                    }
-                    quantidade24H.setText(formularioAtual.getQuantidade24H());
-                    ipEstrutura.setEnabled(true);
-                    quantidadeLampada.setEnabled(true);
-                    tipoPot.setEnabled(true);
-                    potReator.setEnabled(true);
-                    ipAtivacao.setEnabled(true);
-                    vinteEQuatro.setEnabled(true);
-                    ip2.setEnabled(true);
-                    if (formularioAtual.getIp2().equals("Sim")) {
-                        ip2.setChecked(true);
-                        ipEstrutura2.setVisibility(View.VISIBLE);
-                        tipoPot2.setVisibility(View.VISIBLE);
-                        potReator2.setVisibility(View.VISIBLE);
-                        quantidadeLampada2.setVisibility(View.VISIBLE);
-                        ipAtivacao2.setVisibility(View.VISIBLE);
-                        vinteEQuatro2.setVisibility(View.VISIBLE);
-                        quantidade24H2.setVisibility(View.VISIBLE);
-                        foto7.setVisibility(View.VISIBLE);
-                        btnFoto7.setVisibility(View.VISIBLE);
-                        btnUpload7.setVisibility(View.VISIBLE);
-                        ip3.setVisibility(View.VISIBLE);
-                        if (formularioAtual.getIpEstrutura2().equals("-")) {
-                            ipEstrutura2.setSelection(0);
-
-                        } else {
-                            for (int i = 0; i < ipEstrutura2.getAdapter().getCount(); i++) {
-                                ipEstrutura2.setSelection(i);
-                                if (ipEstrutura2.getSelectedItem().toString().equals(formularioAtual.getIpEstrutura2())) {
-                                    break;
-                                }
-                            }
-                        }
-                        quantidadeLampada2.setText(formularioAtual.getQuantidadeLampada2());
-                        if (formularioAtual.getTipoPot2().equals("-")) {
-                            tipoPot2.setSelection(0);
-                        } else {
-                            for (int i = 0; i < tipoPot2.getAdapter().getCount(); i++) {
-                                tipoPot2.setSelection(i);
-                                if (tipoPot2.getSelectedItem().toString().equals(formularioAtual.getTipoPot2())) {
-                                    break;
-                                }
-                            }
-                        }
-                        potReator2.setText(formularioAtual.getPotReator2());
-                        if (formularioAtual.getIpAtivacao2().equals("-")) {
-                            ipAtivacao2.setSelection(0);
-                        } else {
-                            for (int i = 0; i < ipAtivacao2.getAdapter().getCount(); i++) {
-                                ipAtivacao2.setSelection(i);
-                                if (ipAtivacao2.getSelectedItem().toString().equals(formularioAtual.getIpAtivacao2())) {
-                                    break;
-                                }
-                            }
-                        }
-                        if (formularioAtual.getVinteEQuatro2().equals("Sim")) {
-                            vinteEQuatro2.setChecked(true);
-                            quantidade24H2.setEnabled(true);
-                        }
-                        quantidade24H2.setText(formularioAtual.getQuantidade24H2());
-                        ipEstrutura2.setEnabled(true);
-                        quantidadeLampada2.setEnabled(true);
-                        tipoPot2.setEnabled(true);
-                        potReator2.setEnabled(true);
-                        ipAtivacao2.setEnabled(true);
-                        vinteEQuatro2.setEnabled(true);
-                        ip3.setEnabled(true);
-                        if (formularioAtual.getIp3().equals("Sim")) {
-                            ip3.setChecked(true);
-                            ipEstrutura3.setVisibility(View.VISIBLE);
-                            tipoPot3.setVisibility(View.VISIBLE);
-                            potReator3.setVisibility(View.VISIBLE);
-                            quantidadeLampada3.setVisibility(View.VISIBLE);
-                            ipAtivacao3.setVisibility(View.VISIBLE);
-                            vinteEQuatro3.setVisibility(View.VISIBLE);
-                            quantidade24H3.setVisibility(View.VISIBLE);
-                            foto10.setVisibility(View.VISIBLE);
-                            btnFoto10.setVisibility(View.VISIBLE);
-                            btnUpload10.setVisibility(View.VISIBLE);
-                            if (formularioAtual.getIpEstrutura3().equals("-")) {
-                                ipEstrutura3.setSelection(0);
-                            } else {
-                                for (int i = 0; i < ipEstrutura3.getAdapter().getCount(); i++) {
-                                    ipEstrutura3.setSelection(i);
-                                    if (ipEstrutura3.getSelectedItem().toString().equals(formularioAtual.getIpEstrutura3())) {
-                                        break;
-                                    }
-                                }
-                            }
-                            quantidadeLampada3.setText(formularioAtual.getQuantidadeLampada3());
-                            if (formularioAtual.getTipoPot3().equals("-")) {
-                                tipoPot3.setSelection(0);
-                            } else {
-                                for (int i = 0; i < tipoPot3.getAdapter().getCount(); i++) {
-                                    tipoPot3.setSelection(i);
-                                    if (tipoPot3.getSelectedItem().toString().equals(formularioAtual.getTipoPot3())) {
-                                        break;
-                                    }
-                                }
-                            }
-                            potReator3.setText(formularioAtual.getPotReator3());
-                            if (formularioAtual.getIpAtivacao3().equals("-")) {
-                                ipAtivacao3.setSelection(0);
-                            } else {
-                                for (int i = 0; i < ipAtivacao3.getAdapter().getCount(); i++) {
-                                    ipAtivacao3.setSelection(i);
-                                    if (ipAtivacao3.getSelectedItem().toString().equals(formularioAtual.getIpAtivacao3())) {
-                                        break;
-                                    }
-                                }
-                            }
-                            if (formularioAtual.getVinteEQuatro3().equals("Sim")) {
-                                vinteEQuatro3.setChecked(true);
-                                quantidade24H3.setEnabled(true);
-                            }
-                            quantidade24H3.setText(formularioAtual.getQuantidade24H3());
-                            ipEstrutura3.setEnabled(true);
-                            quantidadeLampada3.setEnabled(true);
-                            tipoPot3.setEnabled(true);
-                            potReator3.setEnabled(true);
-                            ipAtivacao3.setEnabled(true);
-                            vinteEQuatro3.setEnabled(true);
-
-                        }
-
-                    }
-
-
-                }
-                observacaoIP.setText(formularioAtual.getObservacaoIP());
-
-
-                //TRAFO
-
-                if (formularioAtual.getAtivos().equals("Sim")) {
-                    ativos.setChecked(true);
-                    chkTrafoMono.setEnabled(true);
-                    chkTrafoTrifasico.setEnabled(true);
-                    trafoMono.setEnabled(true);
-                    trafoTrifasico.setEnabled(true);
-                    chFusivel.setEnabled(true);
-                    chFaca.setEnabled(true);
-                    religador.setEnabled(true);
-                    medicao.setEnabled(true);
-                    chBanco.setEnabled(true);
-                    chFusivelReligador.setEnabled(true);
-                    ramalSubt.setEnabled(true);
-                    outros.setEnabled(true);
-
-                    ativos.setVisibility(View.VISIBLE);
-                    chkTrafoMono.setVisibility(View.VISIBLE);
-                    chkTrafoTrifasico.setVisibility(View.VISIBLE);
-                    trafoMono.setVisibility(View.VISIBLE);
-                    trafoTrifasico.setVisibility(View.VISIBLE);
-                    chFusivel.setVisibility(View.VISIBLE);
-                    chFaca.setVisibility(View.VISIBLE);
-                    religador.setVisibility(View.VISIBLE);
-                    medicao.setVisibility(View.VISIBLE);
-                    chBanco.setVisibility(View.VISIBLE);
-                    chFusivelReligador.setVisibility(View.VISIBLE);
-                    ramalSubt.setVisibility(View.VISIBLE);
-                    outros.setVisibility(View.VISIBLE);
-                    foto13.setVisibility(View.VISIBLE);
-                    btnFoto13.setVisibility(View.VISIBLE);
-                    btnUpload13.setVisibility(View.VISIBLE);
-                    foto14.setVisibility(View.VISIBLE);
-                    btnFoto14.setVisibility(View.VISIBLE);
-                    btnUpload14.setVisibility(View.VISIBLE);
-                }
-                if (formularioAtual.getChkTrafoTrifasico().equals("Sim")) {
-                    chkTrafoTrifasico.setChecked(true);
-                }
-                if (formularioAtual.getChkTrafoMono().equals("Sim")) {
-                    chkTrafoMono.setChecked(true);
-                }
-                if (formularioAtual.getTrafoTrifasico().equals("-")) {
-                    trafoTrifasico.setSelection(0);
-                } else {
-                    for (int i = 0; i < trafoTrifasico.getAdapter().getCount(); i++) {
-                        trafoTrifasico.setSelection(i);
-                        if (trafoTrifasico.getSelectedItem().toString().equals(formularioAtual.getTrafoTrifasico())) {
-                            break;
-                        }
-                    }
-                }
-                if (formularioAtual.getTrafoMono().equals("-")) {
-                    trafoMono.setSelection(0);
-                } else {
-                    for (int i = 0; i < trafoMono.getAdapter().getCount(); i++) {
-                        trafoMono.setSelection(i);
-                        if (trafoMono.getSelectedItem().toString().equals(formularioAtual.getTrafoMono())) {
-                            break;
-                        }
-                    }
-                }
-
-                if (formularioAtual.getReligador().equals("Sim")) {
-                    religador.setChecked(true);
-                }
-                if (formularioAtual.getMedicao().equals("Sim")) {
-                    medicao.setChecked(true);
-                }
-                if (formularioAtual.getChFusivel().equals("Sim")) {
-                    chFusivel.setChecked(true);
-                }
-                if (formularioAtual.getChFaca().equals("Sim")) {
-                    chFaca.setChecked(true);
-                }
-                if (formularioAtual.getBanco().equals("Sim")) {
-                    chBanco.setChecked(true);
-                }
-                if (formularioAtual.getChFusivelReligador().equals("Sim")) {
-                    chFusivelReligador.setChecked(true);
-                }
-                if (formularioAtual.getRamalSubt().equals("-")) {
-                    ramalSubt.setSelection(0);
-                } else {
-                    for (int i = 0; i < ramalSubt.getAdapter().getCount(); i++) {
-                        ramalSubt.setSelection(i);
-                        if (ramalSubt.getSelectedItem().toString().equals(formularioAtual.getRamalSubt())) {
-                            break;
-                        }
-                    }
-                }
-                observacaoAtivos.setText(formularioAtual.getObservacaoAtivos());
-                outros.setText(formularioAtual.getOutros());
-
-                //MUTUO
-                if (formularioAtual.getMutuo().equals("Sim")) {
-                    mutuo.setChecked(true);
-                    foto15.setVisibility(View.VISIBLE);
-                    btnFoto15.setVisibility(View.VISIBLE);
-                    btnUpload15.setVisibility(View.VISIBLE);
-
-                    foto16.setVisibility(View.VISIBLE);
-                    btnFoto16.setVisibility(View.VISIBLE);
-                    btnUpload16.setVisibility(View.VISIBLE);
-
-                    foto17.setVisibility(View.VISIBLE);
-                    btnFoto17.setVisibility(View.VISIBLE);
-                    btnUpload17.setVisibility(View.VISIBLE);
-                    quantidadeOcupantes.setVisibility(View.VISIBLE);
-                    quantidadeCabos.setVisibility(View.VISIBLE);
-                    tipoCabo.setVisibility(View.VISIBLE);
-                    quantidadeCabosdois.setVisibility(View.VISIBLE);
-                    tipoCabodois.setVisibility(View.VISIBLE);
-                    nome.setVisibility(View.VISIBLE);
-                    finalidade.setVisibility(View.VISIBLE);
-                    ceans.setVisibility(View.VISIBLE);
-                    tar.setVisibility(View.VISIBLE);
-                    reservaTec.setVisibility(View.VISIBLE);
-                    backbone.setVisibility(View.VISIBLE);
-                    placaIdentificadora.setVisibility(View.VISIBLE);
-                    descidaCabos.setVisibility(View.VISIBLE);
-                    descricaoIrregularidade.setVisibility(View.VISIBLE);
-
-
-                }
-                //1
-                quantidadeOcupantes.setText(formularioAtual.getQuantidadeOcupantes());
-                quantidadeCabos.setText(formularioAtual.getQuantidadeCabos());
-                if (formularioAtual.getTipoCabo().equals("-")) {
-                    tipoCabo.setSelection(0);
-                } else {
-                    for (int i = 0; i < tipoCabo.getAdapter().getCount(); i++) {
-                        tipoCabo.setSelection(i);
-                        if (tipoCabo.getSelectedItem().toString().equals(formularioAtual.getTipoCabo())) {
-                            break;
-                        }
-                    }
-                }
-                quantidadeCabosdois.setText(formularioAtual.getQuantidadeCabosdois());
-                if (formularioAtual.getTipoCabodois().equals("-")) {
-                    tipoCabodois.setSelection(0);
-                } else {
-                    for (int i = 0; i < tipoCabodois.getAdapter().getCount(); i++) {
-                        tipoCabodois.setSelection(i);
-                        if (tipoCabodois.getSelectedItem().toString().equals(formularioAtual.getTipoCabodois())) {
-                            break;
-                        }
-                    }
-                }
-                nome.setText(formularioAtual.getNome());
-                if (formularioAtual.getFinalidade().equals("-")) {
-                    finalidade.setSelection(0);
-                } else {
-                    for (int i = 0; i < finalidade.getAdapter().getCount(); i++) {
-                        finalidade.setSelection(i);
-                        if (finalidade.getSelectedItem().toString().equals(formularioAtual.getFinalidade())) {
-                            break;
-                        }
-                    }
-                }
-                if (formularioAtual.getCeans().equals("-")) {
-                    ceans.setSelection(0);
-                } else {
-                    for (int i = 0; i < ceans.getAdapter().getCount(); i++) {
-                        ceans.setSelection(i);
-                        if (ceans.getSelectedItem().toString().equals(formularioAtual.getCeans())) {
-                            break;
-                        }
-                    }
-                }
-                if (formularioAtual.getTar().equals("-")) {
-                    tar.setSelection(0);
-                } else {
-                    for (int i = 0; i < tar.getAdapter().getCount(); i++) {
-                        tar.setSelection(i);
-                        if (tar.getSelectedItem().toString().equals(formularioAtual.getTar())) {
-                            break;
-                        }
-                    }
-                }
-                if (formularioAtual.getReservaTec().equals("-")) {
-                    reservaTec.setSelection(0);
-                } else {
-                    for (int i = 0; i < reservaTec.getAdapter().getCount(); i++) {
-                        reservaTec.setSelection(i);
-                        if (reservaTec.getSelectedItem().toString().equals(formularioAtual.getReservaTec())) {
-                            break;
-                        }
-                    }
-                }
-                if (formularioAtual.getBackbone().equals("-")) {
-                    backbone.setSelection(0);
-                } else {
-                    for (int i = 0; i < backbone.getAdapter().getCount(); i++) {
-                        backbone.setSelection(i);
-                        if (backbone.getSelectedItem().toString().equals(formularioAtual.getBackbone())) {
-                            break;
-                        }
-                    }
-                }
-                if (formularioAtual.getPlacaIdent().equals("Sim")) {
-                    placaIdentificadora.setChecked(true);
-                }
-                if (formularioAtual.getDescidaCabos().equals("Sim")) {
-                    descidaCabos.setChecked(true);
-                }
-                descricaoIrregularidade.setText(formularioAtual.getDescricaoIrregularidade());
-                observacaoMutuo.setText((formularioAtual.getObservacaoMutuo()));
-
-
-                if (formularioAtual.getDimensaoVegetacao().equals("-")) {
-                    dimensaoVegetacao.setSelection(0);
-                } else {
-                    for (int i = 0; i < dimensaoVegetacao.getAdapter().getCount(); i++) {
-                        dimensaoVegetacao.setSelection(i);
-                        if (dimensaoVegetacao.getSelectedItem().toString().equals(formularioAtual.getDimensaoVegetacao())) {
-                            break;
-                        }
-                    }
-                }
-                if (formularioAtual.getDistaciaBaixa().equals("-")) {
-                    distaciaBaixa.setSelection(0);
-                } else {
-                    for (int i = 0; i < distaciaBaixa.getAdapter().getCount(); i++) {
-                        distaciaBaixa.setSelection(i);
-                        if (distaciaBaixa.getSelectedItem().toString().equals(formularioAtual.getDistaciaBaixa())) {
-                            break;
-                        }
-                    }
-                }
-                if (formularioAtual.getDistanciaMedia().equals("-")) {
-                    distanciaMedia.setSelection(0);
-                } else {
-                    for (int i = 0; i < distanciaMedia.getAdapter().getCount(); i++) {
-                        distanciaMedia.setSelection(i);
-                        if (dimensaoVegetacao.getSelectedItem().toString().equals(formularioAtual.getDistanciaMedia())) {
-                            break;
-                        }
-                    }
-                }
-                if (formularioAtual.getEstadoArvore().equals("-")) {
-                    estadoArvore.setSelection(0);
-                } else {
-                    for (int i = 0; i < estadoArvore.getAdapter().getCount(); i++) {
-                        estadoArvore.setSelection(i);
-                        if (estadoArvore.getSelectedItem().toString().equals(formularioAtual.getEstadoArvore())) {
-                            break;
-                        }
-                    }
-                }
-                if (formularioAtual.getQuedaArvore().equals("Sim")) {
-                    quedaArvore.setChecked(true);
-                }
-                if (formularioAtual.getLocalArvore().equals("-")) {
-                    localArvore.setSelection(0);
-                } else {
-                    for (int i = 0; i < localArvore.getAdapter().getCount(); i++) {
-                        localArvore.setSelection(i);
-                        if (localArvore.getSelectedItem().toString().equals(formularioAtual.getLocalArvore())) {
-                            break;
-                        }
-                    }
-                }
-                observacaoVegetacao.setText(formularioAtual.getObservacaoVegetacao());
                 Button btnNovoPoste = root.findViewById(R.id.btnNovoPoste);
                 btnNovoPoste.setVisibility(View.VISIBLE);
                 //add button to the layout
@@ -1574,7 +822,7 @@ public class CadastroFragment extends Fragment {
                         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
                         progressDialog.show(); // Display Progress Dialog
                         progressDialog.setCancelable(false);
-                        if ((imgPath == null) && (imgPath2 == null) && (imgPath3 == null)) {
+                        if ((imgPathPan == null) && (imgPathAlt == null) && (imgPathQualidade == null)) {
                             Toast.makeText(requireContext(), "Preencha pelo menos uma foto", Toast.LENGTH_SHORT).show();
                             progressDialog.dismiss();
                         } else if (codigo.getText().toString().equals("") || codigo == null) {
@@ -1584,185 +832,124 @@ public class CadastroFragment extends Fragment {
                             FormularioDAO formularioDAO = new FormularioDAO(requireActivity().getApplicationContext());
                             Formulario formulario = new Formulario();
                             formulario.setCodigo(Objects.requireNonNull(codigo.getText()).toString());
-                            Log.i("TAG", imgPath);
-                            if (imgPath != null) {
-                                formulario.setCaminhoImagem(imgPath);
+                            if (imgPathPan != null) {
+                                formulario.setCaminhoImagem(imgPathPan);
                             } else {
                                 formulario.setCaminhoImagem("");
                             }
-                            if (imgPath2 != null) {
-                                formulario.setCaminhoImagem2(imgPath2);
+                            if (imgPathAlt != null) {
+                                formulario.setCaminhoImagem2(imgPathAlt);
                             } else {
                                 formulario.setCaminhoImagem2("");
                             }
-                            if (imgPath3 != null) {
-                                formulario.setCaminhoImagem3(imgPath3);
+                            if (imgPathQualidade != null) {
+                                formulario.setCaminhoImagem3(imgPathQualidade);
                             } else {
                                 formulario.setCaminhoImagem3("");
                             }
-                            if (imgPath4 != null) {
-                                formulario.setCaminhoImagem4(imgPath4);
+                            if (imgPathIP != null) {
+                                formulario.setCaminhoImagem4(imgPathIP);
                             } else {
                                 formulario.setCaminhoImagem4("");
                             }
-                            if (imgPath7 != null) {
-                                formulario.setCaminhoImagem5(imgPath7);
-                            } else {
-                                formulario.setCaminhoImagem5("");
-                            }
-                            if (imgPath10 != null) {
-                                formulario.setCaminhoImagem6(imgPath10);
-                            } else {
-                                formulario.setCaminhoImagem6("");
-                            }
-                            if (imgPath13 != null) {
-                                formulario.setCaminhoImagem7(imgPath13);
+                            if (imgPathAtivos != null) {
+                                formulario.setCaminhoImagem7(imgPathAtivos);
                             } else {
                                 formulario.setCaminhoImagem7("");
                             }
-                            if (imgPath14 != null) {
-                                formulario.setCaminhoImagem8(imgPath14);
+                            if (imgPathAtivos2 != null) {
+                                formulario.setCaminhoImagem8(imgPathAtivos2);
                             } else {
                                 formulario.setCaminhoImagem8("");
                             }
-                            if (imgPath15 != null) {
-                                formulario.setCaminhoImagem9(imgPath15);
+                            if (imgPathMutuo != null) {
+                                formulario.setCaminhoImagem9(imgPathMutuo);
                             } else {
                                 formulario.setCaminhoImagem9("");
                             }
-                            if (imgPath16 != null) {
-                                formulario.setCaminhoImagem10(imgPath16);
+                            if (imgPathMutuo2 != null) {
+                                formulario.setCaminhoImagem10(imgPathMutuo2);
                             } else {
                                 formulario.setCaminhoImagem10("");
                             }
-                            if (imgPath17 != null) {
-                                formulario.setCaminhoImagem11(imgPath17);
+                            if (imgPathMutuo3 != null) {
+                                formulario.setCaminhoImagem11(imgPathMutuo3);
                             } else{
                                 formulario.setCaminhoImagem11("");
                             }
-                            if (imgPath30 != null) {
-                                formulario.setCaminhoImagem12(imgPath30);
+                            if (imgPathVeg != null) {
+                                formulario.setCaminhoImagem12(imgPathVeg);
                             } else {
                                 formulario.setCaminhoImagem12("");
                             }
-                            if (!novoUpload) {
-                                urlFoto = null;
-                            }
-                            if (!novoUpload2) {
-                                urlFoto2 = null;
-                            }
-                            if (!novoUpload3) {
-                                urlFoto3 = null;
-                            }
-                            if (!novoUpload4) {
-                                urlFoto4 = null;
-                            }
-                            if (!novoUpload7) {
-                                urlFoto7 = null;
-                            }
-                            if (!novoUpload10) {
-                                urlFoto10 = null;
-                            }
-                            if (!novoUpload13) {
-                                urlFoto13 = null;
-                            }
-                            if (!novoUpload14) {
-                                urlFoto14 = null;
-                            }
-                            if (!novoUpload15) {
-                                urlFoto15 = null;
-                            }
-                            if (!novoUpload16) {
-                                urlFoto16 = null;
-                            }
-                            if (!novoUpload17) {
-                                urlFoto17 = null;
-                            }
-                            if (!novoUpload30) {
-                                urlFoto30 = null;
-                            }
-                            if((urlFoto == null) || ((urlFoto.toString()).equals(""))) {
+                            if((urlFotoPan == null) || ((urlFotoPan.toString()).equals(""))) {
                                 formulario.setUrlImagem("");
                                 formulario.setColor(String.valueOf(R.color.design_default_color_error));
                             }else {
-                                formulario.setUrlImagem(urlFoto.toString());
+                                formulario.setUrlImagem(urlFotoPan.toString());
                                 formulario.setColor(String.valueOf(R.color.colorPrimary));
                             }
-                            if((urlFoto2 == null) || ((urlFoto2.toString()).equals(""))) {
+                            if((urlFotoAlt == null) || ((urlFotoAlt.toString()).equals(""))) {
                                 formulario.setUrlImagem2("");
                                 formulario.setColor2(String.valueOf(R.color.design_default_color_error));
                             }else {
-                                formulario.setUrlImagem2(urlFoto2.toString());
+                                formulario.setUrlImagem2(urlFotoAlt.toString());
                                 formulario.setColor2(String.valueOf(R.color.colorPrimary));
                             }
-                            if((urlFoto3 == null) || ((urlFoto3.toString()).equals(""))) {
+                            if((urlFotoQualidade == null) || ((urlFotoQualidade.toString()).equals(""))) {
                                 formulario.setUrlImagem3("");
                                 formulario.setColor3(String.valueOf(R.color.design_default_color_error));
                             }else {
-                                formulario.setUrlImagem3(urlFoto3.toString());
+                                formulario.setUrlImagem3(urlFotoQualidade.toString());
                                 formulario.setColor3(String.valueOf(R.color.colorPrimary));
                             }
-                            if((urlFoto4 == null) || ((urlFoto4.toString()).equals(""))) {
+                            if((urlFotoIP == null) || ((urlFotoIP.toString()).equals(""))) {
                                 formulario.setUrlImagem4("");
                                 formulario.setColor4(String.valueOf(R.color.design_default_color_error));
                             }else {
-                                formulario.setUrlImagem4(urlFoto4.toString());
+                                formulario.setUrlImagem4(urlFotoIP.toString());
                                 formulario.setColor4(String.valueOf(R.color.colorPrimary));
                             }
-                            if((urlFoto7 == null) || ((urlFoto7.toString()).equals(""))) {
-                                formulario.setUrlImagem5("");
-                                formulario.setColor5(String.valueOf(R.color.design_default_color_error));
-                            }else {
-                                formulario.setUrlImagem5(urlFoto7.toString());
-                                formulario.setColor5(String.valueOf(R.color.colorPrimary));
-                            }
-                            if((urlFoto10 == null) || ((urlFoto10.toString()).equals(""))) {
-                                formulario.setUrlImagem6("");
-                                formulario.setColor6(String.valueOf(R.color.design_default_color_error));
-                            }else {
-                                formulario.setUrlImagem6(urlFoto10.toString());
-                                formulario.setColor6(String.valueOf(R.color.colorPrimary));
-                            }
-                            if((urlFoto13 == null) || ((urlFoto13.toString()).equals(""))) {
+                            if((urlFotoAtivos == null) || ((urlFotoAtivos.toString()).equals(""))) {
                                 formulario.setUrlImagem7("");
                                 formulario.setColor7(String.valueOf(R.color.design_default_color_error));
                             }else {
-                                formulario.setUrlImagem7(urlFoto13.toString());
+                                formulario.setUrlImagem7(urlFotoAtivos.toString());
                                 formulario.setColor7(String.valueOf(R.color.colorPrimary));
                             }
-                            if((urlFoto14 == null) || ((urlFoto14.toString()).equals(""))) {
+                            if((urlFotoAtivos2 == null) || ((urlFotoAtivos2.toString()).equals(""))) {
                                 formulario.setUrlImagem8("");
                                 formulario.setColor8(String.valueOf(R.color.design_default_color_error));
                             }else {
-                                formulario.setUrlImagem8(urlFoto14.toString());
+                                formulario.setUrlImagem8(urlFotoAtivos2.toString());
                                 formulario.setColor8(String.valueOf(R.color.colorPrimary));
                             }
-                            if((urlFoto15 == null) || ((urlFoto15.toString()).equals(""))) {
+                            if((urlFotoMutuo == null) || ((urlFotoMutuo.toString()).equals(""))) {
                                 formulario.setUrlImagem9("");
                                 formulario.setColor9(String.valueOf(R.color.design_default_color_error));
                             }else {
-                                formulario.setUrlImagem9(urlFoto15.toString());
+                                formulario.setUrlImagem9(urlFotoMutuo.toString());
                                 formulario.setColor9(String.valueOf(R.color.colorPrimary));
                             }
-                            if((urlFoto16 == null) || ((urlFoto16.toString()).equals(""))) {
+                            if((urlFotoMutuo2 == null) || ((urlFotoMutuo2.toString()).equals(""))) {
                                 formulario.setUrlImagem10("");
                                 formulario.setColor10(String.valueOf(R.color.design_default_color_error));
                             }else {
-                                formulario.setUrlImagem10(urlFoto16.toString());
+                                formulario.setUrlImagem10(urlFotoMutuo2.toString());
                                 formulario.setColor10(String.valueOf(R.color.colorPrimary));
                             }
-                            if((urlFoto17 == null) || ((urlFoto17.toString()).equals(""))) {
+                            if((urlFotoMutuo3 == null) || ((urlFotoMutuo3.toString()).equals(""))) {
                                 formulario.setUrlImagem11("");
                                 formulario.setColor11(String.valueOf(R.color.design_default_color_error));
                             }else {
-                                formulario.setUrlImagem11(urlFoto17.toString());
+                                formulario.setUrlImagem11(urlFotoMutuo3.toString());
                                 formulario.setColor11(String.valueOf(R.color.colorPrimary));
                             }
-                            if((urlFoto30 == null) || ((urlFoto30.toString()).equals(""))) {
+                            if((urlFotoVeg == null) || ((urlFotoVeg.toString()).equals(""))) {
                                 formulario.setUrlImagem12("");
                                 formulario.setColor12(String.valueOf(R.color.design_default_color_error));
                             }else {
-                                formulario.setUrlImagem12(urlFoto30.toString());
+                                formulario.setUrlImagem12(urlFotoVeg.toString());
                                 formulario.setColor12(String.valueOf(R.color.colorPrimary));
                             }
                             //LOCALIZAÇÂO
@@ -1828,40 +1015,6 @@ public class CadastroFragment extends Fragment {
                                 formulario.setVinteEQuatro("Não");
                             }
                             formulario.setQuantidade24H(Objects.requireNonNull(quantidade24H.getText().toString()));
-
-                            if (ip2.isChecked()) {
-                                formulario.setIp2("Sim");
-                            } else {
-                                formulario.setIp2("Não");
-                            }
-                            setLista(formulario, ipEstrutura2, "ipEstrutura2");
-                            formulario.setQuantidadeLampada2(Objects.requireNonNull(quantidadeLampada2.getText().toString()));
-                            setLista(formulario, tipoPot2, "tipoPot2");
-                            formulario.setPotReator2(Objects.requireNonNull(potReator2.getText()).toString());
-                            setLista(formulario, ipAtivacao2, "ipAtivacao2");
-                            if (vinteEQuatro2.isChecked()) {
-                                formulario.setVinteEQuatro2("Sim");
-                            } else {
-                                formulario.setVinteEQuatro2("Não");
-                            }
-                            formulario.setQuantidade24H2(Objects.requireNonNull(quantidade24H2.getText().toString()));
-
-                            if (ip3.isChecked()) {
-                                formulario.setIp3("Sim");
-                            } else {
-                                formulario.setIp3("Não");
-                            }
-                            setLista(formulario, ipEstrutura3, "ipEstrutura3");
-                            formulario.setQuantidadeLampada3(Objects.requireNonNull(quantidadeLampada3.getText().toString()));
-                            setLista(formulario, tipoPot3, "tipoPot3");
-                            formulario.setPotReator3(Objects.requireNonNull(potReator3.getText()).toString());
-                            setLista(formulario, ipAtivacao3, "ipAtivacao3");
-                            if (vinteEQuatro3.isChecked()) {
-                                formulario.setVinteEQuatro3("Sim");
-                            } else {
-                                formulario.setVinteEQuatro3("Não");
-                            }
-                            formulario.setQuantidade24H3(Objects.requireNonNull(quantidade24H3.getText().toString()));
                             formulario.setObservacaoIP(Objects.requireNonNull(observacaoIP.getText().toString()));
 
 
@@ -1894,26 +1047,10 @@ public class CadastroFragment extends Fragment {
                             } else {
                                 formulario.setMedicao("Não");
                             }
-                            if (chFusivel.isChecked()) {
-                                formulario.setChFusivel("Sim");
-                            } else {
-                                formulario.setChFusivel("Não");
-                            }
-                            if (chFaca.isChecked()) {
-                                formulario.setChFaca("Sim");
-                            } else {
-                                formulario.setChFaca("Não");
-                            }
-                            if (chBanco.isChecked()) {
-                                formulario.setBanco("Sim");
-                            } else {
-                                formulario.setBanco("Não");
-                            }
-                            if (chFusivelReligador.isChecked()) {
-                                formulario.setChFusivelReligador("Sim");
-                            } else {
-                                formulario.setChFusivelReligador("Não");
-                            }
+                            formulario.setChFusivel(Objects.requireNonNull(chFusivel.getText().toString()));
+                            setLista(formulario, chFaca, "chFaca");
+                            setLista(formulario, chBanco, "chBanco");
+                            formulario.setChFusivelReligador(Objects.requireNonNull(chFusivelReligador.getText().toString()));
                             setLista(formulario, ramalSubt, "ramalSubt");
                             formulario.setObservacaoAtivos(Objects.requireNonNull(observacaoAtivos.getText()).toString());
                             formulario.setOutros(Objects.requireNonNull(outros.getText()).toString());
@@ -1951,6 +1088,11 @@ public class CadastroFragment extends Fragment {
 
 
                             //VEGETAÇÃO
+                            if (chkVegetacao.isChecked()) {
+                                formulario.setVegetacao("Sim");
+                            } else {
+                                formulario.setVegetacao("Não");
+                            }
                             setLista(formulario, dimensaoVegetacao, "dimensaoVegetacao");
                             setLista(formulario, distaciaBaixa, "distanciaBaixa");
                             setLista(formulario, distanciaMedia, "distanciaMedia");
@@ -1995,13 +1137,8 @@ public class CadastroFragment extends Fragment {
                                 e.printStackTrace();
                             }
                             SimpleDateFormat writeDate = new SimpleDateFormat("dd/MM/yyyy, HH:mm:ss");
-                            writeDate.setTimeZone(TimeZone.getTimeZone("GMT-04:00"));
+                            writeDate.setTimeZone(TimeZone.getTimeZone("GMT-00:00"));
                             String s = writeDate.format(date);
-
-
-                            Log.i("DATA", s);
-
-                            String data = thisDayText + "/" + thisMonthText + "/" + thisYearText;
                             formulario.setData(s);
                             if (formularioDAO.salvar(formulario)) {
                                 CadastradosFragment cadastradosFragment = new CadastradosFragment();
@@ -2024,10 +1161,13 @@ public class CadastroFragment extends Fragment {
                 });
 
                 controle = false;
+                try {
+                    progressDialog.dismiss();
+                }catch (Exception e){
 
+                }
             }
         } catch (Exception e) {
-            Log.i("ERRO", "erro: " + e);
         }
 
 
@@ -2073,32 +1213,6 @@ public class CadastroFragment extends Fragment {
                                                 }
         );
 
-        vinteEQuatro2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                     @Override
-                                                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                                         if (vinteEQuatro2.isChecked()) {
-                                                             quantidade24H2.setEnabled(true);
-                                                         } else {
-                                                             quantidade24H2.setEnabled(false);
-                                                             quantidade24H2.setText("");
-                                                         }
-                                                     }
-                                                 }
-        );
-
-        vinteEQuatro3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                                     @Override
-                                                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                                         if (vinteEQuatro3.isChecked()) {
-                                                             quantidade24H3.setEnabled(true);
-                                                         } else {
-                                                             quantidade24H3.setEnabled(false);
-                                                             quantidade24H3.setText("");
-                                                         }
-                                                     }
-                                                 }
-        );
-
 
         //Listener para só habilitar os dados da própria ip e as próximas ip caso a primeira
         // tenha sido checada
@@ -2112,20 +1226,14 @@ public class CadastroFragment extends Fragment {
                     quantidadeLampada.setEnabled(true);
                     ipAtivacao.setEnabled(true);
                     vinteEQuatro.setEnabled(true);
-                    ip2.setEnabled(true);
-                    ip2.setVisibility(View.VISIBLE);
-                    foto4.setEnabled(true);
-                    foto4.setVisibility(View.VISIBLE);
+                    fotoIP.setEnabled(true);
+                    fotoIP.setVisibility(View.VISIBLE);
                     btnFoto4.setVisibility(View.VISIBLE);
                     btnUpload4.setVisibility(View.VISIBLE);
-                    //foto5.setEnabled(true);
-                    //foto5.setVisibility(View.VISIBLE);
-                    //btnFoto5.setVisibility(View.VISIBLE);
-                    //btnUpload5.setVisibility(View.VISIBLE);
-                    //foto6.setEnabled(true);
-                    //foto6.setVisibility(View.VISIBLE);
-                    //btnFoto6.setVisibility(View.VISIBLE);
-                    //btnUpload6.setVisibility(View.VISIBLE);
+                    textLampada.setVisibility(View.VISIBLE);
+                    relativeIPTipoEstrutura.setVisibility(View.VISIBLE);
+                    relativeIPTipoLampada.setVisibility(View.VISIBLE);
+                    relativeIPTipoAtivacao.setVisibility(View.VISIBLE);
 
                     ipEstrutura.setVisibility(View.VISIBLE);
                     tipoPot.setVisibility(View.VISIBLE);
@@ -2137,22 +1245,20 @@ public class CadastroFragment extends Fragment {
                 } else {
                     ipEstrutura.setEnabled(false);
                     quantidadeLampada.setEnabled(false);
+                    quantidadeLampada.setText("0");
                     tipoPot.setEnabled(false);
                     tipoPot.setSelection(0);
                     potReator.setEnabled(false);
-                    potReator.setText("");
-                    quantidadeLampada.setText("");
+                    quantidadeLampada.setText("0");
                     ipEstrutura.setSelection(0);
                     ipAtivacao.setEnabled(false);
                     vinteEQuatro.setEnabled(false);
                     vinteEQuatro.setChecked(false);
                     ipAtivacao.setSelection(0);
-                    ip2.setChecked(false);
-                    ip2.setEnabled(false);
-                    ip2.setVisibility(View.GONE);
-                    foto4.setVisibility(View.GONE);
+                    fotoIP.setVisibility(View.GONE);
                     btnFoto4.setVisibility(View.GONE);
                     btnUpload4.setVisibility(View.GONE);
+                    textLampada.setVisibility(View.GONE);
 
                     ipEstrutura.setVisibility(View.GONE);
                     tipoPot.setVisibility(View.GONE);
@@ -2161,123 +1267,15 @@ public class CadastroFragment extends Fragment {
                     quantidade24H.setVisibility(View.GONE);
                     ipAtivacao.setVisibility(View.GONE);
                     vinteEQuatro.setVisibility(View.GONE);
+                    relativeIPTipoEstrutura.setVisibility(View.GONE);
+                    relativeIPTipoLampada.setVisibility(View.GONE);
+                    relativeIPTipoAtivacao.setVisibility(View.GONE);
                 }
             }
         });
 
         //Listener para só habilitar os dados da própria ip e as próximas ip caso a segunda
         // tenha sido checada
-        ip2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (ip2.isChecked()) {
-                    ipEstrutura2.setEnabled(true);
-                    tipoPot2.setEnabled(true);
-                    potReator2.setEnabled(true);
-                    quantidadeLampada2.setEnabled(true);
-                    ipAtivacao2.setEnabled(true);
-                    vinteEQuatro2.setEnabled(true);
-                    ip3.setEnabled(true);
-                    foto7.setEnabled(true);
-                    foto7.setVisibility(View.VISIBLE);
-                    btnFoto7.setVisibility(View.VISIBLE);
-                    btnUpload7.setVisibility(View.VISIBLE);
-
-
-                    ipEstrutura2.setVisibility(View.VISIBLE);
-                    tipoPot2.setVisibility(View.VISIBLE);
-                    potReator2.setVisibility(View.VISIBLE);
-                    quantidadeLampada2.setVisibility(View.VISIBLE);
-                    ipAtivacao2.setVisibility(View.VISIBLE);
-                    vinteEQuatro2.setVisibility(View.VISIBLE);
-                    quantidade24H2.setVisibility(View.VISIBLE);
-                    ip3.setVisibility(View.VISIBLE);
-                } else {
-                    ipEstrutura2.setEnabled(false);
-                    quantidadeLampada2.setEnabled(false);
-                    tipoPot2.setEnabled(false);
-                    tipoPot2.setSelection(0);
-                    potReator2.setEnabled(false);
-                    potReator2.setText("");
-                    quantidadeLampada2.setText("");
-                    ipEstrutura2.setSelection(0);
-                    ipAtivacao2.setEnabled(false);
-                    vinteEQuatro2.setChecked(false);
-                    vinteEQuatro2.setEnabled(false);
-                    ipAtivacao2.setSelection(0);
-                    ip3.setChecked(false);
-                    ip3.setEnabled(false);
-
-                    foto7.setVisibility(View.GONE);
-                    btnFoto7.setVisibility(View.GONE);
-                    btnUpload7.setVisibility(View.GONE);
-
-                    ipEstrutura2.setVisibility(View.GONE);
-                    tipoPot2.setVisibility(View.GONE);
-                    potReator2.setVisibility(View.GONE);
-                    quantidadeLampada2.setVisibility(View.GONE);
-                    quantidade24H2.setVisibility(View.GONE);
-                    ipAtivacao2.setVisibility(View.GONE);
-                    vinteEQuatro2.setVisibility(View.GONE);
-                    ip3.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        //Listener para só habilitar os dados da própria ip caso tenha sido checada
-        ip3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (ip3.isChecked()) {
-                    ipEstrutura3.setEnabled(true);
-                    tipoPot3.setEnabled(true);
-                    potReator3.setEnabled(true);
-                    quantidadeLampada3.setEnabled(true);
-                    ipAtivacao3.setEnabled(true);
-                    vinteEQuatro3.setEnabled(true);
-
-                    foto10.setEnabled(true);
-                    foto10.setVisibility(View.VISIBLE);
-                    btnFoto10.setVisibility(View.VISIBLE);
-                    btnUpload10.setVisibility(View.VISIBLE);
-
-                    ipEstrutura3.setVisibility(View.VISIBLE);
-                    tipoPot3.setVisibility(View.VISIBLE);
-                    potReator3.setVisibility(View.VISIBLE);
-                    quantidadeLampada3.setVisibility(View.VISIBLE);
-                    ipAtivacao3.setVisibility(View.VISIBLE);
-                    vinteEQuatro3.setVisibility(View.VISIBLE);
-                    quantidade24H3.setVisibility(View.VISIBLE);
-
-                } else {
-                    ipEstrutura3.setEnabled(false);
-                    quantidadeLampada3.setEnabled(false);
-                    tipoPot3.setEnabled(false);
-                    tipoPot3.setSelection(0);
-                    potReator3.setEnabled(false);
-                    potReator3.setText("");
-                    quantidadeLampada3.setText("");
-                    ipEstrutura3.setSelection(0);
-                    ipAtivacao3.setEnabled(false);
-                    vinteEQuatro3.setChecked(false);
-                    vinteEQuatro3.setEnabled(false);
-                    ipAtivacao3.setSelection(0);
-                    foto10.setVisibility(View.GONE);
-                    btnFoto10.setVisibility(View.GONE);
-                    btnUpload10.setVisibility(View.GONE);
-
-
-                    ipEstrutura3.setVisibility(View.GONE);
-                    tipoPot3.setVisibility(View.GONE);
-                    potReator3.setVisibility(View.GONE);
-                    quantidadeLampada3.setVisibility(View.GONE);
-                    quantidade24H3.setVisibility(View.GONE);
-                    ipAtivacao3.setVisibility(View.GONE);
-                    vinteEQuatro3.setVisibility(View.GONE);
-                }
-            }
-        });
-
         ativos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -2293,12 +1291,12 @@ public class CadastroFragment extends Fragment {
                     ramalSubt.setEnabled(true);
                     outros.setEnabled(true);
 
-                    foto13.setEnabled(true);
-                    foto13.setVisibility(View.VISIBLE);
+                    fotoAtivos.setEnabled(true);
+                    fotoAtivos.setVisibility(View.VISIBLE);
                     btnFoto13.setVisibility(View.VISIBLE);
                     btnUpload13.setVisibility(View.VISIBLE);
-                    foto14.setEnabled(true);
-                    foto14.setVisibility(View.VISIBLE);
+                    fotoAtivos2.setEnabled(true);
+                    fotoAtivos2.setVisibility(View.VISIBLE);
                     btnFoto14.setVisibility(View.VISIBLE);
                     btnUpload14.setVisibility(View.VISIBLE);
 
@@ -2313,7 +1311,13 @@ public class CadastroFragment extends Fragment {
                     chFusivelReligador.setVisibility(View.VISIBLE);
                     chBanco.setVisibility(View.VISIBLE);
                     ramalSubt.setVisibility(View.VISIBLE);
+                    textOutros.setVisibility(View.VISIBLE);
+                    relativeBanco.setVisibility(View.VISIBLE);
+                    relativeRamal.setVisibility(View.VISIBLE);
+                    relativeChFaca.setVisibility(View.VISIBLE);
                     outros.setVisibility(View.VISIBLE);
+                    textFusivel.setVisibility(View.VISIBLE);
+                    textFusivelReligador.setVisibility(View.VISIBLE);
                 } else {
                     chkTrafoTrifasico.setChecked(false);
                     chkTrafoTrifasico.setEnabled(false);
@@ -2328,36 +1332,41 @@ public class CadastroFragment extends Fragment {
                     religador.setChecked(false);
                     medicao.setEnabled(false);
                     medicao.setChecked(false);
-                    chFusivel.setEnabled(false);
-                    chFusivel.setChecked(false);
+                    chFusivel.setText("0");
                     chFaca.setEnabled(false);
-                    chFaca.setChecked(false);
+                    chFaca.setSelection(0);
                     chFusivelReligador.setEnabled(false);
-                    chFusivelReligador.setChecked(false);
+                    chFusivelReligador.setText("0");
                     chBanco.setEnabled(false);
-                    chBanco.setChecked(false);
+                    chBanco.setSelection(0);
                     ramalSubt.setSelection(0);
                     ramalSubt.setEnabled(false);
                     outros.setEnabled(false);
 
-                    trafoMono.setVisibility(View.INVISIBLE);
+                    trafoMono.setVisibility(View.GONE);
                     trafoTrifasico.setVisibility(View.GONE);
                     chkTrafoTrifasico.setVisibility(View.GONE);
                     chkTrafoMono.setVisibility(View.GONE);
                     religador.setVisibility(View.GONE);
                     medicao.setVisibility(View.GONE);
                     chFusivel.setVisibility(View.GONE);
+                    textOutros.setVisibility(View.GONE);
                     chFaca.setVisibility(View.GONE);
                     chFusivelReligador.setVisibility(View.GONE);
                     chBanco.setVisibility(View.GONE);
                     ramalSubt.setVisibility(View.GONE);
                     outros.setVisibility(View.GONE);
-                    foto13.setVisibility(View.GONE);
+                    fotoAtivos.setVisibility(View.GONE);
                     btnFoto13.setVisibility(View.GONE);
                     btnUpload13.setVisibility(View.GONE);
-                    foto14.setVisibility(View.GONE);
+                    fotoAtivos2.setVisibility(View.GONE);
                     btnFoto14.setVisibility(View.GONE);
                     btnUpload14.setVisibility(View.GONE);
+                    relativeBanco.setVisibility(View.GONE);
+                    relativeRamal.setVisibility(View.GONE);
+                    relativeChFaca.setVisibility(View.GONE);
+                    textFusivel.setVisibility(View.GONE);
+                    textFusivelReligador.setVisibility(View.GONE);
                 }
             }
         });
@@ -2396,7 +1405,6 @@ public class CadastroFragment extends Fragment {
         mutuo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.i("CHAMADO", "FUI");
                 if (mutuo.isChecked()) {
                     mutuoDados(quantidadeCabos, null, true);
                     mutuoDados(null, tipoCabo, true);
@@ -2414,15 +1422,26 @@ public class CadastroFragment extends Fragment {
                     placaIdentificadora.setVisibility(View.VISIBLE);
                     descidaCabos.setVisibility(View.VISIBLE);
                     descidaCabos.setEnabled(true);
-                    foto15.setVisibility(View.VISIBLE);
+                    fotoMutuo.setVisibility(View.VISIBLE);
                     btnFoto15.setVisibility(View.VISIBLE);
                     btnUpload15.setVisibility(View.VISIBLE);
-                    foto16.setVisibility(View.VISIBLE);
+                    fotoMutuo2.setVisibility(View.VISIBLE);
                     btnFoto16.setVisibility(View.VISIBLE);
                     btnUpload16.setVisibility(View.VISIBLE);
-                    foto17.setVisibility(View.VISIBLE);
+                    fotoMutuo3.setVisibility(View.VISIBLE);
                     btnFoto17.setVisibility(View.VISIBLE);
                     btnUpload17.setVisibility(View.VISIBLE);
+                    textQuantidadeCabo.setVisibility(View.VISIBLE);
+                    textQuantidadeCabodois.setVisibility(View.VISIBLE);
+                    textNome.setVisibility(View.VISIBLE);
+                    textIrregularidade.setVisibility(View.VISIBLE);
+                    relativeFinalidade.setVisibility(View.VISIBLE);
+                    relativeCeans.setVisibility(View.VISIBLE);
+                    relativeTar.setVisibility(View.VISIBLE);
+                    relativeReservaTec.setVisibility(View.VISIBLE);
+                    relativeBackbone.setVisibility(View.VISIBLE);
+                    relativeTipoCabo.setVisibility(View.VISIBLE);
+                    relativeTipoCabodois.setVisibility(View.VISIBLE);
                 } else {
                     mutuoDados(quantidadeCabos, null, false);
                     mutuoDados(quantidadeCabosdois, null, false);
@@ -2442,15 +1461,26 @@ public class CadastroFragment extends Fragment {
                     descidaCabos.setChecked(false);
                     descidaCabos.setEnabled(false);
                     descidaCabos.setVisibility(View.GONE);
-                    foto15.setVisibility(View.GONE);
+                    fotoMutuo.setVisibility(View.GONE);
                     btnFoto15.setVisibility(View.GONE);
                     btnUpload15.setVisibility(View.GONE);
-                    foto16.setVisibility(View.GONE);
+                    fotoMutuo2.setVisibility(View.GONE);
                     btnFoto16.setVisibility(View.GONE);
                     btnUpload16.setVisibility(View.GONE);
-                    foto17.setVisibility(View.GONE);
+                    fotoMutuo3.setVisibility(View.GONE);
                     btnFoto17.setVisibility(View.GONE);
                     btnUpload17.setVisibility(View.GONE);
+                    textQuantidadeCabo.setVisibility(View.GONE);
+                    textQuantidadeCabodois.setVisibility(View.GONE);
+                    textNome.setVisibility(View.GONE);
+                    textIrregularidade.setVisibility(View.GONE);
+                    relativeFinalidade.setVisibility(View.GONE);
+                    relativeCeans.setVisibility(View.GONE);
+                    relativeTar.setVisibility(View.GONE);
+                    relativeReservaTec.setVisibility(View.GONE);
+                    relativeBackbone.setVisibility(View.GONE);
+                    relativeTipoCabo.setVisibility(View.GONE);
+                    relativeTipoCabodois.setVisibility(View.GONE);
                 }
             }
         });
@@ -2464,7 +1494,7 @@ public class CadastroFragment extends Fragment {
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
                 progressDialog.show(); // Display Progress Dialog
                 progressDialog.setCancelable(false);
-                if((imgPath == null) && (imgPath2 == null) && (imgPath3 == null)){
+                if((imgPathPan == null) && (imgPathAlt == null) && (imgPathQualidade == null)){
                     Toast.makeText(requireContext(), "Preencha pelo menos uma foto", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                 }else if (codigo.getText().toString().equals("") || codigo == null){
@@ -2475,150 +1505,126 @@ public class CadastroFragment extends Fragment {
                 FormularioDAO formularioDAO = new FormularioDAO(requireActivity().getApplicationContext());
                 final Formulario formulario = new Formulario();
                     formulario.setCodigo(Objects.requireNonNull(codigo.getText()).toString());
-                if (imgPath != null) {
-                    formulario.setCaminhoImagem(imgPath);
+                if (imgPathPan != null) {
+                    formulario.setCaminhoImagem(imgPathPan);
                 } else {
                     formulario.setCaminhoImagem("");
                 }
                 //Panoramica, Alt/Res, Qualidade
 
-                if (imgPath2 != null) {
-                    formulario.setCaminhoImagem2(imgPath2);
+                if (imgPathAlt != null) {
+                    formulario.setCaminhoImagem2(imgPathAlt);
                 } else {
                     formulario.setCaminhoImagem2("");
                 }
-                if (imgPath3 != null) {
-                    formulario.setCaminhoImagem3(imgPath3);
+                if (imgPathQualidade != null) {
+                    formulario.setCaminhoImagem3(imgPathQualidade);
                 } else {
                     formulario.setCaminhoImagem3("");
                 }
-                    if (imgPath4 != null) {
-                        formulario.setCaminhoImagem4(imgPath4);
+                    if (imgPathIP != null) {
+                        formulario.setCaminhoImagem4(imgPathIP);
                     } else {
                         formulario.setCaminhoImagem4("");
                     }
-                    if (imgPath7 != null) {
-                        formulario.setCaminhoImagem5(imgPath7);
-                    } else {
-                        formulario.setCaminhoImagem5("");
-                    }
-                    if (imgPath10 != null) {
-                        formulario.setCaminhoImagem6(imgPath10);
-                    } else {
-                        formulario.setCaminhoImagem6("");
-                    }
-                    if (imgPath13 != null) {
-                        formulario.setCaminhoImagem7(imgPath13);
+                    if (imgPathAtivos != null) {
+                        formulario.setCaminhoImagem7(imgPathAtivos);
                     } else {
                         formulario.setCaminhoImagem7("");
                     }
-                    if (imgPath14 != null) {
-                        formulario.setCaminhoImagem8(imgPath14);
+                    if (imgPathAtivos2 != null) {
+                        formulario.setCaminhoImagem8(imgPathAtivos2);
                     } else {
                         formulario.setCaminhoImagem8("");
                     }
-                    if (imgPath15 != null) {
-                        formulario.setCaminhoImagem9(imgPath15);
+                    if (imgPathMutuo != null) {
+                        formulario.setCaminhoImagem9(imgPathMutuo);
                     } else {
                         formulario.setCaminhoImagem9("");
                     }
-                    if (imgPath16 != null) {
-                        formulario.setCaminhoImagem10(imgPath16);
+                    if (imgPathMutuo2 != null) {
+                        formulario.setCaminhoImagem10(imgPathMutuo2);
                     } else {
                         formulario.setCaminhoImagem10("");
                     }
-                    if (imgPath17 != null) {
-                        formulario.setCaminhoImagem11(imgPath17);
+                    if (imgPathMutuo3 != null) {
+                        formulario.setCaminhoImagem11(imgPathMutuo3);
                     } else{
                         formulario.setCaminhoImagem11("");
                     }
-                    if (imgPath30 != null) {
-                        formulario.setCaminhoImagem12(imgPath30);
+                    if (imgPathVeg != null) {
+                        formulario.setCaminhoImagem12(imgPathVeg);
                     } else {
                         formulario.setCaminhoImagem12("");
                     }
-                if((urlFoto == null) || ((urlFoto.toString()).equals(""))) {
+                if((urlFotoPan == null) || ((urlFotoPan.toString()).equals(""))) {
                     formulario.setUrlImagem("");
                     formulario.setColor(String.valueOf(R.color.design_default_color_error));
                 }else {
-                    formulario.setUrlImagem(urlFoto.toString());
+                    formulario.setUrlImagem(urlFotoPan.toString());
                     formulario.setColor(String.valueOf(R.color.colorPrimary));
                 }
-                if((urlFoto2 == null) || ((urlFoto2.toString()).equals(""))) {
+                if((urlFotoAlt == null) || ((urlFotoAlt.toString()).equals(""))) {
                     formulario.setUrlImagem2("");
                     formulario.setColor2(String.valueOf(R.color.design_default_color_error));
                 }else {
-                    formulario.setUrlImagem2(urlFoto2.toString());
+                    formulario.setUrlImagem2(urlFotoAlt.toString());
                     formulario.setColor2(String.valueOf(R.color.colorPrimary));
                 }
-                if((urlFoto3 == null) || ((urlFoto3.toString()).equals(""))) {
+                if((urlFotoQualidade == null) || ((urlFotoQualidade.toString()).equals(""))) {
                     formulario.setUrlImagem3("");
                     formulario.setColor3(String.valueOf(R.color.design_default_color_error));
                 }else {
-                    formulario.setUrlImagem3(urlFoto3.toString());
+                    formulario.setUrlImagem3(urlFotoQualidade.toString());
                     formulario.setColor3(String.valueOf(R.color.colorPrimary));
                 }
-                    if((urlFoto4 == null) || ((urlFoto4.toString()).equals(""))) {
+                    if((urlFotoIP == null) || ((urlFotoIP.toString()).equals(""))) {
                         formulario.setUrlImagem4("");
                         formulario.setColor4(String.valueOf(R.color.design_default_color_error));
                     }else {
-                        formulario.setUrlImagem4(urlFoto4.toString());
+                        formulario.setUrlImagem4(urlFotoIP.toString());
                         formulario.setColor4(String.valueOf(R.color.colorPrimary));
                     }
-                    if((urlFoto7 == null) || ((urlFoto7.toString()).equals(""))) {
-                        formulario.setUrlImagem5("");
-                        formulario.setColor5(String.valueOf(R.color.design_default_color_error));
-                    }else {
-                        formulario.setUrlImagem5(urlFoto7.toString());
-                        formulario.setColor5(String.valueOf(R.color.colorPrimary));
-                    }
-                    if((urlFoto10 == null) || ((urlFoto10.toString()).equals(""))) {
-                        formulario.setUrlImagem6("");
-                        formulario.setColor6(String.valueOf(R.color.design_default_color_error));
-                    }else {
-                        formulario.setUrlImagem6(urlFoto10.toString());
-                        formulario.setColor6(String.valueOf(R.color.colorPrimary));
-                    }
-                    if((urlFoto13 == null) || ((urlFoto13.toString()).equals(""))) {
+                    if((urlFotoAtivos == null) || ((urlFotoAtivos.toString()).equals(""))) {
                         formulario.setUrlImagem7("");
                         formulario.setColor7(String.valueOf(R.color.design_default_color_error));
                     }else {
-                        formulario.setUrlImagem7(urlFoto13.toString());
+                        formulario.setUrlImagem7(urlFotoAtivos.toString());
                         formulario.setColor7(String.valueOf(R.color.colorPrimary));
                     }
-                    if((urlFoto14 == null) || ((urlFoto14.toString()).equals(""))) {
+                    if((urlFotoAtivos2 == null) || ((urlFotoAtivos2.toString()).equals(""))) {
                         formulario.setUrlImagem8("");
                         formulario.setColor8(String.valueOf(R.color.design_default_color_error));
                     }else {
-                        formulario.setUrlImagem8(urlFoto14.toString());
+                        formulario.setUrlImagem8(urlFotoAtivos2.toString());
                         formulario.setColor8(String.valueOf(R.color.colorPrimary));
                     }
-                    if((urlFoto15 == null) || ((urlFoto15.toString()).equals(""))) {
+                    if((urlFotoMutuo == null) || ((urlFotoMutuo.toString()).equals(""))) {
                         formulario.setUrlImagem9("");
                         formulario.setColor9(String.valueOf(R.color.design_default_color_error));
                     }else {
-                        formulario.setUrlImagem9(urlFoto15.toString());
+                        formulario.setUrlImagem9(urlFotoMutuo.toString());
                         formulario.setColor9(String.valueOf(R.color.colorPrimary));
                     }
-                    if((urlFoto16 == null) || ((urlFoto16.toString()).equals(""))) {
+                    if((urlFotoMutuo2 == null) || ((urlFotoMutuo2.toString()).equals(""))) {
                         formulario.setUrlImagem10("");
                         formulario.setColor10(String.valueOf(R.color.design_default_color_error));
                     }else {
-                        formulario.setUrlImagem10(urlFoto16.toString());
+                        formulario.setUrlImagem10(urlFotoMutuo2.toString());
                         formulario.setColor10(String.valueOf(R.color.colorPrimary));
                     }
-                    if((urlFoto17 == null) || ((urlFoto17.toString()).equals(""))) {
+                    if((urlFotoMutuo3 == null) || ((urlFotoMutuo3.toString()).equals(""))) {
                         formulario.setUrlImagem11("");
                         formulario.setColor11(String.valueOf(R.color.design_default_color_error));
                     }else {
-                        formulario.setUrlImagem11(urlFoto17.toString());
+                        formulario.setUrlImagem11(urlFotoMutuo3.toString());
                         formulario.setColor11(String.valueOf(R.color.colorPrimary));
                     }
-                    if((urlFoto30 == null) || ((urlFoto30.toString()).equals(""))) {
+                    if((urlFotoVeg == null) || ((urlFotoVeg.toString()).equals(""))) {
                         formulario.setUrlImagem12("");
                         formulario.setColor12(String.valueOf(R.color.design_default_color_error));
                     }else {
-                        formulario.setUrlImagem12(urlFoto30.toString());
+                        formulario.setUrlImagem12(urlFotoVeg.toString());
                         formulario.setColor12(String.valueOf(R.color.colorPrimary));
                     }
 
@@ -2674,6 +1680,7 @@ public class CadastroFragment extends Fragment {
                     formulario.setIp("Sim");
                 } else {
                     formulario.setIp("Não");
+                    formulario.setColor4(String.valueOf(R.color.colorPrimary));
                 }
                 setLista(formulario,ipEstrutura,"ipEstrutura");
                 formulario.setQuantidadeLampada(Objects.requireNonNull(quantidadeLampada.getText().toString()));
@@ -2686,40 +1693,6 @@ public class CadastroFragment extends Fragment {
                     formulario.setVinteEQuatro("Não");
                 }
                 formulario.setQuantidade24H(Objects.requireNonNull(quantidade24H.getText().toString()));
-
-                if (ip2.isChecked()) {
-                    formulario.setIp2("Sim");
-                } else {
-                    formulario.setIp2("Não");
-                }
-                setLista(formulario,ipEstrutura2,"ipEstrutura2");
-                formulario.setQuantidadeLampada2(Objects.requireNonNull(quantidadeLampada2.getText().toString()));
-                setLista(formulario, tipoPot2, "tipoPot2");
-                formulario.setPotReator2(Objects.requireNonNull(potReator2.getText()).toString());
-                setLista(formulario, ipAtivacao2, "ipAtivacao2");
-                if (vinteEQuatro2.isChecked()) {
-                    formulario.setVinteEQuatro2("Sim");
-                } else {
-                    formulario.setVinteEQuatro2("Não");
-                }
-                formulario.setQuantidade24H2(Objects.requireNonNull(quantidade24H2.getText().toString()));
-
-                if (ip3.isChecked()) {
-                    formulario.setIp3("Sim");
-                } else {
-                    formulario.setIp3("Não");
-                }
-                setLista(formulario,ipEstrutura3,"ipEstrutura3");
-                formulario.setQuantidadeLampada3(Objects.requireNonNull(quantidadeLampada3.getText().toString()));
-                setLista(formulario, tipoPot3, "tipoPot3");
-                formulario.setPotReator3(Objects.requireNonNull(potReator3.getText()).toString());
-                setLista(formulario, ipAtivacao3, "ipAtivacao3");
-                if (vinteEQuatro3.isChecked()) {
-                    formulario.setVinteEQuatro3("Sim");
-                } else {
-                    formulario.setVinteEQuatro3("Não");
-                }
-                formulario.setQuantidade24H3(Objects.requireNonNull(quantidade24H3.getText().toString()));
                 formulario.setObservacaoIP(Objects.requireNonNull(observacaoIP.getText().toString()));
 
 
@@ -2729,6 +1702,8 @@ public class CadastroFragment extends Fragment {
                     formulario.setAtivos("Sim");
                 } else {
                     formulario.setAtivos("Não");
+                    formulario.setColor7(String.valueOf(R.color.colorPrimary));
+                    formulario.setColor8(String.valueOf(R.color.colorPrimary));
                 }
                 if (chkTrafoTrifasico.isChecked()) {
                     formulario.setChkTrafoTrifasico("Sim");
@@ -2752,35 +1727,23 @@ public class CadastroFragment extends Fragment {
                 } else {
                     formulario.setMedicao("Não");
                 }
-                if (chFusivel.isChecked()) {
-                    formulario.setChFusivel("Sim");
-                } else {
-                    formulario.setChFusivel("Não");
-                }
-                if (chFaca.isChecked()) {
-                    formulario.setChFaca("Sim");
-                } else {
-                    formulario.setChFaca("Não");
-                }
-                if (chBanco.isChecked()) {
-                    formulario.setBanco("Sim");
-                } else {
-                    formulario.setBanco("Não");
-                }
-                if (chFusivelReligador.isChecked()) {
-                    formulario.setChFusivelReligador("Sim");
-                } else {
-                    formulario.setChFusivelReligador("Não");
-                }
-                setLista(formulario,ramalSubt,"ramalSubt");
-                formulario.setObservacaoAtivos(Objects.requireNonNull(observacaoAtivos.getText()).toString());
-                formulario.setOutros(Objects.requireNonNull(outros.getText()).toString());
+                    formulario.setChFusivel(Objects.requireNonNull(chFusivel.getText().toString()));
+                    setLista(formulario, chFaca, "chFaca");
+                    setLista(formulario, chBanco, "chBanco");
+                    formulario.setChFusivelReligador(Objects.requireNonNull(chFusivelReligador.getText().toString()));
+                    setLista(formulario, ramalSubt, "ramalSubt");
+                    formulario.setObservacaoAtivos(Objects.requireNonNull(observacaoAtivos.getText()).toString());
+                    formulario.setOutros(Objects.requireNonNull(outros.getText()).toString());
 
                 //MUTUO
                 if (mutuo.isChecked()) {
                     formulario.setMutuo("Sim");
+
                 } else {
                     formulario.setMutuo("Não");
+                    formulario.setColor9(String.valueOf(R.color.colorPrimary));
+                    formulario.setColor10(String.valueOf(R.color.colorPrimary));
+                    formulario.setColor11(String.valueOf(R.color.colorPrimary));
                 }
                 formulario.setQuantidadeOcupantes(Objects.requireNonNull(quantidadeOcupantes.getText()).toString());
                 formulario.setQuantidadeCabos(Objects.requireNonNull(quantidadeCabos.getText()).toString());
@@ -2807,6 +1770,12 @@ public class CadastroFragment extends Fragment {
                 formulario.setDescricaoIrregularidade(Objects.requireNonNull(descricaoIrregularidade.getText()).toString());
                 formulario.setObservacaoMutuo(Objects.requireNonNull(observacaoMutuo.getText()).toString());
                 //VEGETAÇÃO
+                    if (chkVegetacao.isChecked()) {
+                        formulario.setVegetacao("Sim");
+                    } else {
+                        formulario.setVegetacao("Não");
+                        formulario.setColor12(String.valueOf(R.color.colorPrimary));
+                    }
                 setLista(formulario,dimensaoVegetacao,"dimensaoVegetacao");
                 setLista(formulario,distaciaBaixa,"distanciaBaixa");
                 setLista(formulario,distanciaMedia,"distanciaMedia");
@@ -2870,7 +1839,7 @@ public class CadastroFragment extends Fragment {
                         e.printStackTrace();
                     }
                     SimpleDateFormat writeDate = new SimpleDateFormat("dd/MM/yyyy, HH:mm:ss");
-                    writeDate.setTimeZone(TimeZone.getTimeZone("GMT-04:00"));
+                    writeDate.setTimeZone(TimeZone.getTimeZone("GMT-00:00"));
                     String s = writeDate.format(date);
 
                     //endregion
@@ -2891,10 +1860,6 @@ public class CadastroFragment extends Fragment {
                 }
             }}
         });
-       if(savedInstanceState != null) {
-           imgPath = savedInstanceState.getString("imgPath");
-           imagem = BitmapFactory.decodeFile(imgPath);
-       }
         return root;
     }
 //Pega o valor do spinner e coloca um "-" caso, o usuário não tenha escolhido nenhuma opção.
@@ -2980,300 +1945,195 @@ public class CadastroFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        Log.i("CODE", String.valueOf(requestCode));
-        if(resultCode == RESULT_OK){
+        ThreadCamera threadCamera = new ThreadCamera(requestCode,resultCode,data);
+        threadCamera.start();
+
+        /*if(resultCode == RESULT_OK){
             Uri localImagemSelecionada;
             Cursor cursor;
             int columnIndex;
-
-
             try{
                 switch (requestCode){
-                    case IMAGE_CAPTURE_CODE:
-                        imgPath = photoFile.getAbsolutePath();
-                        Log.i("TAHA", imgPath);
-                        imagem = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                        foto.setImageBitmap(imagem);
+                    case IMAGE_CAPTURE_CODE_PAN:
+                        imgPathPan = photoFile.getAbsolutePath();
+                        imagemPan = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                        fotoPan.setImageBitmap(imagemPan);
                         break;
-                    case IMAGE_PICK_CODE:
-                        Log.i("TAH2", data.getData().toString());
+                    case IMAGE_PICK_CODE_PAN:
                         localImagemSelecionada = data.getData();
-                        imagem = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
-                        //foto.setImageBitmap(imagem);
+                        imagemPan = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
                         String[] filePathColumn = { MediaStore.Images.Media.DATA };
-                        // Get the cursor
                         cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
                                 filePathColumn, null, null, null);
-                        // Move to first row
                         cursor.moveToFirst();
 
                         columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                        imgPath = cursor.getString(columnIndex);
+                        imgPathPan = cursor.getString(columnIndex);
                         cursor.close();
-                        // Set the Image in ImageView after decoding the String
-                        foto.setImageBitmap(imagem);
+                        fotoPan.setImageBitmap(imagemPan);
                         break;
-                    case IMAGE_CAPTURE_CODE2:
-                        imgPath2 = photoFile.getAbsolutePath();
-                        imagem2 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                        foto2.setImageBitmap(imagem2);
+                    case IMAGE_CAPTURE_CODE_ALT:
+                        imgPathAlt = photoFile.getAbsolutePath();
+                        imagemAlt = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                        fotoAlt.setImageBitmap(imagemAlt);
                         break;
-                    case IMAGE_PICK_CODE2:
-                        Log.i("TAH2", data.getData().toString());
+                    case IMAGE_PICK_CODE_ALT:
                         localImagemSelecionada = data.getData();
-                        imagem2 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
-                        //foto2.setImageBitmap(imagem2);
-                        Log.i("ERROAntes", imagem2.toString());
+                        imagemAlt = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
                         String[] filePathColumn2 = { MediaStore.Images.Media.DATA };
-                        // Get the cursor
                         cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
                                 filePathColumn2, null, null, null);
-                        // Move to first row
                         cursor.moveToFirst();
-
                         columnIndex = cursor.getColumnIndex(filePathColumn2[0]);
-                        imgPath2 = cursor.getString(columnIndex);
+                        imgPathAlt = cursor.getString(columnIndex);
                         cursor.close();
-                        // Set the Image in ImageView after decoding the String
-                        foto2.setImageBitmap(imagem2);
+                        fotoAlt.setImageBitmap(imagemAlt);
                         break;
 
-                    case IMAGE_CAPTURE_CODE3:
-                        imgPath3 = photoFile.getAbsolutePath();
-                        Log.i("TAHC", imgPath3);
-                        imagem3 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                        foto3.setImageBitmap(imagem3);
+                    case IMAGE_CAPTURE_CODE_QUALIDADE:
+                        imgPathQualidade = photoFile.getAbsolutePath();
+                        imagemQualidade = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                        fotoQualidade.setImageBitmap(imagemQualidade);
                         break;
-                    case IMAGE_PICK_CODE3:
-                        Log.i("TAH2", data.getData().toString());
+                    case IMAGE_PICK_CODE_QUALIDADE:
                         localImagemSelecionada = data.getData();
-                        imagem3 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
-                        //foto3.setImageBitmap(imagem3);
+                        imagemQualidade = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
                         String[] filePathColumn3 = { MediaStore.Images.Media.DATA };
-                        // Get the cursor
                         cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
                                 filePathColumn3, null, null, null);
-                        // Move to first row
                         cursor.moveToFirst();
 
                         columnIndex = cursor.getColumnIndex(filePathColumn3[0]);
-                        imgPath3 = cursor.getString(columnIndex);
+                        imgPathQualidade = cursor.getString(columnIndex);
                         cursor.close();
-                        // Set the Image in ImageView after decoding the String
-                        foto3.setImageBitmap(imagem3);
+                        fotoQualidade.setImageBitmap(imagemQualidade);
                         break;
 
-                    case IMAGE_CAPTURE_CODE4:
-                        imgPath4 = photoFile.getAbsolutePath();
-                        Log.i("TAHC", imgPath4);
-                        imagem4 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                        foto4.setImageBitmap(imagem4);
+                    case IMAGE_CAPTURE_CODE_IP:
+                        imgPathIP = photoFile.getAbsolutePath();
+                        imagemIP = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                        fotoIP.setImageBitmap(imagemIP);
                         break;
-                    case IMAGE_PICK_CODE4:
-                        Log.i("TAH2", data.getData().toString());
+                    case IMAGE_PICK_CODE_IP:
                         localImagemSelecionada = data.getData();
-                        imagem4 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
-                        //foto4.setImageBitmap(imagem4);
+                        imagemIP = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
                         String[] filePathColumn4 = { MediaStore.Images.Media.DATA };
-                        // Get the cursor
                         cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
                                 filePathColumn4, null, null, null);
-                        // Move to first row
                         cursor.moveToFirst();
 
                         columnIndex = cursor.getColumnIndex(filePathColumn4[0]);
-                        imgPath4 = cursor.getString(columnIndex);
+                        imgPathIP = cursor.getString(columnIndex);
                         cursor.close();
-                        // Set the Image in ImageView after decoding the String
-                        foto4.setImageBitmap(imagem4);
+                        fotoIP.setImageBitmap(imagemIP);
                         break;
-                    case IMAGE_CAPTURE_CODE7:
-                        imgPath7 = photoFile.getAbsolutePath();
-                        Log.i("TAHC", imgPath7);
-                        imagem7 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                        foto7.setImageBitmap(imagem7);
+                    case IMAGE_CAPTURE_CODE_ATIVOS:
+                        imgPathAtivos = photoFile.getAbsolutePath();
+                        imagemAtivos = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                        fotoAtivos.setImageBitmap(imagemAtivos);
                         break;
-                    case IMAGE_PICK_CODE7:
-                        Log.i("TAH2", data.getData().toString());
+                    case IMAGE_PICK_CODE_ATIVOS:
                         localImagemSelecionada = data.getData();
-                        imagem7 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
-                        //foto7.setImageBitmap(imagem7);
-                        String[] filePathColumn7 = { MediaStore.Images.Media.DATA };
-                        // Get the cursor
-                        cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
-                                filePathColumn7, null, null, null);
-                        // Move to first row
-                        cursor.moveToFirst();
-
-                        columnIndex = cursor.getColumnIndex(filePathColumn7[0]);
-                        imgPath7 = cursor.getString(columnIndex);
-                        cursor.close();
-                        // Set the Image in ImageView after decoding the String
-                        foto7.setImageBitmap(imagem7);
-                        break;
-                    case IMAGE_CAPTURE_CODE10:
-                        imgPath10 = photoFile.getAbsolutePath();
-                        Log.i("TAHC", imgPath10);
-                        imagem10 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                        foto10.setImageBitmap(imagem10);
-                        break;
-                    case IMAGE_PICK_CODE10:
-                        Log.i("TAH2", data.getData().toString());
-                        localImagemSelecionada = data.getData();
-                        imagem10 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
-                        //foto10.setImageBitmap(imagem10);
-                        String[] filePathColumn10 = { MediaStore.Images.Media.DATA };
-                        // Get the cursor
-                        cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
-                                filePathColumn10, null, null, null);
-                        // Move to first row
-                        cursor.moveToFirst();
-
-                        columnIndex = cursor.getColumnIndex(filePathColumn10[0]);
-                        imgPath10 = cursor.getString(columnIndex);
-                        cursor.close();
-                        // Set the Image in ImageView after decoding the String
-                        foto10.setImageBitmap(imagem10);
-                        break;
-                    case IMAGE_CAPTURE_CODE13:
-                        imgPath13 = photoFile.getAbsolutePath();
-                        Log.i("TAHC", imgPath13);
-                        imagem13 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                        foto13.setImageBitmap(imagem13);
-                        break;
-                    case IMAGE_PICK_CODE13:
-                        Log.i("TAH2", data.getData().toString());
-                        localImagemSelecionada = data.getData();
-                        imagem13 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
-                        //foto12.setImageBitmap(imagem12);
+                        imagemAtivos = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
                         String[] filePathColumn13 = { MediaStore.Images.Media.DATA };
-                        // Get the cursor
                         cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
                                 filePathColumn13, null, null, null);
-                        // Move to first row
                         cursor.moveToFirst();
 
                         columnIndex = cursor.getColumnIndex(filePathColumn13[0]);
-                        imgPath13 = cursor.getString(columnIndex);
+                        imgPathAtivos = cursor.getString(columnIndex);
                         cursor.close();
-                        // Set the Image in ImageView after decoding the String
-                        foto13.setImageBitmap(imagem13);
+                        fotoAtivos.setImageBitmap(imagemAtivos);
                         break;
-                    case IMAGE_CAPTURE_CODE14:
-                        imgPath14 = photoFile.getAbsolutePath();
-                        Log.i("TAHC", imgPath14);
-                        imagem14 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                        foto14.setImageBitmap(imagem14);
+                    case IMAGE_CAPTURE_CODE_ATIVOS2:
+                        imgPathAtivos2 = photoFile.getAbsolutePath();
+                        imagemAtivos2 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                        fotoAtivos2.setImageBitmap(imagemAtivos2);
                         break;
-                    case IMAGE_PICK_CODE14:
-                        Log.i("TAH2", data.getData().toString());
+                    case IMAGE_PICK_CODE_ATIVOS2:
                         localImagemSelecionada = data.getData();
-                        imagem14 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
-                        //foto12.setImageBitmap(imagem12);
+                        imagemAtivos2 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
                         String[] filePathColumn14 = { MediaStore.Images.Media.DATA };
-                        // Get the cursor
                         cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
                                 filePathColumn14, null, null, null);
-                        // Move to first row
                         cursor.moveToFirst();
 
                         columnIndex = cursor.getColumnIndex(filePathColumn14[0]);
-                        imgPath14 = cursor.getString(columnIndex);
+                        imgPathAtivos2 = cursor.getString(columnIndex);
                         cursor.close();
-                        // Set the Image in ImageView after decoding the String
-                        foto14.setImageBitmap(imagem14);
+                        fotoAtivos2.setImageBitmap(imagemAtivos2);
                         break;
-                    case IMAGE_CAPTURE_CODE15:
-                        imgPath15 = photoFile.getAbsolutePath();
-                        Log.i("TAHC", imgPath15);
-                        imagem15 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                        foto15.setImageBitmap(imagem15);
+                    case IMAGE_CAPTURE_CODE_MUTUO:
+                        imgPathMutuo = photoFile.getAbsolutePath();
+                        imagemMutuo = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                        fotoMutuo.setImageBitmap(imagemMutuo);
                         break;
-                    case IMAGE_PICK_CODE15:
-                        Log.i("TAH2", data.getData().toString());
+                    case IMAGE_PICK_CODE_MUTUO:
                         localImagemSelecionada = data.getData();
-                        imagem15 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
-                        //foto12.setImageBitmap(imagem12);
+                        imagemMutuo = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
                         String[] filePathColumn15 = { MediaStore.Images.Media.DATA };
-                        // Get the cursor
                         cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
                                 filePathColumn15, null, null, null);
-                        // Move to first row
                         cursor.moveToFirst();
 
                         columnIndex = cursor.getColumnIndex(filePathColumn15[0]);
-                        imgPath15 = cursor.getString(columnIndex);
+                        imgPathMutuo = cursor.getString(columnIndex);
                         cursor.close();
-                        // Set the Image in ImageView after decoding the String
-                        foto15.setImageBitmap(imagem15);
+                        fotoMutuo.setImageBitmap(imagemMutuo);
                         break;
 
-                    case IMAGE_CAPTURE_CODE16:
-                        imgPath16 = photoFile.getAbsolutePath();
-                        Log.i("TAHC", imgPath16);
-                        imagem16 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                        foto16.setImageBitmap(imagem16);
+                    case IMAGE_CAPTURE_CODE_MUTUO2:
+                        imgPathMutuo2 = photoFile.getAbsolutePath();
+                        imagemMutuo2 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                        fotoMutuo2.setImageBitmap(imagemMutuo2);
                         break;
-                    case IMAGE_PICK_CODE16:
-                        Log.i("TAH2", data.getData().toString());
+                    case IMAGE_PICK_CODE_MUTUO2:
                         localImagemSelecionada = data.getData();
-                        imagem16 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
-                        //foto12.setImageBitmap(imagem12);
+                        imagemMutuo2 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
                         String[] filePathColumn16 = { MediaStore.Images.Media.DATA };
-                        // Get the cursor
                         cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
                                 filePathColumn16, null, null, null);
-                        // Move to first row
                         cursor.moveToFirst();
 
                         columnIndex = cursor.getColumnIndex(filePathColumn16[0]);
-                        imgPath16 = cursor.getString(columnIndex);
+                        imgPathMutuo2 = cursor.getString(columnIndex);
                         cursor.close();
-                        // Set the Image in ImageView after decoding the String
-                        foto16.setImageBitmap(imagem16);
+                        fotoMutuo2.setImageBitmap(imagemMutuo2);
                         break;
-                    case IMAGE_CAPTURE_CODE17:
-                        imgPath17 = photoFile.getAbsolutePath();
-                        Log.i("TAHC", imgPath17);
-                        imagem17 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                        foto17.setImageBitmap(imagem17);
+                    case IMAGE_CAPTURE_CODE_MUTUO3:
+                        imgPathMutuo3 = photoFile.getAbsolutePath();
+                        imagemMutuo3 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                        fotoMutuo3.setImageBitmap(imagemMutuo3);
                         break;
-                    case IMAGE_PICK_CODE17:
-                        Log.i("TAH2", data.getData().toString());
+                    case IMAGE_PICK_CODE_MUTUO3:
                         localImagemSelecionada = data.getData();
-                        imagem17 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
-                        //foto12.setImageBitmap(imagem12);
+                        imagemMutuo3 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
                         String[] filePathColumn17 = { MediaStore.Images.Media.DATA };
-                        // Get the cursor
                         cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
                                 filePathColumn17, null, null, null);
-                        // Move to first row
                         cursor.moveToFirst();
 
                         columnIndex = cursor.getColumnIndex(filePathColumn17[0]);
-                        imgPath17 = cursor.getString(columnIndex);
+                        imgPathMutuo3 = cursor.getString(columnIndex);
                         cursor.close();
-                        // Set the Image in ImageView after decoding the String
-                        foto17.setImageBitmap(imagem17);
+                        fotoMutuo3.setImageBitmap(imagemMutuo3);
                         break;
-                    case IMAGE_CAPTURE_CODE30:
-                        imgPath30 = photoFile.getAbsolutePath();
-                        Log.i("TAHC", imgPath30);
-                        imagem30 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                        foto30.setImageBitmap(imagem30);
+                    case IMAGE_CAPTURE_CODE_VEG:
+                        imgPathVeg = photoFile.getAbsolutePath();
+                        imagemVeg = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                        fotoVeg.setImageBitmap(imagemVeg);
                         break;
-                    case IMAGE_PICK_CODE30:
-                        Log.i("TAH2", data.getData().toString());
+                    case IMAGE_PICK_CODE_VEG:
                         localImagemSelecionada = data.getData();
-                        imagem30 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
+                        imagemVeg = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
                         String[] filePathColumn30 = { MediaStore.Images.Media.DATA };
                         cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
                                 filePathColumn30, null, null, null);
                         cursor.moveToFirst();
                         columnIndex = cursor.getColumnIndex(filePathColumn30[0]);
-                        imgPath30 = cursor.getString(columnIndex);
+                        imgPathVeg = cursor.getString(columnIndex);
                         cursor.close();
-                        foto30.setImageBitmap(imagem30);
+                        fotoVeg.setImageBitmap(imagemVeg);
                         break;
 
 
@@ -3283,7 +2143,7 @@ public class CadastroFragment extends Fragment {
                 e.printStackTrace();
             }
 
-        }
+        }*/
 
     }
     public void chamarGaleria(int imagemCodigo){
@@ -3298,12 +2158,7 @@ public class CadastroFragment extends Fragment {
         if (cameraIntent.resolveActivity(requireActivity().getApplicationContext().getPackageManager()) != null) {
             // Create the File where the photo should go
             try {
-
                 photoFile = createImageFile();
-
-                Log.i("TAG",photoFile.getAbsolutePath());
-
-                // Continue only if the File was successfully created
                 if (photoFile != null) {
                     Uri photoURI = FileProvider.getUriForFile(requireActivity().getApplicationContext(),
                             "com.example.satelprojetos.provider",
@@ -3312,14 +2167,9 @@ public class CadastroFragment extends Fragment {
                     startActivityForResult(cameraIntent, imagemCodigo);
                 }
             } catch (Exception ex) {
-                // Error occurred while creating the File
-
             }
-
-
         }else
         {
-
         }
     }
     private File createImageFile() throws IOException {
@@ -3346,12 +2196,11 @@ public class CadastroFragment extends Fragment {
          }
 
 
-    private static Bitmap rotateImageIfRequired(Context context,Bitmap img, String filePath) throws IOException {
+    private static Bitmap rotateImageIfRequired(Bitmap img, String filePath) throws IOException {
         ExifInterface ei;
             ei = new ExifInterface(filePath);
 
         int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-Log.i("TAGX", String.valueOf(orientation));
         switch (orientation) {
             case ExifInterface.ORIENTATION_ROTATE_90:
 
@@ -3368,25 +2217,41 @@ Log.i("TAGX", String.valueOf(orientation));
         }
     }
 
-    public void upload(Bitmap imagemUpload,String imgPathUpload, EditText codigoUpload, int contadorUpload, final int codigoSetor, final boolean estado, String sufixo){
+    public void upload(Bitmap imagemUpload,String imgPathUpload, EditText codigoUpload, int contadorUpload, final int codigoSetor, String sufixo){
         if(imagemUpload == null){
-            Toast.makeText(requireActivity().getApplicationContext(), "Escolha primeiro uma foto para fazer o upload", Toast.LENGTH_SHORT).show();
+            requireActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(requireActivity().getApplicationContext(), "Escolha primeiro uma foto para fazer o upload", Toast.LENGTH_SHORT).show();
+                }
+            });
+
 
         }else if(codigoUpload.getText().toString().equals("") ||codigoUpload == null) {
-            Toast.makeText(requireActivity().getApplicationContext(), "Insira o código do poste primeiro", Toast.LENGTH_SHORT).show();
+            requireActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(requireActivity().getApplicationContext(), "Insira o código do poste primeiro", Toast.LENGTH_SHORT).show();
+                }
+            });
+
         }else {
             if(isNetworkAvailable()) {
-                progressDialog = new ProgressDialog(requireContext(),R.style.LightDialogTheme);
-                progressDialog.setMessage("Fazendo upload..."); // Setting Message
-                progressDialog.setTitle("Por favor Espere"); // Setting Title
-                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
-                progressDialog.show(); // Display Progress Dialog
-                progressDialog.setCancelable(false);
-                String nomeFoto = UUID.randomUUID().toString();
+                requireActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog = new ProgressDialog(requireContext(),R.style.LightDialogTheme);
+                        progressDialog.setMessage("Carregando dados..."); // Setting Message
+                        progressDialog.setTitle("Por favor Espere"); // Setting Title
+                        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
+                        progressDialog.show(); // Display Progress Dialog
+                        progressDialog.setCancelable(false);
+                    }
+                });
                 Bitmap imagemCorrigida;
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 try {
-                    imagemCorrigida = rotateImageIfRequired(requireContext(),imagemUpload,imgPathUpload);
+                    imagemCorrigida = rotateImageIfRequired(imagemUpload,imgPathUpload);
                 } catch (IOException e) {
                     imagemCorrigida = imagemUpload;
                     e.printStackTrace();
@@ -3404,105 +2269,1775 @@ Log.i("TAGX", String.valueOf(orientation));
                 uploadTask.addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
-                        Toast.makeText(requireActivity().getApplicationContext(), "Erro ao fazer upload verifique a conexão com a internet", Toast.LENGTH_SHORT).show();
+                        requireActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(requireActivity().getApplicationContext(), "Erro ao fazer upload verifique a conexão com a internet", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Log.i("ERRO", "EERO2");
                         imageRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                             @Override
                             public void onComplete(@NonNull Task<Uri> task) {
                                 switch (codigoSetor) {
                                     case 1:
-                                        urlFoto = task.getResult();
-                                        novoUpload = estado;
+                                        urlFotoPan = task.getResult();
                                         contadorAt = contadorAt+1;
+                                        btn.setText("Enviado");
+                                        progressDialog.dismiss();
                                         break;
                                     case 2:
-                                        urlFoto2 = task.getResult();
-                                        novoUpload2 = estado;
+                                        urlFotoAlt = task.getResult();
                                         contadorAt = contadorAt+1;
+                                        btn.setText("Enviado");
+                                        progressDialog.dismiss();
                                         break;
                                     case 3:
-                                        urlFoto3 = task.getResult();
-                                        novoUpload3 = estado;
+                                        urlFotoQualidade = task.getResult();
                                         contadorAt = contadorAt+1;
+                                        btn.setText("Enviado");
+                                        progressDialog.dismiss();
                                         break;
                                     case 4:
-                                        urlFoto4 = task.getResult();
-                                        novoUpload4 = estado;
+                                        urlFotoIP = task.getResult();
                                         contadorIp = contadorIp+1;
+                                        btn.setText("Enviado");
+                                        progressDialog.dismiss();
+                                        break;
+                                    case 5:
+                                        urlFotoAtivos = task.getResult();
+                                        contadorAt = contadorAt+1;
+                                        btn.setText("Enviado");
+                                        progressDialog.dismiss();
+                                        break;
+                                    case 6:
+                                        urlFotoAtivos2 = task.getResult();
+                                        contadorAt = contadorAt+1;
+                                        btn.setText("Enviado");
+                                        progressDialog.dismiss();
                                         break;
                                     case 7:
-                                        urlFoto7 = task.getResult();
-                                        novoUpload7 = estado;
-                                        contadorIp = contadorIp+1;
+                                        urlFotoMutuo = task.getResult();
+                                        contadorAt = contadorAt+1;
+                                        btn.setText("Enviado");
+                                        progressDialog.dismiss();
+                                        break;
+                                    case 8:
+                                        urlFotoMutuo2 = task.getResult();
+                                        contadorAt = contadorAt+1;
+                                        btn.setText("Enviado");
+                                        progressDialog.dismiss();
+                                        break;
+                                    case 9:
+                                        urlFotoMutuo3 = task.getResult();
+                                        contadorAt = contadorAt+1;
+                                        btn.setText("Enviado");
+                                        progressDialog.dismiss();
                                         break;
                                     case 10:
-                                        urlFoto10 = task.getResult();
-                                        novoUpload10 = estado;
-                                        contadorIp = contadorIp+1;
-                                        break;
-                                    case 13:
-                                        urlFoto13 = task.getResult();
-                                        novoUpload13 = estado;
-                                        contadorAt = contadorAt+1;
-                                        break;
-                                    case 14:
-                                        urlFoto14 = task.getResult();
-                                        novoUpload14 = estado;
-                                        contadorAt = contadorAt+1;
-                                        break;
-                                    case 15:
-                                        urlFoto15 = task.getResult();
-                                        novoUpload15 = estado;
-                                        contadorAt = contadorAt+1;
-                                        break;
-                                    case 16:
-                                        urlFoto16 = task.getResult();
-                                        novoUpload16 = estado;
-                                        contadorAt = contadorAt+1;
-                                        break;
-                                    case 17:
-                                        urlFoto17 = task.getResult();
-                                        novoUpload17 = estado;
-                                        contadorAt = contadorAt+1;
-                                        break;
-                                    case 30:
-                                        urlFoto30 = task.getResult();
-                                        novoUpload30 = estado;
+                                        Log.i("ARVORE", "2");
+                                        urlFotoVeg = task.getResult();
                                         contadorAr = contadorAr+1;
+                                        btn.setText("Enviado");
+                                        progressDialog.dismiss();
                                         break;
                                 }
-                                progressDialog.dismiss();
                             }
                         });
                     }
                 }).addOnCanceledListener(new OnCanceledListener() {
                     @Override
                     public void onCanceled() {
-                        Log.i("ERRO", "EERO3");
                     }
                 });
             }else {
-                Toast.makeText(requireActivity().getApplicationContext(), "Erro ao fazer upload verifique a conexão com a internet", Toast.LENGTH_SHORT).show();
+                requireActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(requireActivity().getApplicationContext(), "Erro ao fazer upload verifique a conexão com a internet", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+            requireActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                }
+            });
+        }
+    }
+
+    class ThreadCamera extends Thread{
+        private int requestCode;
+        private int resultCode;
+        private Intent data;
+
+        public ThreadCamera(int requestCode, int resultCode, Intent data) {
+            this.requestCode = requestCode;
+            this.resultCode = resultCode;
+            this.data = data;
+        }
+
+        @Override
+        public void run() {
+            intentGet(this.requestCode, this.resultCode, this.data);
+        }
+    }
+
+class ThreadUpload extends Thread{
+    private Bitmap imagemUpload;
+    private String imgPathUpload;
+    private EditText codigoUpload;
+    private int contadorUpload;
+    private int codigoSetor;
+    private String sufixo;
+
+    public ThreadUpload(Bitmap imagemUpload, String imgPathUpload, EditText codigoUpload, int contadorUpload, int codigoSetor, String sufixo) {
+        this.imagemUpload = imagemUpload;
+        this.imgPathUpload = imgPathUpload;
+        this.codigoUpload = codigoUpload;
+        this.contadorUpload = contadorUpload;
+        this.codigoSetor = codigoSetor;
+        this.sufixo = sufixo;
+    }
+
+    @Override
+    public void run() {
+        upload(this.imagemUpload,this.imgPathUpload,this.codigoUpload,this.contadorUpload,
+                this.codigoSetor,this.sufixo);
+    }
+}
+
+    class ThreadNovoPoste extends Thread{
+        private View root;
+
+        public ThreadNovoPoste(View root) {
+            this.root = root;
+            }
+
+        @Override
+        public void run() {
+            novoPoste(this.root);
+        }
+    }
+
+    class ThreadMesmoPoste extends Thread{
+        private View root;
+
+        public ThreadMesmoPoste(View root) {
+            this.root = root;
+        }
+
+        @Override
+        public void run() {
+            mesmoPoste(this.root);
+        }
+    }
+
+    class ThreadOutroOcupante extends Thread{
+        private View root;
+
+        public ThreadOutroOcupante(View root) {
+            this.root = root;
+        }
+
+        @Override
+        public void run() {
+            novoOcupante(this.root);
+        }
+    }
+
+public void intentGet(int requestCode, int resultCode, @Nullable Intent data){
+    if(resultCode == RESULT_OK){
+        Uri localImagemSelecionada;
+        Cursor cursor;
+        int columnIndex;
+        try{
+            switch (requestCode){
+                case IMAGE_CAPTURE_CODE_PAN:
+                    imgPathPan = photoFile.getAbsolutePath();
+                    imagemPan = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            fotoPan.setImageBitmap(imagemPan);
+                        }
+                    });
+                    break;
+                case IMAGE_PICK_CODE_PAN:
+                    localImagemSelecionada = data.getData();
+                    imagemPan = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
+                    String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                    cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
+                            filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+
+                    columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    imgPathPan = cursor.getString(columnIndex);
+                    cursor.close();
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            fotoPan.setImageBitmap(imagemPan);
+                        }
+                    });
+                    break;
+                case IMAGE_CAPTURE_CODE_ALT:
+                    imgPathAlt = photoFile.getAbsolutePath();
+                    imagemAlt = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            fotoAlt.setImageBitmap(imagemAlt);
+                        }
+                    });
+                    break;
+                case IMAGE_PICK_CODE_ALT:
+                    localImagemSelecionada = data.getData();
+                    imagemAlt = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
+                    String[] filePathColumn2 = { MediaStore.Images.Media.DATA };
+                    cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
+                            filePathColumn2, null, null, null);
+                    cursor.moveToFirst();
+                    columnIndex = cursor.getColumnIndex(filePathColumn2[0]);
+                    imgPathAlt = cursor.getString(columnIndex);
+                    cursor.close();
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            fotoPan.setImageBitmap(imagemPan);
+                        }
+                    });
+                    break;
+
+                case IMAGE_CAPTURE_CODE_QUALIDADE:
+                    imgPathQualidade = photoFile.getAbsolutePath();
+                    imagemQualidade = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                        fotoQualidade.setImageBitmap(imagemQualidade);
+                        }
+                    });
+                    break;
+                case IMAGE_PICK_CODE_QUALIDADE:
+                    localImagemSelecionada = data.getData();
+                    imagemQualidade = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
+                    String[] filePathColumn3 = { MediaStore.Images.Media.DATA };
+                    cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
+                            filePathColumn3, null, null, null);
+                    cursor.moveToFirst();
+
+                    columnIndex = cursor.getColumnIndex(filePathColumn3[0]);
+                    imgPathQualidade = cursor.getString(columnIndex);
+                    cursor.close();
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            fotoQualidade.setImageBitmap(imagemQualidade);
+                        }
+                    });
+                    break;
+
+                case IMAGE_CAPTURE_CODE_IP:
+                    imgPathIP = photoFile.getAbsolutePath();
+                    imagemIP = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            fotoIP.setImageBitmap(imagemIP);
+                        }
+                    });
+                    break;
+                case IMAGE_PICK_CODE_IP:
+                    localImagemSelecionada = data.getData();
+                    imagemIP = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
+                    String[] filePathColumn4 = { MediaStore.Images.Media.DATA };
+                    cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
+                            filePathColumn4, null, null, null);
+                    cursor.moveToFirst();
+
+                    columnIndex = cursor.getColumnIndex(filePathColumn4[0]);
+                    imgPathIP = cursor.getString(columnIndex);
+                    cursor.close();
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            fotoIP.setImageBitmap(imagemIP);
+                        }
+                    });
+                    break;
+                case IMAGE_CAPTURE_CODE_ATIVOS:
+                    imgPathAtivos = photoFile.getAbsolutePath();
+                    imagemAtivos = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            fotoAtivos.setImageBitmap(imagemAtivos);
+                        }
+                    });
+                    break;
+                case IMAGE_PICK_CODE_ATIVOS:
+                    localImagemSelecionada = data.getData();
+                    imagemAtivos = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
+                    String[] filePathColumn13 = { MediaStore.Images.Media.DATA };
+                    cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
+                            filePathColumn13, null, null, null);
+                    cursor.moveToFirst();
+
+                    columnIndex = cursor.getColumnIndex(filePathColumn13[0]);
+                    imgPathAtivos = cursor.getString(columnIndex);
+                    cursor.close();
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            fotoAtivos.setImageBitmap(imagemAtivos);
+                        }
+                    });
+                    break;
+                case IMAGE_CAPTURE_CODE_ATIVOS2:
+                    imgPathAtivos2 = photoFile.getAbsolutePath();
+                    imagemAtivos2 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            fotoAtivos2.setImageBitmap(imagemAtivos2);
+                        }
+                    });
+                    break;
+                case IMAGE_PICK_CODE_ATIVOS2:
+                    localImagemSelecionada = data.getData();
+                    imagemAtivos2 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
+                    String[] filePathColumn14 = { MediaStore.Images.Media.DATA };
+                    cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
+                            filePathColumn14, null, null, null);
+                    cursor.moveToFirst();
+
+                    columnIndex = cursor.getColumnIndex(filePathColumn14[0]);
+                    imgPathAtivos2 = cursor.getString(columnIndex);
+                    cursor.close();
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            fotoAtivos2.setImageBitmap(imagemAtivos2);
+                        }
+                    });
+                    break;
+                case IMAGE_CAPTURE_CODE_MUTUO:
+                    imgPathMutuo = photoFile.getAbsolutePath();
+                    imagemMutuo = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            fotoMutuo.setImageBitmap(imagemMutuo);
+                        }
+                    });
+                    break;
+                case IMAGE_PICK_CODE_MUTUO:
+                    localImagemSelecionada = data.getData();
+                    imagemMutuo = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
+                    String[] filePathColumn15 = { MediaStore.Images.Media.DATA };
+                    cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
+                            filePathColumn15, null, null, null);
+                    cursor.moveToFirst();
+
+                    columnIndex = cursor.getColumnIndex(filePathColumn15[0]);
+                    imgPathMutuo = cursor.getString(columnIndex);
+                    cursor.close();
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            fotoMutuo.setImageBitmap(imagemMutuo);
+                        }
+                    });
+                    break;
+
+                case IMAGE_CAPTURE_CODE_MUTUO2:
+                    imgPathMutuo2 = photoFile.getAbsolutePath();
+                    imagemMutuo2 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            fotoMutuo2.setImageBitmap(imagemMutuo2);
+                        }
+                    });
+                    break;
+                case IMAGE_PICK_CODE_MUTUO2:
+                    localImagemSelecionada = data.getData();
+                    imagemMutuo2 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
+                    String[] filePathColumn16 = { MediaStore.Images.Media.DATA };
+                    cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
+                            filePathColumn16, null, null, null);
+                    cursor.moveToFirst();
+
+                    columnIndex = cursor.getColumnIndex(filePathColumn16[0]);
+                    imgPathMutuo2 = cursor.getString(columnIndex);
+                    cursor.close();
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            fotoMutuo2.setImageBitmap(imagemMutuo2);
+                        }
+                    });
+                    break;
+                case IMAGE_CAPTURE_CODE_MUTUO3:
+                    imgPathMutuo3 = photoFile.getAbsolutePath();
+                    imagemMutuo3 = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            fotoMutuo3.setImageBitmap(imagemMutuo3);
+                        }
+                    });
+                    break;
+                case IMAGE_PICK_CODE_MUTUO3:
+                    localImagemSelecionada = data.getData();
+                    imagemMutuo3 = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
+                    String[] filePathColumn17 = { MediaStore.Images.Media.DATA };
+                    cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
+                            filePathColumn17, null, null, null);
+                    cursor.moveToFirst();
+
+                    columnIndex = cursor.getColumnIndex(filePathColumn17[0]);
+                    imgPathMutuo3 = cursor.getString(columnIndex);
+                    cursor.close();
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            fotoMutuo3.setImageBitmap(imagemMutuo3);
+                        }
+                    });
+                    break;
+                case IMAGE_CAPTURE_CODE_VEG:
+                    imgPathVeg = photoFile.getAbsolutePath();
+                    imagemVeg = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            fotoVeg.setImageBitmap(imagemVeg);
+                        }
+                    });
+                    break;
+                case IMAGE_PICK_CODE_VEG:
+                    localImagemSelecionada = data.getData();
+                    imagemVeg = MediaStore.Images.Media.getBitmap(requireActivity().getApplicationContext().getContentResolver(),localImagemSelecionada);
+                    String[] filePathColumn30 = { MediaStore.Images.Media.DATA };
+                    cursor = requireActivity().getApplicationContext().getContentResolver().query(localImagemSelecionada,
+                            filePathColumn30, null, null, null);
+                    cursor.moveToFirst();
+                    columnIndex = cursor.getColumnIndex(filePathColumn30[0]);
+                    imgPathVeg = cursor.getString(columnIndex);
+                    cursor.close();
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            fotoVeg.setImageBitmap(imagemVeg);
+                        }
+                    });
+                    break;
+
+
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+}
+
+private void novoPoste(final View root){
+            requireActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+            root.findViewById(R.id.btnCadastroSalvar).setVisibility(View.GONE);
+            codigo.setText("");
+            contadorIp = 1;
+            contadorAr =1;
+            contadorAt = 1;
+            Button btnNovoPoste = root.findViewById(R.id.btnNovoPoste);
+            btnNovoPoste.setText("Novo Poste");
+            fotoPan.setImageResource(R.drawable.ic_menu_camera);
+            fotoAlt.setImageResource(R.drawable.ic_menu_camera);
+            fotoQualidade.setImageResource(R.drawable.ic_menu_camera);
+            fotoIP.setImageResource(R.drawable.ic_menu_camera);
+            fotoAtivos.setImageResource(R.drawable.ic_menu_camera);
+            fotoAtivos2.setImageResource(R.drawable.ic_menu_camera);
+            fotoMutuo.setImageResource(R.drawable.ic_menu_camera);
+            fotoMutuo2.setImageResource(R.drawable.ic_menu_camera);
+            fotoMutuo3.setImageResource(R.drawable.ic_menu_camera);
+            fotoVeg.setImageResource(R.drawable.ic_menu_camera);
+            urlFotoPan = null;
+            urlFotoAlt = null;
+            urlFotoQualidade = null;
+            urlFotoIP = null;
+            urlFotoAtivos = null;
+            urlFotoAtivos2 = null;
+            urlFotoMutuo = null;
+            urlFotoMutuo2 = null;
+            urlFotoMutuo3 = null;
+            urlFotoVeg = null;
+
+    if (formularioAtual.getMunicipio().equals("-")) {
+        municipio.setSelection(0);
+    } else {
+        for (int i = 0; i < municipio.getAdapter().getCount(); i++) {
+            municipio.setSelection(i);
+            if (municipio.getSelectedItem().toString().equals(formularioAtual.getMunicipio())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getAlturaCarga().equals("-")) {
+        alturaCarga.setSelection(0);
+    } else {
+        for (int i = 0; i < alturaCarga.getAdapter().getCount(); i++) {
+            alturaCarga.setSelection(i);
+            if (alturaCarga.getSelectedItem().toString().equals(formularioAtual.getAlturaCarga())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getTipoPoste().equals("-")) {
+        tipoPoste.setSelection(0);
+    } else {
+        for (int i = 0; i < tipoPoste.getAdapter().getCount(); i++) {
+            tipoPoste.setSelection(i);
+            if (tipoPoste.getSelectedItem().toString().equals(formularioAtual.getTipoPoste())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getNormal().equals("Sim")) {
+        normal.setChecked(true);
+    } else {
+        normal.setChecked(false);
+        ferragemExposta.setEnabled(true);
+        fletido.setEnabled(true);
+        abalroado.setEnabled(true);
+        trincado.setEnabled(true);
+        danificado.setEnabled(true);
+    }
+    if (formularioAtual.getFerragemExposta().equals("Sim")) {
+        ferragemExposta.setChecked(true);
+    }
+    if (formularioAtual.getFletido().equals("Sim")) {
+        fletido.setChecked(true);
+    }
+    if (formularioAtual.getDanificado().equals("Sim")) {
+        danificado.setChecked(true);
+    }
+    if (formularioAtual.getAbalroado().equals("Sim")) {
+        abalroado.setChecked(true);
+    }
+    if (formularioAtual.getTrincado().equals("Sim")) {
+        trincado.setChecked(true);
+    }
+    observacaoFisicas.setText(formularioAtual.getObservacaoFisicas());
+
+
+    //ILUMINAÇÃO
+
+    if (formularioAtual.getIp().equals("Sim")) {
+        ip.setChecked(true);
+        ipEstrutura.setVisibility(View.VISIBLE);
+        tipoPot.setVisibility(View.VISIBLE);
+        potReator.setVisibility(View.VISIBLE);
+        quantidadeLampada.setVisibility(View.VISIBLE);
+        ipAtivacao.setVisibility(View.VISIBLE);
+        vinteEQuatro.setVisibility(View.VISIBLE);
+        quantidade24H.setVisibility(View.VISIBLE);
+        fotoIP.setVisibility(View.VISIBLE);
+        btnFoto4.setVisibility(View.VISIBLE);
+        btnUpload4.setVisibility(View.VISIBLE);
+        textLampada.setVisibility(View.VISIBLE);
+        relativeIPTipoEstrutura.setVisibility(View.VISIBLE);
+        relativeIPTipoLampada.setVisibility(View.VISIBLE);
+        relativeIPTipoAtivacao.setVisibility(View.VISIBLE);
+        if (formularioAtual.getIpEstrutura().equals("-")) {
+            ipEstrutura.setSelection(0);
+        } else {
+            for (int i = 0; i < ipEstrutura.getAdapter().getCount(); i++) {
+                ipEstrutura.setSelection(i);
+                if (ipEstrutura.getSelectedItem().toString().equals(formularioAtual.getIpEstrutura())) {
+                    break;
+                }
+            }
+        }
+        quantidadeLampada.setText(formularioAtual.getQuantidadeLampada());
+        if (formularioAtual.getTipoPot().equals("-")) {
+            tipoPot.setSelection(0);
+        } else {
+            for (int i = 0; i < tipoPot.getAdapter().getCount(); i++) {
+                tipoPot.setSelection(i);
+                if (tipoPot.getSelectedItem().toString().equals(formularioAtual.getTipoPot())) {
+                    break;
+                }
+            }
+        }
+        potReator.setText(formularioAtual.getPotReator());
+        if (formularioAtual.getIpAtivacao().equals("-")) {
+            ipAtivacao.setSelection(0);
+        } else {
+            for (int i = 0; i < ipAtivacao.getAdapter().getCount(); i++) {
+                ipAtivacao.setSelection(i);
+                if (ipAtivacao.getSelectedItem().toString().equals(formularioAtual.getIpAtivacao())) {
+                    break;
+                }
+            }
+        }
+        if (formularioAtual.getVinteEQuatro().equals("Sim")) {
+            vinteEQuatro.setChecked(true);
+            quantidade24H.setEnabled(true);
+        }
+        quantidade24H.setText(formularioAtual.getQuantidade24H());
+        ipEstrutura.setEnabled(true);
+        quantidadeLampada.setEnabled(true);
+        tipoPot.setEnabled(true);
+        potReator.setEnabled(true);
+        ipAtivacao.setEnabled(true);
+        vinteEQuatro.setEnabled(true);
+    }
+    observacaoIP.setText(formularioAtual.getObservacaoIP());
+
+
+    //TRAFO
+
+    if (formularioAtual.getAtivos().equals("Sim")) {
+        ativos.setChecked(true);
+        chkTrafoMono.setEnabled(true);
+        chkTrafoTrifasico.setEnabled(true);
+        trafoMono.setEnabled(true);
+        trafoTrifasico.setEnabled(true);
+        chFusivel.setEnabled(true);
+        chFaca.setEnabled(true);
+        religador.setEnabled(true);
+        medicao.setEnabled(true);
+        chBanco.setEnabled(true);
+        chFusivelReligador.setEnabled(true);
+        ramalSubt.setEnabled(true);
+        textOutros.setVisibility(View.VISIBLE);
+        outros.setEnabled(true);
+
+        ativos.setVisibility(View.VISIBLE);
+        chkTrafoMono.setVisibility(View.VISIBLE);
+        chkTrafoTrifasico.setVisibility(View.VISIBLE);
+        trafoMono.setVisibility(View.VISIBLE);
+        trafoTrifasico.setVisibility(View.VISIBLE);
+        chFusivel.setVisibility(View.VISIBLE);
+        chFaca.setVisibility(View.VISIBLE);
+        religador.setVisibility(View.VISIBLE);
+        medicao.setVisibility(View.VISIBLE);
+        chBanco.setVisibility(View.VISIBLE);
+        chFusivelReligador.setVisibility(View.VISIBLE);
+        ramalSubt.setVisibility(View.VISIBLE);
+        outros.setVisibility(View.VISIBLE);
+        fotoAtivos.setVisibility(View.VISIBLE);
+        btnFoto13.setVisibility(View.VISIBLE);
+        btnUpload13.setVisibility(View.VISIBLE);
+        fotoAtivos2.setVisibility(View.VISIBLE);
+        btnFoto14.setVisibility(View.VISIBLE);
+        btnUpload14.setVisibility(View.VISIBLE);
+        relativeBanco.setVisibility(View.VISIBLE);
+        relativeRamal.setVisibility(View.VISIBLE);
+        relativeChFaca.setVisibility(View.VISIBLE);
+        textFusivel.setVisibility(View.VISIBLE);
+        textFusivelReligador.setVisibility(View.VISIBLE);
+    }
+    if (formularioAtual.getChkTrafoTrifasico().equals("Sim")) {
+        chkTrafoTrifasico.setChecked(true);
+    }
+    if (formularioAtual.getChkTrafoMono().equals("Sim")) {
+        chkTrafoMono.setChecked(true);
+    }
+    if (formularioAtual.getTrafoTrifasico().equals("-")) {
+        trafoTrifasico.setSelection(0);
+    } else {
+        for (int i = 0; i < trafoTrifasico.getAdapter().getCount(); i++) {
+            trafoTrifasico.setSelection(i);
+            if (trafoTrifasico.getSelectedItem().toString().equals(formularioAtual.getTrafoTrifasico())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getTrafoMono().equals("-")) {
+        trafoMono.setSelection(0);
+    } else {
+        for (int i = 0; i < trafoMono.getAdapter().getCount(); i++) {
+            trafoMono.setSelection(i);
+            if (trafoMono.getSelectedItem().toString().equals(formularioAtual.getTrafoMono())) {
+                break;
             }
         }
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("imgPath", imgPath);
+    if (formularioAtual.getReligador().equals("Sim")) {
+        religador.setChecked(true);
+    }
+    if (formularioAtual.getMedicao().equals("Sim")) {
+        medicao.setChecked(true);
+    }
+    chFusivel.setText(formularioAtual.getChFusivel());
+    chFusivelReligador.setText(formularioAtual.getChFusivelReligador());
+    if (formularioAtual.getBanco().equals("-")) {
+        chBanco.setSelection(0);
+    } else {
+        for (int i = 0; i < chBanco.getAdapter().getCount(); i++) {
+            chBanco.setSelection(i);
+            if (chBanco.getSelectedItem().toString().equals(formularioAtual.getBanco())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getChFaca().equals("-")) {
+        chFaca.setSelection(0);
+    } else {
+        for (int i = 0; i < chFaca.getAdapter().getCount(); i++) {
+            chFaca.setSelection(i);
+            if (chFaca.getSelectedItem().toString().equals(formularioAtual.getChFaca())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getRamalSubt().equals("-")) {
+        ramalSubt.setSelection(0);
+    } else {
+        for (int i = 0; i < ramalSubt.getAdapter().getCount(); i++) {
+            ramalSubt.setSelection(i);
+            if (ramalSubt.getSelectedItem().toString().equals(formularioAtual.getRamalSubt())) {
+                break;
+            }
+        }
+    }
+    observacaoAtivos.setText(formularioAtual.getObservacaoAtivos());
+    outros.setText(formularioAtual.getOutros());
+
+    //MUTUO
+    if (formularioAtual.getMutuo().equals("Sim")) {
+        mutuo.setChecked(true);
+        fotoMutuo.setVisibility(View.VISIBLE);
+        btnFoto15.setVisibility(View.VISIBLE);
+        btnUpload15.setVisibility(View.VISIBLE);
+
+        fotoMutuo2.setVisibility(View.VISIBLE);
+        btnFoto16.setVisibility(View.VISIBLE);
+        btnUpload16.setVisibility(View.VISIBLE);
+
+        fotoMutuo3.setVisibility(View.VISIBLE);
+        btnFoto17.setVisibility(View.VISIBLE);
+        btnUpload17.setVisibility(View.VISIBLE);
+        quantidadeOcupantes.setVisibility(View.VISIBLE);
+        quantidadeCabos.setVisibility(View.VISIBLE);
+        tipoCabo.setVisibility(View.VISIBLE);
+        quantidadeCabosdois.setVisibility(View.VISIBLE);
+        tipoCabodois.setVisibility(View.VISIBLE);
+        nome.setVisibility(View.VISIBLE);
+        finalidade.setVisibility(View.VISIBLE);
+        ceans.setVisibility(View.VISIBLE);
+        tar.setVisibility(View.VISIBLE);
+        reservaTec.setVisibility(View.VISIBLE);
+        backbone.setVisibility(View.VISIBLE);
+        placaIdentificadora.setVisibility(View.VISIBLE);
+        descidaCabos.setVisibility(View.VISIBLE);
+        descricaoIrregularidade.setVisibility(View.VISIBLE);
+        textQuantidadeCabo.setVisibility(View.VISIBLE);
+        textQuantidadeCabodois.setVisibility(View.VISIBLE);
+        textNome.setVisibility(View.VISIBLE);
+        textIrregularidade.setVisibility(View.VISIBLE);
+        relativeFinalidade.setVisibility(View.VISIBLE);
+        relativeCeans.setVisibility(View.VISIBLE);
+        relativeTar.setVisibility(View.VISIBLE);
+        relativeReservaTec.setVisibility(View.VISIBLE);
+        relativeBackbone.setVisibility(View.VISIBLE);
+        relativeTipoCabo.setVisibility(View.VISIBLE);
+        relativeTipoCabodois.setVisibility(View.VISIBLE);
+
+
+    }
+    //1
+    quantidadeOcupantes.setText(formularioAtual.getQuantidadeOcupantes());
+    quantidadeCabos.setText(formularioAtual.getQuantidadeCabos());
+    if (formularioAtual.getTipoCabo().equals("-")) {
+        tipoCabo.setSelection(0);
+    } else {
+        for (int i = 0; i < tipoCabo.getAdapter().getCount(); i++) {
+            tipoCabo.setSelection(i);
+            if (tipoCabo.getSelectedItem().toString().equals(formularioAtual.getTipoCabo())) {
+                break;
+            }
+        }
+    }
+    quantidadeCabosdois.setText(formularioAtual.getQuantidadeCabosdois());
+    if (formularioAtual.getTipoCabodois().equals("-")) {
+        tipoCabodois.setSelection(0);
+    } else {
+        for (int i = 0; i < tipoCabodois.getAdapter().getCount(); i++) {
+            tipoCabodois.setSelection(i);
+            if (tipoCabodois.getSelectedItem().toString().equals(formularioAtual.getTipoCabodois())) {
+                break;
+            }
+        }
+    }
+    nome.setText(formularioAtual.getNome());
+    if (formularioAtual.getFinalidade().equals("-")) {
+        finalidade.setSelection(0);
+    } else {
+        for (int i = 0; i < finalidade.getAdapter().getCount(); i++) {
+            finalidade.setSelection(i);
+            if (finalidade.getSelectedItem().toString().equals(formularioAtual.getFinalidade())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getCeans().equals("-")) {
+        ceans.setSelection(0);
+    } else {
+        for (int i = 0; i < ceans.getAdapter().getCount(); i++) {
+            ceans.setSelection(i);
+            if (ceans.getSelectedItem().toString().equals(formularioAtual.getCeans())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getTar().equals("-")) {
+        tar.setSelection(0);
+    } else {
+        for (int i = 0; i < tar.getAdapter().getCount(); i++) {
+            tar.setSelection(i);
+            if (tar.getSelectedItem().toString().equals(formularioAtual.getTar())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getReservaTec().equals("-")) {
+        reservaTec.setSelection(0);
+    } else {
+        for (int i = 0; i < reservaTec.getAdapter().getCount(); i++) {
+            reservaTec.setSelection(i);
+            if (reservaTec.getSelectedItem().toString().equals(formularioAtual.getReservaTec())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getBackbone().equals("-")) {
+        backbone.setSelection(0);
+    } else {
+        for (int i = 0; i < backbone.getAdapter().getCount(); i++) {
+            backbone.setSelection(i);
+            if (backbone.getSelectedItem().toString().equals(formularioAtual.getBackbone())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getPlacaIdent().equals("Sim")) {
+        placaIdentificadora.setChecked(true);
+    }
+    if (formularioAtual.getDescidaCabos().equals("Sim")) {
+        descidaCabos.setChecked(true);
+    }
+    descricaoIrregularidade.setText(formularioAtual.getDescricaoIrregularidade());
+    observacaoMutuo.setText((formularioAtual.getObservacaoMutuo()));
+
+    if(formularioAtual.getVegetacao().equals("Sim")) {
+        chkVegetacao.setChecked(true);
+        dimensaoVegetacao.setVisibility(View.VISIBLE);
+        distaciaBaixa.setVisibility(View.VISIBLE);
+        distanciaMedia.setVisibility(View.VISIBLE);
+        estadoArvore.setVisibility(View.VISIBLE);
+        quedaArvore.setVisibility(View.VISIBLE);
+        localArvore.setVisibility(View.VISIBLE);
+        fotoVeg.setVisibility(View.VISIBLE);
+        btnFoto30.setVisibility(View.VISIBLE);
+        btnUpload30.setVisibility(View.VISIBLE);
+        relativeDimensaoVegetacao.setVisibility(View.VISIBLE);
+        relativeBaixa.setVisibility(View.VISIBLE);
+        relativeMedia.setVisibility(View.VISIBLE);
+        relativeEstadoArvore.setVisibility(View.VISIBLE);
+        relativeLocalArvore.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
+    if (formularioAtual.getDimensaoVegetacao().equals("-")) {
+        dimensaoVegetacao.setSelection(0);
+    } else {
+        for (int i = 0; i < dimensaoVegetacao.getAdapter().getCount(); i++) {
+            dimensaoVegetacao.setSelection(i);
+            if (dimensaoVegetacao.getSelectedItem().toString().equals(formularioAtual.getDimensaoVegetacao())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getDistaciaBaixa().equals("-")) {
+        distaciaBaixa.setSelection(0);
+    } else {
+        for (int i = 0; i < distaciaBaixa.getAdapter().getCount(); i++) {
+            distaciaBaixa.setSelection(i);
+            if (distaciaBaixa.getSelectedItem().toString().equals(formularioAtual.getDistaciaBaixa())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getDistanciaMedia().equals("-")) {
+        distanciaMedia.setSelection(0);
+    } else {
+        for (int i = 0; i < distanciaMedia.getAdapter().getCount(); i++) {
+            distanciaMedia.setSelection(i);
+            if (dimensaoVegetacao.getSelectedItem().toString().equals(formularioAtual.getDistanciaMedia())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getEstadoArvore().equals("-")) {
+        estadoArvore.setSelection(0);
+    } else {
+        for (int i = 0; i < estadoArvore.getAdapter().getCount(); i++) {
+            estadoArvore.setSelection(i);
+            if (estadoArvore.getSelectedItem().toString().equals(formularioAtual.getEstadoArvore())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getQuedaArvore().equals("Sim")) {
+        quedaArvore.setChecked(true);
+    }
+    if (formularioAtual.getLocalArvore().equals("-")) {
+        localArvore.setSelection(0);
+    } else {
+        for (int i = 0; i < localArvore.getAdapter().getCount(); i++) {
+            localArvore.setSelection(i);
+            if (localArvore.getSelectedItem().toString().equals(formularioAtual.getLocalArvore())) {
+                break;
+            }
+        }
+    }
+    observacaoVegetacao.setText(formularioAtual.getObservacaoVegetacao());
 
+                }
+        });
+}
+
+private void mesmoPoste(final View root){
+    requireActivity().runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+    root.findViewById(R.id.btnNovoPoste).setVisibility(View.GONE);
+    controle = true;
+    contadorAr = formularioAtual.getContadorAr();
+    contadorAt = formularioAtual.getContadorAt();
+    contadorIp = formularioAtual.getContadorIp();
+    codigo.setText(formularioAtual.getCodigo());
+
+    imgPathPan = formularioAtual.getCaminhoImagem();
+    if (imgPathPan == null || imgPathPan.equals("")) {
+
+    } else {
+        fotoPan.setImageBitmap(BitmapFactory.decodeFile(imgPathPan));
+        imagemPan = BitmapFactory.decodeFile(imgPathPan);
+    }
+    imgPathAlt = formularioAtual.getCaminhoImagem2();
+    if (imgPathAlt == null || imgPathAlt.equals("")) {
+
+    } else {
+        imgPathAlt = formularioAtual.getCaminhoImagem2();
+        fotoAlt.setImageBitmap(BitmapFactory.decodeFile(imgPathAlt));
+        imagemAlt = BitmapFactory.decodeFile(imgPathAlt);
     }
 
+    imgPathQualidade = formularioAtual.getCaminhoImagem3();
+    if (imgPathQualidade == null || imgPathQualidade.equals("")) {
+
+    } else {
+        imgPathQualidade = formularioAtual.getCaminhoImagem3();
+        fotoQualidade.setImageBitmap(BitmapFactory.decodeFile(imgPathQualidade));
+        imagemQualidade = BitmapFactory.decodeFile(imgPathQualidade);
+    }
+
+    imgPathIP = formularioAtual.getCaminhoImagem4();
+    if (imgPathIP == null || imgPathIP.equals("")) {
+
+    } else {
+        imgPathIP = formularioAtual.getCaminhoImagem4();
+        fotoIP.setImageBitmap(BitmapFactory.decodeFile(imgPathIP));
+        imagemIP = BitmapFactory.decodeFile(imgPathIP);
+    }
+
+    imgPathAtivos = formularioAtual.getCaminhoImagem7();
+    if (imgPathAtivos == null || imgPathAtivos.equals("")) {
+
+    } else {
+        imgPathAtivos = formularioAtual.getCaminhoImagem7();
+        fotoAtivos.setImageBitmap(BitmapFactory.decodeFile(imgPathAtivos));
+        imagemAtivos = BitmapFactory.decodeFile(imgPathAtivos);
+    }
+
+    imgPathAtivos2 = formularioAtual.getCaminhoImagem8();
+    if (imgPathAtivos2 == null || imgPathAtivos2.equals("")) {
+        imgPathAtivos2 = formularioAtual.getCaminhoImagem8();
+    } else {
+        imgPathAtivos2 = formularioAtual.getCaminhoImagem8();
+        fotoAtivos2.setImageBitmap(BitmapFactory.decodeFile(imgPathAtivos2));
+        imagemAtivos2 = BitmapFactory.decodeFile(imgPathAtivos2);
+    }
+
+    imgPathMutuo = formularioAtual.getCaminhoImagem9();
+    if (imgPathMutuo == null || imgPathMutuo.equals("")) {
+
+    } else {
+        imgPathMutuo = formularioAtual.getCaminhoImagem9();
+        fotoMutuo.setImageBitmap(BitmapFactory.decodeFile(imgPathMutuo));
+        imagemMutuo = BitmapFactory.decodeFile(imgPathMutuo);
+    }
+
+    imgPathMutuo2 = formularioAtual.getCaminhoImagem10();
+    if (imgPathMutuo2 == null || imgPathMutuo2.equals("")) {
+
+    } else {
+        imgPathMutuo2 = formularioAtual.getCaminhoImagem10();
+        fotoMutuo2.setImageBitmap(BitmapFactory.decodeFile(imgPathMutuo2));
+        imagemMutuo2 = BitmapFactory.decodeFile(imgPathMutuo2);
+    }
+
+    imgPathMutuo3 = formularioAtual.getCaminhoImagem11();
+    if (imgPathMutuo3 == null || imgPathMutuo3.equals("")) {
+
+    } else {
+        imgPathMutuo3 = formularioAtual.getCaminhoImagem11();
+        fotoMutuo3.setImageBitmap(BitmapFactory.decodeFile(imgPathMutuo3));
+        imagemMutuo3 = BitmapFactory.decodeFile(imgPathMutuo3);
+    }
+
+    imgPathVeg = formularioAtual.getCaminhoImagem12();
+    if (imgPathVeg == null || imgPathVeg.equals("")) {
+
+    } else {
+        imgPathVeg = formularioAtual.getCaminhoImagem12();
+        fotoVeg.setImageBitmap(BitmapFactory.decodeFile(imgPathVeg));
+        imagemVeg = BitmapFactory.decodeFile(imgPathVeg);
+    }
+    endereco.setText(formularioAtual.getEndereco());
+    urlFotoPan = Uri.parse(formularioAtual.getUrlImagem());
+    urlFotoAlt = Uri.parse(formularioAtual.getUrlImagem2());
+    urlFotoQualidade = Uri.parse(formularioAtual.getUrlImagem3());
+    urlFotoIP = Uri.parse(formularioAtual.getUrlImagem4());
+    urlFotoAtivos = Uri.parse(formularioAtual.getUrlImagem7());
+    urlFotoAtivos2 = Uri.parse(formularioAtual.getUrlImagem8());
+    urlFotoMutuo = Uri.parse(formularioAtual.getUrlImagem9());
+    urlFotoMutuo2 = Uri.parse(formularioAtual.getUrlImagem10());
+    urlFotoMutuo3 = Uri.parse(formularioAtual.getUrlImagem11());
+    urlFotoVeg = Uri.parse(formularioAtual.getUrlImagem12());
+    latitude.setText(formularioAtual.getLatitude());
+    longitude.setText(formularioAtual.getLongitude());
+
+    if (formularioAtual.getMunicipio().equals("-")) {
+        municipio.setSelection(0);
+    } else {
+        for (int i = 0; i < municipio.getAdapter().getCount(); i++) {
+            municipio.setSelection(i);
+            if (municipio.getSelectedItem().toString().equals(formularioAtual.getMunicipio())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getAlturaCarga().equals("-")) {
+        alturaCarga.setSelection(0);
+    } else {
+        for (int i = 0; i < alturaCarga.getAdapter().getCount(); i++) {
+            alturaCarga.setSelection(i);
+            if (alturaCarga.getSelectedItem().toString().equals(formularioAtual.getAlturaCarga())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getTipoPoste().equals("-")) {
+        tipoPoste.setSelection(0);
+    } else {
+        for (int i = 0; i < tipoPoste.getAdapter().getCount(); i++) {
+            tipoPoste.setSelection(i);
+            if (tipoPoste.getSelectedItem().toString().equals(formularioAtual.getTipoPoste())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getNormal().equals("Sim")) {
+        normal.setChecked(true);
+    } else {
+        normal.setChecked(false);
+        ferragemExposta.setEnabled(true);
+        fletido.setEnabled(true);
+        abalroado.setEnabled(true);
+        trincado.setEnabled(true);
+        danificado.setEnabled(true);
+    }
+    if (formularioAtual.getFerragemExposta().equals("Sim")) {
+        ferragemExposta.setChecked(true);
+    }
+    if (formularioAtual.getFletido().equals("Sim")) {
+        fletido.setChecked(true);
+    }
+    if (formularioAtual.getDanificado().equals("Sim")) {
+        danificado.setChecked(true);
+    }
+    if (formularioAtual.getAbalroado().equals("Sim")) {
+        abalroado.setChecked(true);
+    }
+    if (formularioAtual.getTrincado().equals("Sim")) {
+        trincado.setChecked(true);
+    }
+    observacaoFisicas.setText(formularioAtual.getObservacaoFisicas());
+
+
+    //ILUMINAÇÃO
+
+    if (formularioAtual.getIp().equals("Sim")) {
+        ip.setChecked(true);
+        ipEstrutura.setVisibility(View.VISIBLE);
+        tipoPot.setVisibility(View.VISIBLE);
+        potReator.setVisibility(View.VISIBLE);
+        quantidadeLampada.setVisibility(View.VISIBLE);
+        ipAtivacao.setVisibility(View.VISIBLE);
+        vinteEQuatro.setVisibility(View.VISIBLE);
+        quantidade24H.setVisibility(View.VISIBLE);
+        fotoIP.setVisibility(View.VISIBLE);
+        btnFoto4.setVisibility(View.VISIBLE);
+        btnUpload4.setVisibility(View.VISIBLE);
+        textLampada.setVisibility(View.VISIBLE);
+        relativeIPTipoEstrutura.setVisibility(View.VISIBLE);
+        relativeIPTipoLampada.setVisibility(View.VISIBLE);
+        relativeIPTipoAtivacao.setVisibility(View.VISIBLE);
+        if (formularioAtual.getIpEstrutura().equals("-")) {
+            ipEstrutura.setSelection(0);
+        } else {
+            for (int i = 0; i < ipEstrutura.getAdapter().getCount(); i++) {
+                ipEstrutura.setSelection(i);
+                if (ipEstrutura.getSelectedItem().toString().equals(formularioAtual.getIpEstrutura())) {
+                    break;
+                }
+            }
+        }
+        quantidadeLampada.setText(formularioAtual.getQuantidadeLampada());
+        if (formularioAtual.getTipoPot().equals("-")) {
+            tipoPot.setSelection(0);
+        } else {
+            for (int i = 0; i < tipoPot.getAdapter().getCount(); i++) {
+                tipoPot.setSelection(i);
+                if (tipoPot.getSelectedItem().toString().equals(formularioAtual.getTipoPot())) {
+                    break;
+                }
+            }
+        }
+        potReator.setText(formularioAtual.getPotReator());
+        if (formularioAtual.getIpAtivacao().equals("-")) {
+            ipAtivacao.setSelection(0);
+        } else {
+            for (int i = 0; i < ipAtivacao.getAdapter().getCount(); i++) {
+                ipAtivacao.setSelection(i);
+                if (ipAtivacao.getSelectedItem().toString().equals(formularioAtual.getIpAtivacao())) {
+                    break;
+                }
+            }
+        }
+        if (formularioAtual.getVinteEQuatro().equals("Sim")) {
+            vinteEQuatro.setChecked(true);
+            quantidade24H.setEnabled(true);
+        }
+        quantidade24H.setText(formularioAtual.getQuantidade24H());
+        ipEstrutura.setEnabled(true);
+        quantidadeLampada.setEnabled(true);
+        tipoPot.setEnabled(true);
+        potReator.setEnabled(true);
+        ipAtivacao.setEnabled(true);
+        vinteEQuatro.setEnabled(true);
+    }
+    observacaoIP.setText(formularioAtual.getObservacaoIP());
+
+
+    //TRAFO
+
+    if (formularioAtual.getAtivos().equals("Sim")) {
+        ativos.setChecked(true);
+        chkTrafoMono.setEnabled(true);
+        chkTrafoTrifasico.setEnabled(true);
+        trafoMono.setEnabled(true);
+        trafoTrifasico.setEnabled(true);
+        chFusivel.setEnabled(true);
+        chFaca.setEnabled(true);
+        religador.setEnabled(true);
+        medicao.setEnabled(true);
+        chBanco.setEnabled(true);
+        chFusivelReligador.setEnabled(true);
+        ramalSubt.setEnabled(true);
+        textOutros.setVisibility(View.VISIBLE);
+        outros.setEnabled(true);
+
+        ativos.setVisibility(View.VISIBLE);
+        chkTrafoMono.setVisibility(View.VISIBLE);
+        chkTrafoTrifasico.setVisibility(View.VISIBLE);
+        trafoMono.setVisibility(View.VISIBLE);
+        trafoTrifasico.setVisibility(View.VISIBLE);
+        chFusivel.setVisibility(View.VISIBLE);
+        chFaca.setVisibility(View.VISIBLE);
+        religador.setVisibility(View.VISIBLE);
+        medicao.setVisibility(View.VISIBLE);
+        chBanco.setVisibility(View.VISIBLE);
+        chFusivelReligador.setVisibility(View.VISIBLE);
+        ramalSubt.setVisibility(View.VISIBLE);
+        outros.setVisibility(View.VISIBLE);
+        fotoAtivos.setVisibility(View.VISIBLE);
+        btnFoto13.setVisibility(View.VISIBLE);
+        btnUpload13.setVisibility(View.VISIBLE);
+        fotoAtivos2.setVisibility(View.VISIBLE);
+        btnFoto14.setVisibility(View.VISIBLE);
+        btnUpload14.setVisibility(View.VISIBLE);
+        relativeBanco.setVisibility(View.VISIBLE);
+        relativeRamal.setVisibility(View.VISIBLE);
+        relativeChFaca.setVisibility(View.VISIBLE);
+        textFusivel.setVisibility(View.VISIBLE);
+        textFusivelReligador.setVisibility(View.VISIBLE);
+    }
+    if (formularioAtual.getChkTrafoTrifasico().equals("Sim")) {
+        chkTrafoTrifasico.setChecked(true);
+    }
+    if (formularioAtual.getChkTrafoMono().equals("Sim")) {
+        chkTrafoMono.setChecked(true);
+    }
+    if (formularioAtual.getTrafoTrifasico().equals("-")) {
+        trafoTrifasico.setSelection(0);
+    } else {
+        for (int i = 0; i < trafoTrifasico.getAdapter().getCount(); i++) {
+            trafoTrifasico.setSelection(i);
+            if (trafoTrifasico.getSelectedItem().toString().equals(formularioAtual.getTrafoTrifasico())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getTrafoMono().equals("-")) {
+        trafoMono.setSelection(0);
+    } else {
+        for (int i = 0; i < trafoMono.getAdapter().getCount(); i++) {
+            trafoMono.setSelection(i);
+            if (trafoMono.getSelectedItem().toString().equals(formularioAtual.getTrafoMono())) {
+                break;
+            }
+        }
+    }
+
+    if (formularioAtual.getReligador().equals("Sim")) {
+        religador.setChecked(true);
+    }
+    if (formularioAtual.getMedicao().equals("Sim")) {
+        medicao.setChecked(true);
+    }
+    chFusivel.setText(formularioAtual.getChFusivel());
+    chFusivelReligador.setText(formularioAtual.getChFusivelReligador());
+    if (formularioAtual.getBanco().equals("-")) {
+        chBanco.setSelection(0);
+    } else {
+        for (int i = 0; i < chBanco.getAdapter().getCount(); i++) {
+            chBanco.setSelection(i);
+            if (chBanco.getSelectedItem().toString().equals(formularioAtual.getBanco())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getChFaca().equals("-")) {
+        chFaca.setSelection(0);
+    } else {
+        for (int i = 0; i < chFaca.getAdapter().getCount(); i++) {
+            chFaca.setSelection(i);
+            if (chFaca.getSelectedItem().toString().equals(formularioAtual.getChFaca())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getRamalSubt().equals("-")) {
+        ramalSubt.setSelection(0);
+    } else {
+        for (int i = 0; i < ramalSubt.getAdapter().getCount(); i++) {
+            ramalSubt.setSelection(i);
+            if (ramalSubt.getSelectedItem().toString().equals(formularioAtual.getRamalSubt())) {
+                break;
+            }
+        }
+    }
+    observacaoAtivos.setText(formularioAtual.getObservacaoAtivos());
+    outros.setText(formularioAtual.getOutros());
+
+    //MUTUO
+    if (formularioAtual.getMutuo().equals("Sim")) {
+        mutuo.setChecked(true);
+        fotoMutuo.setVisibility(View.VISIBLE);
+        btnFoto15.setVisibility(View.VISIBLE);
+        btnUpload15.setVisibility(View.VISIBLE);
+
+        fotoMutuo2.setVisibility(View.VISIBLE);
+        btnFoto16.setVisibility(View.VISIBLE);
+        btnUpload16.setVisibility(View.VISIBLE);
+
+        fotoMutuo3.setVisibility(View.VISIBLE);
+        btnFoto17.setVisibility(View.VISIBLE);
+        btnUpload17.setVisibility(View.VISIBLE);
+        quantidadeOcupantes.setVisibility(View.VISIBLE);
+        quantidadeCabos.setVisibility(View.VISIBLE);
+        tipoCabo.setVisibility(View.VISIBLE);
+        quantidadeCabosdois.setVisibility(View.VISIBLE);
+        tipoCabodois.setVisibility(View.VISIBLE);
+        nome.setVisibility(View.VISIBLE);
+        finalidade.setVisibility(View.VISIBLE);
+        ceans.setVisibility(View.VISIBLE);
+        tar.setVisibility(View.VISIBLE);
+        reservaTec.setVisibility(View.VISIBLE);
+        backbone.setVisibility(View.VISIBLE);
+        placaIdentificadora.setVisibility(View.VISIBLE);
+        descidaCabos.setVisibility(View.VISIBLE);
+        descricaoIrregularidade.setVisibility(View.VISIBLE);
+        textQuantidadeCabo.setVisibility(View.VISIBLE);
+        textQuantidadeCabodois.setVisibility(View.VISIBLE);
+        textNome.setVisibility(View.VISIBLE);
+        textIrregularidade.setVisibility(View.VISIBLE);
+        relativeFinalidade.setVisibility(View.VISIBLE);
+        relativeCeans.setVisibility(View.VISIBLE);
+        relativeTar.setVisibility(View.VISIBLE);
+        relativeReservaTec.setVisibility(View.VISIBLE);
+        relativeBackbone.setVisibility(View.VISIBLE);
+        relativeTipoCabo.setVisibility(View.VISIBLE);
+        relativeTipoCabodois.setVisibility(View.VISIBLE);
+
+
+    }
+    //1
+    quantidadeOcupantes.setText(formularioAtual.getQuantidadeOcupantes());
+    quantidadeCabos.setText(formularioAtual.getQuantidadeCabos());
+    if (formularioAtual.getTipoCabo().equals("-")) {
+        tipoCabo.setSelection(0);
+    } else {
+        for (int i = 0; i < tipoCabo.getAdapter().getCount(); i++) {
+            tipoCabo.setSelection(i);
+            if (tipoCabo.getSelectedItem().toString().equals(formularioAtual.getTipoCabo())) {
+                break;
+            }
+        }
+    }
+    quantidadeCabosdois.setText(formularioAtual.getQuantidadeCabosdois());
+    if (formularioAtual.getTipoCabodois().equals("-")) {
+        tipoCabodois.setSelection(0);
+    } else {
+        for (int i = 0; i < tipoCabodois.getAdapter().getCount(); i++) {
+            tipoCabodois.setSelection(i);
+            if (tipoCabodois.getSelectedItem().toString().equals(formularioAtual.getTipoCabodois())) {
+                break;
+            }
+        }
+    }
+    nome.setText(formularioAtual.getNome());
+    if (formularioAtual.getFinalidade().equals("-")) {
+        finalidade.setSelection(0);
+    } else {
+        for (int i = 0; i < finalidade.getAdapter().getCount(); i++) {
+            finalidade.setSelection(i);
+            if (finalidade.getSelectedItem().toString().equals(formularioAtual.getFinalidade())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getCeans().equals("-")) {
+        ceans.setSelection(0);
+    } else {
+        for (int i = 0; i < ceans.getAdapter().getCount(); i++) {
+            ceans.setSelection(i);
+            if (ceans.getSelectedItem().toString().equals(formularioAtual.getCeans())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getTar().equals("-")) {
+        tar.setSelection(0);
+    } else {
+        for (int i = 0; i < tar.getAdapter().getCount(); i++) {
+            tar.setSelection(i);
+            if (tar.getSelectedItem().toString().equals(formularioAtual.getTar())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getReservaTec().equals("-")) {
+        reservaTec.setSelection(0);
+    } else {
+        for (int i = 0; i < reservaTec.getAdapter().getCount(); i++) {
+            reservaTec.setSelection(i);
+            if (reservaTec.getSelectedItem().toString().equals(formularioAtual.getReservaTec())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getBackbone().equals("-")) {
+        backbone.setSelection(0);
+    } else {
+        for (int i = 0; i < backbone.getAdapter().getCount(); i++) {
+            backbone.setSelection(i);
+            if (backbone.getSelectedItem().toString().equals(formularioAtual.getBackbone())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getPlacaIdent().equals("Sim")) {
+        placaIdentificadora.setChecked(true);
+    }
+    if (formularioAtual.getDescidaCabos().equals("Sim")) {
+        descidaCabos.setChecked(true);
+    }
+    descricaoIrregularidade.setText(formularioAtual.getDescricaoIrregularidade());
+    observacaoMutuo.setText((formularioAtual.getObservacaoMutuo()));
+
+    if(formularioAtual.getVegetacao().equals("Sim")) {
+        chkVegetacao.setChecked(true);
+        dimensaoVegetacao.setVisibility(View.VISIBLE);
+        distaciaBaixa.setVisibility(View.VISIBLE);
+        distanciaMedia.setVisibility(View.VISIBLE);
+        estadoArvore.setVisibility(View.VISIBLE);
+        quedaArvore.setVisibility(View.VISIBLE);
+        localArvore.setVisibility(View.VISIBLE);
+        fotoVeg.setVisibility(View.VISIBLE);
+        btnFoto30.setVisibility(View.VISIBLE);
+        btnUpload30.setVisibility(View.VISIBLE);
+        relativeDimensaoVegetacao.setVisibility(View.VISIBLE);
+        relativeBaixa.setVisibility(View.VISIBLE);
+        relativeMedia.setVisibility(View.VISIBLE);
+        relativeEstadoArvore.setVisibility(View.VISIBLE);
+        relativeLocalArvore.setVisibility(View.VISIBLE);
+    }
+
+    if (formularioAtual.getDimensaoVegetacao().equals("-")) {
+        dimensaoVegetacao.setSelection(0);
+    } else {
+        for (int i = 0; i < dimensaoVegetacao.getAdapter().getCount(); i++) {
+            dimensaoVegetacao.setSelection(i);
+            if (dimensaoVegetacao.getSelectedItem().toString().equals(formularioAtual.getDimensaoVegetacao())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getDistaciaBaixa().equals("-")) {
+        distaciaBaixa.setSelection(0);
+    } else {
+        for (int i = 0; i < distaciaBaixa.getAdapter().getCount(); i++) {
+            distaciaBaixa.setSelection(i);
+            if (distaciaBaixa.getSelectedItem().toString().equals(formularioAtual.getDistaciaBaixa())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getDistanciaMedia().equals("-")) {
+        distanciaMedia.setSelection(0);
+    } else {
+        for (int i = 0; i < distanciaMedia.getAdapter().getCount(); i++) {
+            distanciaMedia.setSelection(i);
+            if (dimensaoVegetacao.getSelectedItem().toString().equals(formularioAtual.getDistanciaMedia())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getEstadoArvore().equals("-")) {
+        estadoArvore.setSelection(0);
+    } else {
+        for (int i = 0; i < estadoArvore.getAdapter().getCount(); i++) {
+            estadoArvore.setSelection(i);
+            if (estadoArvore.getSelectedItem().toString().equals(formularioAtual.getEstadoArvore())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getQuedaArvore().equals("Sim")) {
+        quedaArvore.setChecked(true);
+    }
+    if (formularioAtual.getLocalArvore().equals("-")) {
+        localArvore.setSelection(0);
+    } else {
+        for (int i = 0; i < localArvore.getAdapter().getCount(); i++) {
+            localArvore.setSelection(i);
+            if (localArvore.getSelectedItem().toString().equals(formularioAtual.getLocalArvore())) {
+                break;
+            }
+        }
+    }
+    observacaoVegetacao.setText(formularioAtual.getObservacaoVegetacao());
+        }
+    });
+
+}
+
+
+private void novoOcupante(final View root){
+    requireActivity().runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+    root.findViewById(R.id.btnCadastroSalvar).setVisibility(View.GONE);
+    controle = true;
+    contadorAr = formularioAtual.getContadorAr();
+    contadorAt = formularioAtual.getContadorAt();
+    contadorIp = formularioAtual.getContadorIp();
+    codigo.setText(formularioAtual.getCodigo());
+
+    imgPathPan = formularioAtual.getCaminhoImagem();
+    if(imgPathPan == null || imgPathPan.equals("")){
+
+    }else {
+        fotoPan.setImageBitmap(BitmapFactory.decodeFile(imgPathPan));
+        imagemPan = BitmapFactory.decodeFile(imgPathPan);
+    }
+    imgPathAlt = formularioAtual.getCaminhoImagem2();
+    if(imgPathAlt == null || imgPathAlt.equals("")){
+
+    }else {
+        imgPathAlt = formularioAtual.getCaminhoImagem2();
+        fotoAlt.setImageBitmap(BitmapFactory.decodeFile(imgPathAlt));
+        imagemAlt = BitmapFactory.decodeFile(imgPathAlt);
+    }
+
+    imgPathQualidade = formularioAtual.getCaminhoImagem3();
+    if(imgPathQualidade == null || imgPathQualidade.equals("")){
+
+    }else {
+        imgPathQualidade = formularioAtual.getCaminhoImagem3();
+        fotoQualidade.setImageBitmap(BitmapFactory.decodeFile(imgPathQualidade));
+        imagemQualidade = BitmapFactory.decodeFile(imgPathQualidade);
+    }
+
+    imgPathIP = formularioAtual.getCaminhoImagem4();
+    if(imgPathIP == null || imgPathIP.equals("")){
+
+    }else {
+        imgPathIP = formularioAtual.getCaminhoImagem4();
+        fotoIP.setImageBitmap(BitmapFactory.decodeFile(imgPathIP));
+        imagemIP = BitmapFactory.decodeFile(imgPathIP);
+    }
+
+    imgPathAtivos = formularioAtual.getCaminhoImagem7();
+    if(imgPathAtivos == null || imgPathAtivos.equals("")){
+
+    }else {
+        imgPathAtivos = formularioAtual.getCaminhoImagem7();
+        fotoAtivos.setImageBitmap(BitmapFactory.decodeFile(imgPathAtivos));
+        imagemAtivos = BitmapFactory.decodeFile(imgPathAtivos);
+    }
+
+
+    if(imgPathAtivos2 == null || imgPathAtivos2.equals("")){
+        imgPathAtivos2 = formularioAtual.getCaminhoImagem8();
+    }else {
+        imgPathAtivos2 = formularioAtual.getCaminhoImagem8();
+        fotoAtivos2.setImageBitmap(BitmapFactory.decodeFile(imgPathAtivos2));
+        imagemAtivos2 = BitmapFactory.decodeFile(imgPathAtivos2);
+    }
+
+    imgPathMutuo = formularioAtual.getCaminhoImagem9();
+    if(imgPathMutuo == null || imgPathMutuo.equals("")){
+
+    }else {
+        imgPathMutuo = formularioAtual.getCaminhoImagem9();
+        fotoMutuo.setImageBitmap(BitmapFactory.decodeFile(imgPathMutuo));
+        imagemMutuo = BitmapFactory.decodeFile(imgPathMutuo);
+    }
+
+    imgPathMutuo2 = formularioAtual.getCaminhoImagem10();
+    if(imgPathMutuo2 == null || imgPathMutuo2.equals("")){
+
+    }else {
+        imgPathMutuo2 = formularioAtual.getCaminhoImagem10();
+        fotoMutuo2.setImageBitmap(BitmapFactory.decodeFile(imgPathMutuo2));
+        imagemMutuo2 = BitmapFactory.decodeFile(imgPathMutuo2);
+    }
+
+    imgPathMutuo3 = formularioAtual.getCaminhoImagem11();
+    if(imgPathMutuo3 == null || imgPathMutuo3.equals("")){
+
+    }else {
+        imgPathMutuo3 = formularioAtual.getCaminhoImagem11();
+        fotoMutuo3.setImageBitmap(BitmapFactory.decodeFile(imgPathMutuo3));
+        imagemMutuo3 = BitmapFactory.decodeFile(imgPathMutuo3);
+    }
+
+    imgPathVeg = formularioAtual.getCaminhoImagem12();
+    if(imgPathVeg == null || imgPathVeg.equals("")){
+
+    }else {
+        imgPathVeg = formularioAtual.getCaminhoImagem12();
+        fotoVeg.setImageBitmap(BitmapFactory.decodeFile(imgPathVeg));
+        imagemVeg = BitmapFactory.decodeFile(imgPathVeg);
+    }
+    endereco.setText(formularioAtual.getEndereco());
+    urlFotoPan = Uri.parse(formularioAtual.getUrlImagem());
+    urlFotoAlt = Uri.parse(formularioAtual.getUrlImagem2());
+    urlFotoQualidade = Uri.parse(formularioAtual.getUrlImagem3());
+    urlFotoIP = Uri.parse(formularioAtual.getUrlImagem4());
+    urlFotoAtivos = Uri.parse(formularioAtual.getUrlImagem7());
+    urlFotoAtivos2 = Uri.parse(formularioAtual.getUrlImagem8());
+    urlFotoMutuo = Uri.parse(formularioAtual.getUrlImagem9());
+    urlFotoMutuo2 = Uri.parse(formularioAtual.getUrlImagem10());
+    urlFotoMutuo3 = Uri.parse(formularioAtual.getUrlImagem11());
+    urlFotoVeg = Uri.parse(formularioAtual.getUrlImagem12());
+    if (formularioAtual.getMunicipio().equals("-")) {
+        municipio.setSelection(0);
+    } else {
+        for (int i = 0; i < municipio.getAdapter().getCount(); i++) {
+            municipio.setSelection(i);
+            if (municipio.getSelectedItem().toString().equals(formularioAtual.getMunicipio())) {
+                break;
+            }
+        }
+    }
+    latitude.setText(formularioAtual.getLatitude());
+    longitude.setText(formularioAtual.getLongitude());
+
+    //CARACTERISTICAS FÍSICAS
+    if (formularioAtual.getAlturaCarga().equals("-")) {
+        alturaCarga.setSelection(0);
+    } else {
+        for (int i = 0; i < alturaCarga.getAdapter().getCount(); i++) {
+            alturaCarga.setSelection(i);
+            if (alturaCarga.getSelectedItem().toString().equals(formularioAtual.getAlturaCarga())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getTipoPoste().equals("-")) {
+        tipoPoste.setSelection(0);
+    } else {
+        for (int i = 0; i < tipoPoste.getAdapter().getCount(); i++) {
+            tipoPoste.setSelection(i);
+            if (tipoPoste.getSelectedItem().toString().equals(formularioAtual.getTipoPoste())) {
+                break;
+            }
+        }
+    }
+    if (formularioAtual.getNormal().equals("Sim")) {
+        normal.setChecked(true);
+    } else {
+        normal.setChecked(false);
+        ferragemExposta.setEnabled(true);
+        fletido.setEnabled(true);
+        abalroado.setEnabled(true);
+        trincado.setEnabled(true);
+        danificado.setEnabled(true);
+    }
+    if (formularioAtual.getFerragemExposta().equals("Sim")) {
+        ferragemExposta.setChecked(true);
+    }
+    if (formularioAtual.getFletido().equals("Sim")) {
+        fletido.setChecked(true);
+    }
+    if (formularioAtual.getDanificado().equals("Sim")) {
+        danificado.setChecked(true);
+    }
+    if (formularioAtual.getAbalroado().equals("Sim")) {
+        abalroado.setChecked(true);
+    }
+    if (formularioAtual.getTrincado().equals("Sim")) {
+        trincado.setChecked(true);
+    }
+    observacaoFisicas.setText(formularioAtual.getObservacaoFisicas());
+        }
+    });
+}
+
+    class NovoPosteTask extends AsyncTask<Void, Void, Void>{
+        ProgressDialog progressDialogAsync = new ProgressDialog(requireContext(),R.style.LightDialogTheme);
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialogAsync.setMessage("Carregando dados..."); // Setting Message
+            progressDialogAsync.setTitle("Por favor Espere"); // Setting Title
+            progressDialogAsync.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
+            progressDialogAsync.show(); // Display Progress Dialog
+            progressDialogAsync.setCancelable(false);
+            progressDialogAsync.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            Log.i("ENTREI","ENTREI AQUI");
+            ThreadNovoPoste threadNovoPoste = new ThreadNovoPoste(root);
+            threadNovoPoste.start();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            progressDialogAsync.dismiss();
+        }
+    }
+
+    class MesmoPosteTask extends AsyncTask<Void, Void, Void>{
+        ProgressDialog progressDialogAsync = new ProgressDialog(requireContext(),R.style.LightDialogTheme);
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialogAsync.setMessage("Carregando dados..."); // Setting Message
+            progressDialogAsync.setTitle("Por favor Espere"); // Setting Title
+            progressDialogAsync.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
+            progressDialogAsync.show(); // Display Progress Dialog
+            progressDialogAsync.setCancelable(false);
+            progressDialogAsync.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            ThreadMesmoPoste threadMesmoPoste = new ThreadMesmoPoste(root);
+            threadMesmoPoste.start();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    progressDialogAsync.dismiss();
+                }
+
+            }, 1);
+        }
+    }
+
+    class OutroOcupanteTask extends AsyncTask<Void, Void, Void>{
+        ProgressDialog progressDialogAsync = new ProgressDialog(requireContext(),R.style.LightDialogTheme);
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialogAsync.setMessage("Carregando dados..."); // Setting Message
+            progressDialogAsync.setTitle("Por favor Espere"); // Setting Title
+            progressDialogAsync.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
+            progressDialogAsync.show(); // Display Progress Dialog
+            progressDialogAsync.setCancelable(false);
+            progressDialogAsync.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            ThreadOutroOcupante threadOutroOcupante = new ThreadOutroOcupante(root);
+            threadOutroOcupante.start();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    progressDialogAsync.dismiss();
+                }
+
+            }, 1);
+        }
+    }
 }
 

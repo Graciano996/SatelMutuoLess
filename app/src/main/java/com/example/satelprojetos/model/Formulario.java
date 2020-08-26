@@ -16,10 +16,6 @@ public class Formulario implements Serializable {
     @Exclude
     private String color4;
     @Exclude
-    private String color5;
-    @Exclude
-    private String color6;
-    @Exclude
     private String color7;
     @Exclude
     private String color8;
@@ -40,10 +36,6 @@ public class Formulario implements Serializable {
     @Exclude
     private String caminhoImagem4;
     @Exclude
-    private String caminhoImagem5;
-    @Exclude
-    private String caminhoImagem6;
-    @Exclude
     private String caminhoImagem7;
     @Exclude
     private String caminhoImagem8;
@@ -60,8 +52,6 @@ public class Formulario implements Serializable {
     private String urlImagem2;
     private String urlImagem3;
     private String urlImagem4;
-    private String urlImagem5;
-    private String urlImagem6;
     private String urlImagem7;
     private String urlImagem8;
     private String urlImagem9;
@@ -100,7 +90,7 @@ public class Formulario implements Serializable {
     private String chFusivel;
     private String chFaca;
     private String banco;
-    private String chFusivelReligador;;
+    private String chFusivelReligador;
     private String outros;
     private String observacaoAtivos;
     private String ip;
@@ -111,22 +101,6 @@ public class Formulario implements Serializable {
     private String ipAtivacao;
     private String vinteEQuatro;
     private String quantidade24H;
-    private String ip2;
-    private String ipEstrutura2;
-    private String quantidadeLampada2;
-    private String tipoPot2;
-    private String potReator2;
-    private String ipAtivacao2;
-    private String vinteEQuatro2;
-    private String quantidade24H2;
-    private String ip3;
-    private String ipEstrutura3;
-    private String quantidadeLampada3;
-    private String tipoPot3;
-    private String potReator3;
-    private String ipAtivacao3;
-    private String vinteEQuatro3;
-    private String quantidade24H3;
     private String observacaoIP;
     private String mutuo;
     private String quantidadeOcupantes;
@@ -145,6 +119,7 @@ public class Formulario implements Serializable {
     private String descricaoIrregularidade;
     private String observacaoMutuo;
 
+    private String vegetacao;
     private String dimensaoVegetacao;
     private String distaciaBaixa;
     private String distanciaMedia;
@@ -152,6 +127,14 @@ public class Formulario implements Serializable {
     private String quedaArvore;
     private String localArvore;
     private String observacaoVegetacao;
+
+    public String getVegetacao() {
+        return vegetacao;
+    }
+
+    public void setVegetacao(String vegetacao) {
+        this.vegetacao = vegetacao;
+    }
 
     public int getContadorAt() {
         return contadorAt;
@@ -223,22 +206,6 @@ public class Formulario implements Serializable {
 
     public void setColor4(String color4) {
         this.color4 = color4;
-    }
-
-    public String getColor5() {
-        return color5;
-    }
-
-    public void setColor5(String color5) {
-        this.color5 = color5;
-    }
-
-    public String getColor6() {
-        return color6;
-    }
-
-    public void setColor6(String color6) {
-        this.color6 = color6;
     }
 
     public String getColor7() {
@@ -321,22 +288,6 @@ public class Formulario implements Serializable {
         this.caminhoImagem4 = caminhoImagem4;
     }
 
-    public String getCaminhoImagem5() {
-        return caminhoImagem5;
-    }
-
-    public void setCaminhoImagem5(String caminhoImagem5) {
-        this.caminhoImagem5 = caminhoImagem5;
-    }
-
-    public String getCaminhoImagem6() {
-        return caminhoImagem6;
-    }
-
-    public void setCaminhoImagem6(String caminhoImagem6) {
-        this.caminhoImagem6 = caminhoImagem6;
-    }
-
     public String getCaminhoImagem7() {
         return caminhoImagem7;
     }
@@ -415,22 +366,6 @@ public class Formulario implements Serializable {
 
     public void setUrlImagem4(String urlImagem4) {
         this.urlImagem4 = urlImagem4;
-    }
-
-    public String getUrlImagem5() {
-        return urlImagem5;
-    }
-
-    public void setUrlImagem5(String urlImagem5) {
-        this.urlImagem5 = urlImagem5;
-    }
-
-    public String getUrlImagem6() {
-        return urlImagem6;
-    }
-
-    public void setUrlImagem6(String urlImagem6) {
-        this.urlImagem6 = urlImagem6;
     }
 
     public String getUrlImagem7() {
@@ -768,135 +703,6 @@ public class Formulario implements Serializable {
     public void setQuantidade24H(String quantidade24H) {
         this.quantidade24H = quantidade24H;
     }
-
-    public String getIp2() {
-        return ip2;
-    }
-
-    public void setIp2(String ip2) {
-        this.ip2 = ip2;
-    }
-
-    public String getIpEstrutura2() {
-        return ipEstrutura2;
-    }
-
-    public void setIpEstrutura2(String ipEstrutura2) {
-        this.ipEstrutura2 = ipEstrutura2;
-    }
-
-    public String getQuantidadeLampada2() {
-        return quantidadeLampada2;
-    }
-
-    public void setQuantidadeLampada2(String quantidadeLampada2) {
-        this.quantidadeLampada2 = quantidadeLampada2;
-    }
-
-    public String getTipoPot2() {
-        return tipoPot2;
-    }
-
-    public void setTipoPot2(String tipoPot2) {
-        this.tipoPot2 = tipoPot2;
-    }
-
-    public String getPotReator2() {
-        return potReator2;
-    }
-
-    public void setPotReator2(String potReator2) {
-        this.potReator2 = potReator2;
-    }
-
-    public String getIpAtivacao2() {
-        return ipAtivacao2;
-    }
-
-    public void setIpAtivacao2(String ipAtivacao2) {
-        this.ipAtivacao2 = ipAtivacao2;
-    }
-
-    public String getVinteEQuatro2() {
-        return vinteEQuatro2;
-    }
-
-    public void setVinteEQuatro2(String vinteEQuatro2) {
-        this.vinteEQuatro2 = vinteEQuatro2;
-    }
-
-    public String getQuantidade24H2() {
-        return quantidade24H2;
-    }
-
-    public void setQuantidade24H2(String quantidade24H2) {
-        this.quantidade24H2 = quantidade24H2;
-    }
-
-    public String getIp3() {
-        return ip3;
-    }
-
-    public void setIp3(String ip3) {
-        this.ip3 = ip3;
-    }
-
-    public String getIpEstrutura3() {
-        return ipEstrutura3;
-    }
-
-    public void setIpEstrutura3(String ipEstrutura3) {
-        this.ipEstrutura3 = ipEstrutura3;
-    }
-
-    public String getQuantidadeLampada3() {
-        return quantidadeLampada3;
-    }
-
-    public void setQuantidadeLampada3(String quantidadeLampada3) {
-        this.quantidadeLampada3 = quantidadeLampada3;
-    }
-
-    public String getTipoPot3() {
-        return tipoPot3;
-    }
-
-    public void setTipoPot3(String tipoPot3) {
-        this.tipoPot3 = tipoPot3;
-    }
-
-    public String getPotReator3() {
-        return potReator3;
-    }
-
-    public void setPotReator3(String potReator3) {
-        this.potReator3 = potReator3;
-    }
-
-    public String getIpAtivacao3() {
-        return ipAtivacao3;
-    }
-
-    public void setIpAtivacao3(String ipAtivacao3) {
-        this.ipAtivacao3 = ipAtivacao3;
-    }
-
-    public String getVinteEQuatro3() {
-        return vinteEQuatro3;
-    }
-
-    public void setVinteEQuatro3(String vinteEQuatro3) {
-        this.vinteEQuatro3 = vinteEQuatro3;
-    }
-
-    public String getQuantidade24H3() {
-        return quantidade24H3;
-    }
-
-    public void setQuantidade24H3(String quantidade24H3) {
-        this.quantidade24H3 = quantidade24H3;
-    }
-
     public String getObservacaoIP() {
         return observacaoIP;
     }
@@ -1090,90 +896,81 @@ public class Formulario implements Serializable {
     }
 
     public void GenericSetter(String atributo, String dado){
-        if (atributo.equals("municipio")){
-            setMunicipio(dado);
+        switch (atributo) {
+            case "municipio":
+                setMunicipio(dado);
+                break;
+            case "alturaCarga":
+                setAlturaCarga(dado);
+                break;
+            case "tipoPoste":
+                setTipoPoste(dado);
+                break;
+            case "ipEstrutura":
+                setIpEstrutura(dado);
+                break;
+            case "tipoPot":
+                setTipoPot(dado);
+                break;
+            case "ipAtivacao":
+                setIpAtivacao(dado);
+                break;
+            case "trafoTrifasico":
+                setTrafoTrifasico(dado);
+                break;
+            case "trafoMono":
+                setTrafoMono(dado);
+                break;
+            case "ramalSubt":
+                setRamalSubt(dado);
+                break;
+            case "quantidadeOcupantes":
+                setQuantidadeOcupantes(dado);
+                break;
+            case "tipoCabo":
+                setTipoCabo(dado);
+                break;
+            case "finalidade":
+                setFinalidade(dado);
+                break;
+            case "ceans":
+                setCeans(dado);
+                break;
+            case "tar":
+                setTar(dado);
+                break;
+            case "reservaTec":
+                setReservaTec(dado);
+                break;
+            case "backbone":
+                setBackbone(dado);
+                break;
+            case "tipoCabodois":
+                setTipoCabodois(dado);
+                break;
+            case "dimensaoVegetacao":
+                setDimensaoVegetacao(dado);
+                break;
+            case "distanciaBaixa":
+                setDistaciaBaixa(dado);
+                break;
+            case "distanciaMedia":
+                setDistanciaMedia(dado);
+                break;
+            case "estadoArvore":
+                setEstadoArvore(dado);
+                break;
+            case "localArvore":
+                setLocalArvore(dado);
+                break;
+            case "chFaca":
+                setChFaca(dado);
+                break;
+            case "chBanco":
+                setBanco(dado);
+                break;
         }
-        else if (atributo.equals("alturaCarga")){
-            setAlturaCarga(dado);
-        }
-        else if (atributo.equals("tipoPoste")){
-            setTipoPoste(dado);
-        }
-        else if (atributo.equals("ipEstrutura")){
-            setIpEstrutura(dado);
-        }
-        else if (atributo.equals("tipoPot")){
-            setTipoPot(dado);
-        }
-        else if (atributo.equals("ipAtivacao")){
-            setIpAtivacao(dado);
-        }
-        else if (atributo.equals("ipEstrutura2")){
-            setIpEstrutura2(dado);
-        }
-        else if (atributo.equals("tipoPot2")){
-            setTipoPot2(dado);
-        }
-        else if (atributo.equals("ipAtivacao2")){
-            setIpAtivacao2(dado);
-        }
-        else if (atributo.equals("ipEstrutura3")){
-            setIpEstrutura3(dado);
-        }
-        else if (atributo.equals("tipoPot3")){
-            setTipoPot3(dado);
-        }
-        else if (atributo.equals("ipAtivacao3")){
-            setIpAtivacao3(dado);
-        }
-        else if (atributo.equals("trafoTrifasico")){
-            setTrafoTrifasico(dado);
-        }
-        else if (atributo.equals("trafoMono")){
-            setTrafoMono(dado);
-        }
-        else if (atributo.equals("ramalSubt")){
-            setRamalSubt(dado);
-        }
-        else if (atributo.equals("quantidadeOcupantes")){
-            setQuantidadeOcupantes(dado);
-        }
-        else if (atributo.equals("tipoCabo")){
-            setTipoCabo(dado);
-        }
-        else if (atributo.equals("finalidade")){
-            setFinalidade(dado);
-        }
-        else if (atributo.equals("ceans")){
-            setCeans(dado);
-        }
-        else if (atributo.equals("tar")){
-            setTar(dado);
-        }
-        else if (atributo.equals("reservaTec")){
-            setReservaTec(dado);
-        }
-        else if (atributo.equals("backbone")){
-            setBackbone(dado);
-        }
-        else if (atributo.equals("tipoCabodois")){
-            setTipoCabodois(dado);
-        }
-        else if (atributo.equals("dimensaoVegetacao")){
-            setDimensaoVegetacao(dado);
-        }
-        else if (atributo.equals("distanciaBaixa")){
-            setDistaciaBaixa(dado);
-        }
-        else if (atributo.equals("distanciaMedia")){
-            setDistanciaMedia(dado);
-        }
-        else if (atributo.equals("estadoArvore")){
-            setEstadoArvore(dado);
-        }
-        else if (atributo.equals("localArvore")){
-            setLocalArvore(dado);
-        }
+
 
     }
 }

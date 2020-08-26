@@ -77,25 +77,17 @@ public class CadastradosFragment extends Fragment {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                progressDialog = new ProgressDialog(requireContext(),R.style.LightDialogTheme);
-                                progressDialog.setMessage("Carregando formulário..."); // Setting Message
-                                progressDialog.setTitle("Por favor Espere"); // Setting Title
-                                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
-                                progressDialog.show(); // Display Progress Dialog
-                                progressDialog.setCancelable(false);
                                 Formulario formularioSelecionado = listaFormulario.get(position);
                                 CadastroFragment cadastroFragment = new CadastroFragment();
                                 Bundle bundle = new Bundle();
                                 bundle.putSerializable("formularioSelecionado", formularioSelecionado);
                                 cadastroFragment.setArguments(bundle);
-                                Log.i("TAGB",formularioSelecionado.toString());
                                 NavigationView navigationView = requireActivity().findViewById(R.id.nav_view);
                                 navigationView.setCheckedItem(R.id.nav_cadastro);
                                 FragmentManager fm = getParentFragmentManager();
                                 FragmentTransaction transaction = fm.beginTransaction();
                                 transaction.replace(R.id.nav_host_fragment, cadastroFragment).addToBackStack(null);
                                 transaction.commit();
-                                progressDialog.dismiss();
 
                             }
 
@@ -137,23 +129,10 @@ public class CadastradosFragment extends Fragment {
         btnEnviarCadastrados.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean connected = false;
-                ConnectivityManager connectivityManager = (ConnectivityManager) requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-                if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
-                        connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
-                    FormularioDAO formularioDAO = new FormularioDAO(getActivity().getApplicationContext());
-                    listaFormulario = formularioDAO.listar();
-                    autentificacao = ConfiguracaoFirebase.getFirebaseAuth();
-                    DatabaseReference formularios = referencia.child("usuarios").child(Base64Custom.codificarBase64(autentificacao.getCurrentUser().getEmail())).child("formulario");
-                    for (int i = 0; i < listaFormulario.size(); i++) {
-                        formularios.child(listaFormulario.get(i).getId().toString()).setValue(listaFormulario.get(i));
-                    }
-                    enviarParaGS(listaFormulario, autentificacao.getCurrentUser().getEmail());
-                    Toast.makeText(getActivity().getApplicationContext(), "Sucesso ao enviar formulários", Toast.LENGTH_SHORT).show();
-                    connected = true;
-                } else{
-                    Toast.makeText(getActivity().getApplicationContext(), "Sem conexão com a internet", Toast.LENGTH_SHORT).show();
-            }    }
+                ThreadPutGS threadPutGS = new ThreadPutGS(listaFormulario,
+                        FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                threadPutGS.start();
+            }
         });
 
         return root;
@@ -165,7 +144,6 @@ public class CadastradosFragment extends Fragment {
         //Listar Formulários
         FormularioDAO formularioDAO = new FormularioDAO(getActivity().getApplicationContext());
         listaFormulario = formularioDAO.listar();
-        Log.i("TAG",String.valueOf(listaFormulario.size()));
         if(listaFormulario.size() <= 0){
             btnEnviarCadastrados.setEnabled(false);
         }
@@ -193,29 +171,35 @@ public class CadastradosFragment extends Fragment {
     public void enviarParaGS(final List<Formulario> formularioLista, final String email){
         final EnviadoDAO enviadoDAO = new EnviadoDAO(getActivity().getApplicationContext());
         final FormularioDAO formularioDAO = new FormularioDAO(getActivity().getApplicationContext());
-        progressDialog = new ProgressDialog(requireContext(),R.style.LightDialogTheme);
-        progressDialog.setMessage("Enviado os dados para o banco de dados..."); // Setting Message
-        progressDialog.setTitle("Por favor Espere"); // Setting Title
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
-        progressDialog.show(); // Display Progress Dialog
-        progressDialog.setCancelable(false);
+        requireActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog = new ProgressDialog(requireContext(),R.style.LightDialogTheme);
+                progressDialog.setMessage("Enviado os dados para o banco de dados..."); // Setting Message
+                progressDialog.setTitle("Por favor Espere"); // Setting Title
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
+                progressDialog.show(); // Display Progress Dialog
+                progressDialog.setCancelable(false);
+            }
+        });
             StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbzZJUnvHaDYfO13T9t7NyhLcweYuuYp38D1n0JzH0Hs4FVR0mrO/exec",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-
-                            progressDialog.dismiss();
-                            carregarFormulariosCadastrados();
-                            Toast.makeText(requireActivity().getApplicationContext(), response, Toast.LENGTH_LONG).show();
-
-
+                            requireActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                     progressDialog.dismiss();
+                                     carregarFormulariosCadastrados();
+                                     Toast.makeText(requireActivity().getApplicationContext(), "Sucesso", Toast.LENGTH_LONG).show();
+                            }
+                        });
                         }
                     },
                     new Response.ErrorListener() {
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Log.i("TAGB", "ENTREI AQUI1");
                         }
                     }
             ) {
@@ -223,7 +207,6 @@ public class CadastradosFragment extends Fragment {
                 protected Map<String, String> getParams() {
                     Map<String, String> parmas = new HashMap<>();
                     //here we pass params
-                    Log.i("ERRO2", String.valueOf(formularioLista.size()));
                     parmas.put("action", "addItem");
                     parmas.put("codigo",formularioLista.get(0).getCodigo());
                     parmas.put("email", email);
@@ -231,8 +214,6 @@ public class CadastradosFragment extends Fragment {
                     parmas.put("urlImagem2", formularioLista.get(0).getUrlImagem2());
                     parmas.put("urlImagem3", formularioLista.get(0).getUrlImagem3());
                     parmas.put("urlImagem4", formularioLista.get(0).getUrlImagem4());
-                    parmas.put("urlImagem5", formularioLista.get(0).getUrlImagem5());
-                    parmas.put("urlImagem6", formularioLista.get(0).getUrlImagem6());
                     parmas.put("urlImagem7", formularioLista.get(0).getUrlImagem7());
                     parmas.put("urlImagem8", formularioLista.get(0).getUrlImagem8());
                     parmas.put("urlImagem9", formularioLista.get(0).getUrlImagem9());
@@ -242,7 +223,6 @@ public class CadastradosFragment extends Fragment {
                     parmas.put("data", formularioLista.get(0).getData());
                     parmas.put("municipio", formularioLista.get(0).getMunicipio());
                     parmas.put("endereco", formularioLista.get(0).getEndereco());
-                    Log.i("LATIDUDE", formularioLista.get(0).getLatitude());
                     parmas.put("latitude", "'" + formularioLista.get(0).getLatitude());
                     parmas.put("longitude", "'" + formularioLista.get(0).getLongitude());
                     parmas.put("tipoPoste", formularioLista.get(0).getTipoPoste());
@@ -262,24 +242,6 @@ public class CadastradosFragment extends Fragment {
                     parmas.put("ipAtivacao", formularioLista.get(0).getIpAtivacao());
                     parmas.put("vinteEQuatro", formularioLista.get(0).getVinteEQuatro());
                     parmas.put("quantidade24H", formularioLista.get(0).getQuantidade24H());
-
-                    parmas.put("ip2", formularioLista.get(0).getIp2());
-                    parmas.put("ipEstrutura2", formularioLista.get(0).getIpEstrutura2());
-                    parmas.put("quantidadeLampada2", formularioLista.get(0).getQuantidadeLampada2());
-                    parmas.put("tipoPot2", formularioLista.get(0).getTipoPot2());
-                    parmas.put("potReator2", formularioLista.get(0).getPotReator2());
-                    parmas.put("ipAtivacao2", formularioLista.get(0).getIpAtivacao2());
-                    parmas.put("vinteEQuatro2", formularioLista.get(0).getVinteEQuatro2());
-                    parmas.put("quantidade24H2", formularioLista.get(0).getQuantidade24H2());
-
-                    parmas.put("ip3", formularioLista.get(0).getIp3());
-                    parmas.put("ipEstrutura3", formularioLista.get(0).getIpEstrutura3());
-                    parmas.put("quantidadeLampada3", formularioLista.get(0).getQuantidadeLampada3());
-                    parmas.put("tipoPot3", formularioLista.get(0).getTipoPot3());
-                    parmas.put("potReator3", formularioLista.get(0).getPotReator3());
-                    parmas.put("ipAtivacao3", formularioLista.get(0).getIpAtivacao3());
-                    parmas.put("vinteEQuatro3", formularioLista.get(0).getVinteEQuatro3());
-                    parmas.put("quantidade24H3", formularioLista.get(0).getQuantidade24H3());
                     parmas.put("observacaoIp", formularioLista.get(0).getObservacaoIP());
 
                     parmas.put("ativos", formularioLista.get(0).getAtivos());
@@ -315,7 +277,8 @@ public class CadastradosFragment extends Fragment {
                     parmas.put("descricaoIrregularidade", formularioLista.get(0).getDescricaoIrregularidade());
                     parmas.put("observacaoMutuo", formularioLista.get(0).getObservacaoMutuo());
 
-                    parmas.put("vegetacao", formularioLista.get(0).getDimensaoVegetacao());
+                    parmas.put("vegetacao", formularioLista.get(0).getVegetacao());
+                    parmas.put("vegetacaoDimensao", formularioLista.get(0).getDimensaoVegetacao());
                     parmas.put("distanciaBaixa", formularioLista.get(0).getDistaciaBaixa());
                     parmas.put("distanciaMedia", formularioLista.get(0).getDistanciaMedia());
                     parmas.put("estadoArvore", formularioLista.get(0).getEstadoArvore());
@@ -339,10 +302,44 @@ public class CadastradosFragment extends Fragment {
 
             RetryPolicy retryPolicy = new DefaultRetryPolicy(socketTimeOut, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
             stringRequest.setRetryPolicy(retryPolicy);
-            Log.i("TAGB", "ENTREI AQUI 3");
             RequestQueue queue = Volley.newRequestQueue(requireContext());
 
             queue.add(stringRequest);
+        }
+
+        class ThreadPutGS extends Thread{
+
+        private List<Formulario> formularios;
+        private String email;
+
+            public ThreadPutGS(List<Formulario> formularios, String email) {
+                this.formularios = formularios;
+                this.email = email;
+            }
+
+            @Override
+            public void run() {
+                ConnectivityManager connectivityManager = (ConnectivityManager) requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                        connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+                    FormularioDAO formularioDAO = new FormularioDAO(getActivity().getApplicationContext());
+                    listaFormulario = formularioDAO.listar();
+                    autentificacao = ConfiguracaoFirebase.getFirebaseAuth();
+                    DatabaseReference formularios = referencia.child("usuarios").child(Base64Custom.codificarBase64(autentificacao.getCurrentUser().getEmail())).child("formulario");
+                    for (int i = 0; i < listaFormulario.size(); i++) {
+                        formularios.child(listaFormulario.get(i).getId().toString()).setValue(listaFormulario.get(i));
+                    }
+                    enviarParaGS(this.formularios, this.email);
+                }else{
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getActivity().getApplicationContext(), "Sem conexão com a internet", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                }
+            }
         }
 
 }

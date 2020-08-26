@@ -44,84 +44,90 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAlignment="textEnd" />
+            android:text="1"
+            android:textAlignment="center"
+            android:textColor="@color/textColor" />
 
         <TextView
             android:id="@+id/cadastroUpload2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAlignment="textEnd" />
+            android:text="2"
+            android:textAlignment="center"
+            android:textColor="@color/textColor" />
 
         <TextView
             android:id="@+id/cadastroUpload3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAlignment="textEnd" />
+            android:text="3"
+            android:textAlignment="center"
+            android:textColor="@color/textColor" />
 
         <TextView
             android:id="@+id/cadastroUpload4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAlignment="textEnd" />
-
-        <TextView
-            android:id="@+id/cadastroUpload5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textAlignment="textEnd" />
-
-        <TextView
-            android:id="@+id/cadastroUpload6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textAlignment="textEnd" />
+            android:text="4"
+            android:textAlignment="center"
+            android:textColor="@color/textColor" />
 
         <TextView
             android:id="@+id/cadastroUpload7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAlignment="textEnd" />
+            android:text="5"
+            android:textAlignment="center"
+            android:textColor="@color/textColor" />
 
         <TextView
             android:id="@+id/cadastroUpload8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAlignment="textEnd" />
+            android:text="6"
+            android:textAlignment="center"
+            android:textColor="@color/textColor" />
 
         <TextView
             android:id="@+id/cadastroUpload9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAlignment="textEnd" />
+            android:text="7"
+            android:textAlignment="center"
+            android:textColor="@color/textColor" />
 
         <TextView
             android:id="@+id/cadastroUpload10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAlignment="textEnd" />
+            android:text="8"
+            android:textAlignment="center"
+            android:textColor="@color/textColor" />
 
         <TextView
             android:id="@+id/cadastroUpload11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAlignment="textEnd" />
+            android:text="9"
+            android:textAlignment="center"
+            android:textColor="@color/textColor" />
 
         <TextView
             android:id="@+id/cadastroUpload12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAlignment="textEnd" />
+            android:text="10"
+            android:textAlignment="center"
+            android:textColor="@color/textColor" />
     </LinearLayout>
 
     <TextView

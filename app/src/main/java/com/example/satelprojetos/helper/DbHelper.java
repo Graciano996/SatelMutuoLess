@@ -30,12 +30,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 " ip TEXT NOT NULL,ipEstrutura TEXT NOT NULL,quantidadeLampada TEXT NOT NULL," +
                 " ipAtivacao TEXT NOT NULL,vinteEQuatro TEXT NOT NULL,quantidade24H TEXT NOT NULL," +
                 " tipoPot TEXT NOT NULL, potReator TEXT NOT NULL, " +
-                " ip2 TEXT NOT NULL,ipEstrutura2 TEXT NOT NULL, quantidadeLampada2 TEXT NOT NULL," +
-                " ipAtivacao2 TEXT NOT NULL, vinteEQuatro2 TEXT NOT NULL, quantidade24H2 TEXT NOT NULL," +
-                " tipoPot2 TEXT NOT NULL, potReator2 TEXT NOT NULL, " +
-                " ip3 TEXT NOT NULL, ipEstrutura3 TEXT NOT NULL, quantidadeLampada3 TEXT NOT NULL," +
-                " ipAtivacao3 TEXT NOT NULL, vinteEQuatro3 TEXT NOT NULL, quantidade24H3 TEXT NOT NULL," +
-                " tipoPot3 TEXT NOT NULL, potReator3 TEXT NOT NULL, observacaoIP TEXT NOT NULL," +
+                " observacaoIP TEXT NOT NULL," +
                 " ativos TEXT NOT NULL, chkTrafoTrifasico TEXT NOT NULL, chkTrafoMono TEXT NOT  NULL,"+
                 " trafoTrifasico TEXT NOT NULL, trafoMono TEXT NOT NULL,chFusivel TEXT NOT NULL,"+
                 " chFaca TEXT NOT NULL,religador TEXT NOT NULL, medicao TEXT NOT NULL, banco TEXT NOT NULL," +
@@ -48,17 +43,17 @@ public class DbHelper extends SQLiteOpenHelper {
                 " observacaoMutuo TEXT NOT NULL, descricaoIrregularidade TEXT NOT NULL," +
                 " dimensaoVegetacao TEXT NOT NULL, distanciaBaixa TEXT NOT NULL, distanciaMedia TEXT NOT NULL," +
                 " estadoArvore TEXT NOT NULL,quedaArvore TEXT NOT NULL, localArvore TEXT NOT NULL, " +
-                " observacaoVegetacao TEXT NOT NULL," +
+                " observacaoVegetacao TEXT NOT NULL,vegetacao TEXT NOT NULL," +
                 " caminhoImagem TEXT NOT NULL, caminhoImagem2 TEXT NOT NULL, caminhoImagem3 TEXT NOT NULL," +
-                "caminhoImagem4 TEXT NOT NULL,caminhoImagem5 TEXT NOT NULL,caminhoImagem6 TEXT NOT NULL," +
+                "caminhoImagem4 TEXT NOT NULL," +
                 "caminhoImagem7 TEXT NOT NULL,caminhoImagem8 TEXT NOT NULL,caminhoImagem9 TEXT NOT NULL," +
                 "caminhoImagem10 TEXT NOT NULL,caminhoImagem11 TEXT NOT NULL,caminhoImagem12 TEXT NOT NULL," +
                 " urlImagem TEXT NOT NULL, urlImagem2 TEXT NOT NULL, urlImagem3 TEXT NOT NULL," +
-                " urlImagem4 TEXT NOT NULL, urlImagem5 TEXT NOT NULL, urlImagem6 TEXT NOT NULL," +
+                " urlImagem4 TEXT NOT NULL," +
                 " urlImagem7 TEXT NOT NULL,urlImagem8 TEXT NOT NULL,urlImagem9 TEXT NOT NULL," +
                 " urlImagem10 TEXT NOT NULL,urlImagem11 TEXT NOT NULL,urlImagem12 TEXT NOT NULL," +
                 " color TEXT NOT NULL, color2 TEXT NOT NULL, color3 TEXT NOT NULL, color4 TEXT NOT NULL," +
-                " color5 TEXT NOT NULL, color6 TEXT NOT NULL, color7 TEXT NOT NULL, color8 TEXT NOT NULL," +
+                " color7 TEXT NOT NULL, color8 TEXT NOT NULL," +
                 " color9 TEXT NOT NULL, color10 TEXT NOT NULL, color11 TEXT NOT NULL, color12 TEXT NOT NULL," +
                 " contadorIp INTEGER, contadorAr INTEGER,contadorAt INTEGER);";
 
@@ -71,12 +66,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 " ip TEXT NOT NULL,ipEstrutura TEXT NOT NULL,quantidadeLampada TEXT NOT NULL," +
                 " ipAtivacao TEXT NOT NULL,vinteEQuatro TEXT NOT NULL,quantidade24H TEXT NOT NULL," +
                 " tipoPot TEXT NOT NULL, potReator TEXT NOT NULL, " +
-                " ip2 TEXT NOT NULL,ipEstrutura2 TEXT NOT NULL, quantidadeLampada2 TEXT NOT NULL," +
-                " ipAtivacao2 TEXT NOT NULL, vinteEQuatro2 TEXT NOT NULL, quantidade24H2 TEXT NOT NULL," +
-                " tipoPot2 TEXT NOT NULL, potReator2 TEXT NOT NULL, " +
-                " ip3 TEXT NOT NULL, ipEstrutura3 TEXT NOT NULL, quantidadeLampada3 TEXT NOT NULL," +
-                " ipAtivacao3 TEXT NOT NULL, vinteEQuatro3 TEXT NOT NULL, quantidade24H3 TEXT NOT NULL," +
-                " tipoPot3 TEXT NOT NULL, potReator3 TEXT NOT NULL, observacaoIP TEXT NOT NULL," +
+                " observacaoIP TEXT NOT NULL," +
                 " ativos TEXT NOT NULL, chkTrafoTrifasico TEXT NOT NULL, chkTrafoMono TEXT NOT  NULL,"+
                 " trafoTrifasico TEXT NOT NULL, trafoMono TEXT NOT NULL,chFusivel TEXT NOT NULL,"+
                 " chFaca TEXT NOT NULL,religador TEXT NOT NULL, medicao TEXT NOT NULL, banco TEXT NOT NULL," +
@@ -89,17 +79,17 @@ public class DbHelper extends SQLiteOpenHelper {
                 " observacaoMutuo TEXT NOT NULL, descricaoIrregularidade TEXT NOT NULL," +
                 " dimensaoVegetacao TEXT NOT NULL, distanciaBaixa TEXT NOT NULL, distanciaMedia TEXT NOT NULL," +
                 " estadoArvore TEXT NOT NULL,quedaArvore TEXT NOT NULL, localArvore TEXT NOT NULL, " +
-                " observacaoVegetacao TEXT NOT NULL," +
+                " observacaoVegetacao TEXT NOT NULL,vegetacao TEXT NOT NULL," +
                 " caminhoImagem TEXT NOT NULL, caminhoImagem2 TEXT NOT NULL, caminhoImagem3 TEXT NOT NULL," +
-                "caminhoImagem4 TEXT NOT NULL,caminhoImagem5 TEXT NOT NULL,caminhoImagem6 TEXT NOT NULL," +
+                "caminhoImagem4 TEXT NOT NULL," +
                 "caminhoImagem7 TEXT NOT NULL,caminhoImagem8 TEXT NOT NULL,caminhoImagem9 TEXT NOT NULL," +
                 "caminhoImagem10 TEXT NOT NULL,caminhoImagem11 TEXT NOT NULL,caminhoImagem12 TEXT NOT NULL," +
                 " urlImagem TEXT NOT NULL, urlImagem2 TEXT NOT NULL, urlImagem3 TEXT NOT NULL," +
-                " urlImagem4 TEXT NOT NULL, urlImagem5 TEXT NOT NULL, urlImagem6 TEXT NOT NULL," +
+                " urlImagem4 TEXT NOT NULL," +
                 " urlImagem7 TEXT NOT NULL,urlImagem8 TEXT NOT NULL,urlImagem9 TEXT NOT NULL," +
                 " urlImagem10 TEXT NOT NULL,urlImagem11 TEXT NOT NULL,urlImagem12 TEXT NOT NULL," +
                 " color TEXT NOT NULL, color2 TEXT NOT NULL, color3 TEXT NOT NULL, color4 TEXT NOT NULL," +
-                " color5 TEXT NOT NULL, color6 TEXT NOT NULL, color7 TEXT NOT NULL, color8 TEXT NOT NULL," +
+                " color7 TEXT NOT NULL, color8 TEXT NOT NULL," +
                 " color9 TEXT NOT NULL, color10 TEXT NOT NULL, color11 TEXT NOT NULL, color12 TEXT NOT NULL," +
                 " contadorIp INTEGER, contadorAr INTEGER,contadorAt INTEGER);";
 

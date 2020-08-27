@@ -79,13 +79,18 @@ public class CadastradosFragment extends Fragment {
                             public void onItemClick(View view, int position) {
                                 Formulario formularioSelecionado = listaFormulario.get(position);
                                 CadastroFragment cadastroFragment = new CadastroFragment();
+                                CadastradosFragment cadastradosFragment = new CadastradosFragment();
                                 Bundle bundle = new Bundle();
                                 bundle.putSerializable("formularioSelecionado", formularioSelecionado);
                                 cadastroFragment.setArguments(bundle);
                                 NavigationView navigationView = requireActivity().findViewById(R.id.nav_view);
                                 navigationView.setCheckedItem(R.id.nav_cadastro);
                                 FragmentManager fm = getParentFragmentManager();
+                                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                                    fm.popBackStack();
+                                }
                                 FragmentTransaction transaction = fm.beginTransaction();
+                                transaction.detach(cadastradosFragment);
                                 transaction.replace(R.id.nav_host_fragment, cadastroFragment).addToBackStack(null);
                                 transaction.commit();
 
@@ -129,9 +134,9 @@ public class CadastradosFragment extends Fragment {
         btnEnviarCadastrados.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ThreadPutGS threadPutGS = new ThreadPutGS(listaFormulario,
-                        FirebaseAuth.getInstance().getCurrentUser().getEmail());
-                threadPutGS.start();
+                    ThreadPutGS threadPutGS = new ThreadPutGS(listaFormulario,
+                            FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                    threadPutGS.start();
             }
         });
 

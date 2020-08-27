@@ -13,6 +13,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -21,6 +22,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -276,13 +278,20 @@ public class MapsFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 String codigoEnergisa = marker.getTitle();
                                 CadastroFragment cadastroFragment = new CadastroFragment();
+                                MapsFragment mapsFragment = new MapsFragment();
                                 Bundle bundle = new Bundle();
+                                googleMap.clear();
                                 bundle.putSerializable("codigoEnergisa", codigoEnergisa);
                                 cadastroFragment.setArguments(bundle);
                                 NavigationView navigationView = requireActivity().findViewById(R.id.nav_view);
                                 navigationView.setCheckedItem(R.id.nav_cadastro);
                                 FragmentManager fm = getParentFragmentManager();
-                                FragmentTransaction transaction = fm.beginTransaction();
+                                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                                    fm.popBackStack();
+                                }
+                                FragmentTransaction transaction = fm.beginTransaction();;
+                                transaction.detach(mapsFragment);
+                                transaction.addToBackStack(null);
                                 transaction.replace(R.id.nav_host_fragment, cadastroFragment).addToBackStack(null);
                                 transaction.commit();
                             }
@@ -564,6 +573,10 @@ class ThreadGS extends Thread{
     }
 }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i("DATA", "ENTRE AQUI 74");
+    }
 }
 

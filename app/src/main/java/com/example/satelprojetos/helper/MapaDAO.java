@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.satelprojetos.helper.DbHelper;
+import com.example.satelprojetos.model.Formulario;
 import com.example.satelprojetos.model.Mapa;
 
 import java.util.ArrayList;
@@ -24,12 +25,8 @@ public class MapaDAO {
 
     }
     public boolean salvar(Mapa mapa) {
-        ContentValues cv = new ContentValues();
-        cv.put("latitude", mapa.getLatitude());
-        cv.put("longitude", mapa.getLongitude());
-        cv.put("codigo", mapa.getCodigo());
-        cv.put("cadastrado", mapa.getCadastrado());
-        cv.put("existe", mapa.getExiste());
+        ContentValues cv = setCV(mapa);
+
 
 
         try{
@@ -44,12 +41,7 @@ public class MapaDAO {
     }
 
     public boolean atualizar(Mapa mapa) {
-        ContentValues cv = new ContentValues();
-        cv.put("latitude", mapa.getLatitude());
-        cv.put("longitude", mapa.getLongitude());
-        cv.put("codigo", mapa.getCodigo());
-        cv.put("cadastrado", mapa.getCadastrado());
-        cv.put("existe", mapa.getExiste());
+        ContentValues cv = setCV(mapa);
 
         String[] args = {mapa.getCodigo()};
 
@@ -118,5 +110,16 @@ public class MapaDAO {
         }
 
         return mapas;
+    }
+
+    public ContentValues setCV(Mapa mapa){
+        ContentValues cv = new ContentValues();
+        cv.put("latitude", mapa.getLatitude());
+        cv.put("longitude", mapa.getLongitude());
+        cv.put("codigo", mapa.getCodigo());
+        cv.put("cadastrado", mapa.getCadastrado());
+        cv.put("existe", mapa.getExiste());
+
+        return cv;
     }
 }

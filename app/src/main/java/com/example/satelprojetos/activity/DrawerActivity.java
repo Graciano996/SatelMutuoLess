@@ -71,7 +71,7 @@ public class DrawerActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences(SESSION_ID,0);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("Id",sessionId);
-        editor.commit();
+        editor.apply();
 
 
         Log.i("sessionId", sessionId);

@@ -30,6 +30,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,7 +134,7 @@ public class CadastroFragment extends Fragment {
     relativeCeans, relativeTar, relativeReservaTec, relativeBackbone,relativeTipoCabo,relativeTipoCabodois,
     relativeDimensaoVegetacao, relativeBaixa, relativeMedia, relativeEstadoArvore, relativeLocalArvore;
     private TextView textOutros, textLampada, textFusivel, textFusivelReligador, textQuantidadeCabo,
-    textQuantidadeCabodois, textNome, textIrregularidade;
+    textQuantidadeCabodois, textNome, textIrregularidade, textOcupante;
     private EditText codigo, endereco, latitude, longitude, observacaoFisicas,
             observacaoAtivos, quantidadeLampada,
             potReator, quantidade24H,
@@ -161,9 +162,10 @@ public class CadastroFragment extends Fragment {
             imagemMutuo, imagemMutuo2, imagemMutuo3,imagemVeg;
     private String imgPathPan, imgPathAlt, imgPathQualidade,imgPathIP, imgPathAtivos,
             imgPathAtivos2, imgPathMutuo, imgPathMutuo2, imgPathMutuo3,imgPathVeg;
-    public Button btnUpload, btn, btnFoto4, btnFoto13,btnFoto14,btnFoto15,btnFoto16,btnFoto17,
-    btnFoto30, btnUpload4,btnUpload13,btnUpload14,btnUpload15,btnUpload16,btnUpload17,btnUpload30;
+    public Button btnUpload, btn, btnFoto, btnFoto2,btnFoto3,btnFoto4, btnFoto13,btnFoto14,btnFoto15,btnFoto16,btnFoto17,
+    btnFoto30,btnUpload2,btnUpload3, btnUpload4,btnUpload13,btnUpload14,btnUpload15,btnUpload16,btnUpload17,btnUpload30;
     public View root;
+    Boolean outroOcupante = false;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -243,7 +245,7 @@ public class CadastroFragment extends Fragment {
 
         storageReference = ConfiguracaoFirebase.getStorageReference();
         autentificacao = ConfiguracaoFirebase.getFirebaseAuth();
-        final Button btnFoto = root.findViewById(R.id.btnFoto);
+        btnFoto = root.findViewById(R.id.btnFoto);
         btnFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -268,7 +270,7 @@ public class CadastroFragment extends Fragment {
             }
         });
 
-        Button btnFoto2 = root.findViewById(R.id.btnFoto2);
+        btnFoto2 = root.findViewById(R.id.btnFoto2);
         btnFoto2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -294,7 +296,7 @@ public class CadastroFragment extends Fragment {
                 }
             }
         });
-        Button btnFoto3 = root.findViewById(R.id.btnFoto3);
+        btnFoto3 = root.findViewById(R.id.btnFoto3);
         btnFoto3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -506,7 +508,7 @@ public class CadastroFragment extends Fragment {
             }
         });
 
-        final Button btnUpload2 = root.findViewById(R.id.btnUpload2);
+        btnUpload2 = root.findViewById(R.id.btnUpload2);
         btnUpload2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -518,7 +520,7 @@ public class CadastroFragment extends Fragment {
             }
         });
 
-        final Button btnUpload3 = root.findViewById(R.id.btnUpload3);
+        btnUpload3 = root.findViewById(R.id.btnUpload3);
         btnUpload3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -677,6 +679,7 @@ public class CadastroFragment extends Fragment {
 
         //MUTUO
         mutuo = root.findViewById(R.id.chkCadastroMutuo);
+        textOcupante = root.findViewById(R.id.textViewQuantidadeOcupante);
         quantidadeOcupantes = root.findViewById(R.id.textCadastroQuantidadeMutuo);
         textQuantidadeCabo = root.findViewById(R.id.textViewQuantidadeMutuodois);
         quantidadeCabos = root.findViewById(R.id.textCadastroMutuoQuantidadeCabos);
@@ -1094,6 +1097,8 @@ public class CadastroFragment extends Fragment {
                     fotoMutuo3.setVisibility(View.VISIBLE);
                     btnFoto17.setVisibility(View.VISIBLE);
                     btnUpload17.setVisibility(View.VISIBLE);
+                    textOcupante.setVisibility(View.VISIBLE);
+                    quantidadeOcupantes.setVisibility(View.VISIBLE);
                     textQuantidadeCabo.setVisibility(View.VISIBLE);
                     textQuantidadeCabodois.setVisibility(View.VISIBLE);
                     textNome.setVisibility(View.VISIBLE);
@@ -1133,6 +1138,8 @@ public class CadastroFragment extends Fragment {
                     fotoMutuo3.setVisibility(View.GONE);
                     btnFoto17.setVisibility(View.GONE);
                     btnUpload17.setVisibility(View.GONE);
+                    textOcupante.setVisibility(View.GONE);
+                    quantidadeOcupantes.setVisibility(View.GONE);
                     textQuantidadeCabo.setVisibility(View.GONE);
                     textQuantidadeCabodois.setVisibility(View.GONE);
                     textNome.setVisibility(View.GONE);
@@ -1356,6 +1363,8 @@ public class CadastroFragment extends Fragment {
                 }
 
                 imagemCorrigida.compress(Bitmap.CompressFormat.JPEG, 80, baos);
+                imagemCorrigida.recycle();
+                Runtime.getRuntime().gc();
                 byte[] dadosImagem = baos.toByteArray();
                 String pastaNome = codigoUpload.getText().toString() + "_" + sufixo + contadorUpload + ".jpeg";
                 final StorageReference imageRef = storageReference
@@ -1452,7 +1461,6 @@ public class CadastroFragment extends Fragment {
                     public void onCanceled() {
                     }
                 });
-                imagemCorrigida.recycle();
             } else {
                 requireActivity().runOnUiThread(new Runnable() {
                     @Override
@@ -1549,13 +1557,13 @@ public class CadastroFragment extends Fragment {
         }
     }
 
-    public void intentGet(int requestCode, int resultCode, @Nullable Intent data) {
+    public void intentGet(int requestCode, int resultCode, @Nullable final Intent data) {
         if (resultCode == RESULT_OK) {
-            Uri localImagemSelecionada;
-            Cursor cursor;
+            final Uri localImagemSelecionada;
+            final Cursor cursor;
             final BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 2;
-            int columnIndex;
+            options.inSampleSize = 8;
+            final int columnIndex;
             try {
                 switch (requestCode) {
                     case IMAGE_CAPTURE_CODE_PAN:
@@ -1565,7 +1573,7 @@ public class CadastroFragment extends Fragment {
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                fotoPan.setImageBitmap(BitmapFactory.decodeFile(photoFile.getAbsolutePath()));
+                                fotoPan.setImageBitmap(BitmapFactory.decodeFile(imgPathPan,options));
                             }
                         });
                         //imagemPan = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
@@ -1594,7 +1602,7 @@ public class CadastroFragment extends Fragment {
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                fotoAlt.setImageBitmap(BitmapFactory.decodeFile(photoFile.getAbsolutePath(),options));
+                                fotoAlt.setImageBitmap(BitmapFactory.decodeFile(imgPathAlt,options));
                             }
                         });
                         break;
@@ -1622,7 +1630,7 @@ public class CadastroFragment extends Fragment {
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                fotoQualidade.setImageBitmap(BitmapFactory.decodeFile(photoFile.getAbsolutePath(),options));
+                                fotoQualidade.setImageBitmap(BitmapFactory.decodeFile(imgPathQualidade,options));
                             }
                         });
                         break;
@@ -1651,7 +1659,7 @@ public class CadastroFragment extends Fragment {
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                fotoIP.setImageBitmap(BitmapFactory.decodeFile(photoFile.getAbsolutePath(),options));
+                                fotoIP.setImageBitmap(BitmapFactory.decodeFile(imgPathIP,options));
                             }
                         });
                         break;
@@ -1681,7 +1689,7 @@ public class CadastroFragment extends Fragment {
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                fotoAtivos.setImageBitmap(BitmapFactory.decodeFile(photoFile.getAbsolutePath(),options));
+                                fotoAtivos.setImageBitmap(BitmapFactory.decodeFile(imgPathAtivos,options));
                             }
                         });
                         break;
@@ -1711,7 +1719,7 @@ public class CadastroFragment extends Fragment {
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                fotoAtivos2.setImageBitmap(BitmapFactory.decodeFile(photoFile.getAbsolutePath(),options));
+                                fotoAtivos2.setImageBitmap(BitmapFactory.decodeFile(imgPathAtivos2,options));
                             }
                         });
                         break;
@@ -1741,7 +1749,7 @@ public class CadastroFragment extends Fragment {
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                fotoMutuo.setImageBitmap(BitmapFactory.decodeFile(photoFile.getAbsolutePath(),options));
+                                fotoMutuo.setImageBitmap(BitmapFactory.decodeFile(imgPathMutuo,options));
                             }
                         });
                         break;
@@ -1772,7 +1780,7 @@ public class CadastroFragment extends Fragment {
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                fotoMutuo2.setImageBitmap(BitmapFactory.decodeFile(photoFile.getAbsolutePath(),options));
+                                fotoMutuo2.setImageBitmap(BitmapFactory.decodeFile(imgPathMutuo2,options));
                             }
                         });
                         break;
@@ -1802,7 +1810,7 @@ public class CadastroFragment extends Fragment {
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                fotoMutuo3.setImageBitmap(BitmapFactory.decodeFile(photoFile.getAbsolutePath(),options));
+                                fotoMutuo3.setImageBitmap(BitmapFactory.decodeFile(imgPathMutuo3,options));
                             }
                         });
                         break;
@@ -1832,7 +1840,7 @@ public class CadastroFragment extends Fragment {
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                fotoVeg.setImageBitmap(BitmapFactory.decodeFile(photoFile.getAbsolutePath(),options));
+                                fotoVeg.setImageBitmap(BitmapFactory.decodeFile(imgPathVeg,options));
                             }
                         });
                         break;
@@ -2146,6 +2154,7 @@ public class CadastroFragment extends Fragment {
                     fotoMutuo3.setVisibility(View.VISIBLE);
                     btnFoto17.setVisibility(View.VISIBLE);
                     btnUpload17.setVisibility(View.VISIBLE);
+                    textOcupante.setVisibility(View.VISIBLE);
                     quantidadeOcupantes.setVisibility(View.VISIBLE);
                     quantidadeCabos.setVisibility(View.VISIBLE);
                     tipoCabo.setVisibility(View.VISIBLE);
@@ -2341,6 +2350,7 @@ public class CadastroFragment extends Fragment {
         requireActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+
                 root.findViewById(R.id.btnNovoPoste).setVisibility(View.GONE);
                 contadorAr = formularioAtual.getContadorAr();
                 contadorAt = formularioAtual.getContadorAt();
@@ -2447,6 +2457,58 @@ public class CadastroFragment extends Fragment {
                 urlFotoVeg = Uri.parse(formularioAtual.getUrlImagem12());
                 latitude.setText(formularioAtual.getLatitude());
                 longitude.setText(formularioAtual.getLongitude());
+
+
+                if ((urlFotoPan == null) || ((urlFotoPan.toString()).equals(""))) {
+
+                } else {
+                    btnUpload.setText("Enviado");
+                }
+                if ((urlFotoAlt == null) || ((urlFotoAlt.toString()).equals(""))) {
+
+                } else {
+                    btnUpload2.setText("Enviado");
+                }
+                if ((urlFotoQualidade == null) || ((urlFotoQualidade.toString()).equals(""))) {
+
+                } else {
+                    btnUpload3.setText("Enviado");
+                }
+                if ((urlFotoIP == null) || ((urlFotoIP.toString()).equals(""))) {
+
+                } else {
+                    btnUpload4.setText("Enviado");
+                }
+                if ((urlFotoAtivos == null) || ((urlFotoAtivos.toString()).equals(""))) {
+
+                } else {
+                    btnUpload13.setText("Enviado");
+                }
+                if ((urlFotoAtivos2 == null) || ((urlFotoAtivos2.toString()).equals(""))) {
+
+                } else {
+                    btnUpload14.setText("Enviado");
+                }
+                if ((urlFotoMutuo == null) || ((urlFotoMutuo.toString()).equals(""))) {
+
+                } else {
+                    btnUpload15.setText("Enviado");
+                }
+                if ((urlFotoMutuo2 == null) || ((urlFotoMutuo2.toString()).equals(""))) {
+
+                } else {
+                    btnUpload16.setText("Enviado");
+                }
+                if ((urlFotoMutuo3 == null) || ((urlFotoMutuo3.toString()).equals(""))) {
+
+                } else {
+                    btnUpload17.setText("Enviado");
+                }
+                if ((urlFotoVeg == null) || ((urlFotoVeg.toString()).equals(""))) {
+
+                } else {
+                    btnUpload30.setText("Enviado");
+                }
 
                 if (formularioAtual.getMunicipio().equals("-")) {
                     municipio.setSelection(0);
@@ -2892,6 +2954,7 @@ public class CadastroFragment extends Fragment {
         requireActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                outroOcupante = true;
                 root.findViewById(R.id.btnCadastroSalvar).setVisibility(View.GONE);
                 contadorAr = formularioAtual.getContadorAr();
                 contadorAt = formularioAtual.getContadorAt();
@@ -2923,7 +2986,7 @@ public class CadastroFragment extends Fragment {
                     imagemQualidade = BitmapFactory.decodeFile(imgPathQualidade,options);
                 }
 
-                imgPathIP = formularioAtual.getCaminhoImagem4();
+                /*imgPathIP = formularioAtual.getCaminhoImagem4();
                 if (imgPathIP == null || imgPathIP.equals("")) {
 
                 } else {
@@ -2984,11 +3047,12 @@ public class CadastroFragment extends Fragment {
                     imgPathVeg = formularioAtual.getCaminhoImagem12();
                     fotoVeg.setImageBitmap(BitmapFactory.decodeFile(imgPathVeg,options));
                     imagemVeg = BitmapFactory.decodeFile(imgPathVeg,options);
-                }
+                }*/
                 endereco.setText(formularioAtual.getEndereco());
                 urlFotoPan = Uri.parse(formularioAtual.getUrlImagem());
                 urlFotoAlt = Uri.parse(formularioAtual.getUrlImagem2());
                 urlFotoQualidade = Uri.parse(formularioAtual.getUrlImagem3());
+                /*
                 urlFotoIP = Uri.parse(formularioAtual.getUrlImagem4());
                 urlFotoAtivos = Uri.parse(formularioAtual.getUrlImagem7());
                 urlFotoAtivos2 = Uri.parse(formularioAtual.getUrlImagem8());
@@ -2996,6 +3060,7 @@ public class CadastroFragment extends Fragment {
                 urlFotoMutuo2 = Uri.parse(formularioAtual.getUrlImagem10());
                 urlFotoMutuo3 = Uri.parse(formularioAtual.getUrlImagem11());
                 urlFotoVeg = Uri.parse(formularioAtual.getUrlImagem12());
+                */
                 if (formularioAtual.getMunicipio().equals("-")) {
                     municipio.setSelection(0);
                 } else {
@@ -3160,6 +3225,7 @@ public class CadastroFragment extends Fragment {
     }
 
     public void getFormulario(Boolean novoPosteEstado) throws Throwable {
+        Log.i("ENTREI","AQUI");
         progressDialog = new ProgressDialog(requireContext(), R.style.LightDialogTheme);
         progressDialog.setMessage("Salvando..."); // Setting Message
         progressDialog.setTitle("Por favor Espere"); // Setting Title
@@ -3462,8 +3528,7 @@ public class CadastroFragment extends Fragment {
             formulario.setContadorAr(contadorAr);
             formulario.setContadorAt(contadorAt);
             formulario.setContadorIp(contadorIp);
-            if (formularioAtual != null) {
-            if (novoPosteEstado == false) {
+            if ((novoPosteEstado == false) && (formularioAtual != null) ) {
                     formulario.setId(formularioAtual.getId());
                     formulario.setData(formularioAtual.getData());
                     if (formularioDAO.atualizar(formulario)) {
@@ -3485,46 +3550,48 @@ public class CadastroFragment extends Fragment {
                         Toast.makeText(requireActivity().getApplicationContext(), "Erro ao atualizar formulário", Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
                     }
-                }else{
-
-                }
             } else {
-                String thisDayText, thisMonthText, thisYearText;
-                //region Inicialização da data
-                Calendar calendar = Calendar.getInstance();
-
-                int thisYear = calendar.get(Calendar.YEAR);
-                thisYearText = String.valueOf(thisYear);
-
-                int thisMonth = calendar.get(Calendar.MONTH) + 1;
-                if (thisMonth < 9) {
-                    thisMonthText = "0" + thisMonth;
-                } else {
-                    thisMonthText = String.valueOf(thisMonth);
+                if(outroOcupante == true){
+                    formulario.setData(formularioAtual.getData());
                 }
+                else {
+                    String thisDayText, thisMonthText, thisYearText;
+                    //region Inicialização da data
+                    Calendar calendar = Calendar.getInstance();
 
-                int thisDay = calendar.get(Calendar.DAY_OF_MONTH);
-                if (thisDay < 9) {
-                    thisDayText = "0" + thisDay;
-                } else {
-                    thisDayText = String.valueOf(thisDay);
-                }
-                String data = thisDayText + "/" + thisMonthText + "/" + thisYearText;
-                String timeStamp = new SimpleDateFormat("dd/MM/yy-HH:mm:ss").format(new Date());
-                SimpleDateFormat readDate = new SimpleDateFormat("dd/MM/yy-HH:mm:ss");
-                readDate.setTimeZone(TimeZone.getTimeZone("GMT"));
-                Date date = null;
-                try {
-                    date = readDate.parse(timeStamp);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                SimpleDateFormat writeDate = new SimpleDateFormat("dd/MM/yyyy, HH:mm:ss");
-                writeDate.setTimeZone(TimeZone.getTimeZone("GMT-00:00"));
-                String s = writeDate.format(date);
+                    int thisYear = calendar.get(Calendar.YEAR);
+                    thisYearText = String.valueOf(thisYear);
 
+                    int thisMonth = calendar.get(Calendar.MONTH) + 1;
+                    if (thisMonth < 9) {
+                        thisMonthText = "0" + thisMonth;
+                    } else {
+                        thisMonthText = String.valueOf(thisMonth);
+                    }
+
+                    int thisDay = calendar.get(Calendar.DAY_OF_MONTH);
+                    if (thisDay < 9) {
+                        thisDayText = "0" + thisDay;
+                    } else {
+                        thisDayText = String.valueOf(thisDay);
+                    }
+                    String data = thisDayText + "/" + thisMonthText + "/" + thisYearText;
+                    String timeStamp = new SimpleDateFormat("dd/MM/yy-HH:mm:ss").format(new Date());
+                    SimpleDateFormat readDate = new SimpleDateFormat("dd/MM/yy-HH:mm:ss");
+                    readDate.setTimeZone(TimeZone.getTimeZone("GMT"));
+                    Date date = null;
+
+                    try {
+                        date = readDate.parse(timeStamp);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    SimpleDateFormat writeDate = new SimpleDateFormat("dd/MM/yyyy, HH:mm:ss");
+                    writeDate.setTimeZone(TimeZone.getTimeZone("GMT-00:00"));
+                    String s = writeDate.format(date);
+                    formulario.setData(s);
+                }
                 //endregion
-                formulario.setData(s);
                 if (formularioDAO.salvar(formulario)) {
                     CadastradosFragment cadastradosFragment = new CadastradosFragment();
                     CadastroFragment cadastroFragment = new CadastroFragment();
@@ -3545,6 +3612,10 @@ public class CadastroFragment extends Fragment {
                     progressDialog.dismiss();
                 }
 
+            }
+            try {
+                progressDialog.dismiss();
+            }catch (Exception e){
 
             }
         }

@@ -190,13 +190,13 @@ public class CadastradosFragment extends Fragment {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://script.google.com/macros/s/AKfycbzZJUnvHaDYfO13T9t7NyhLcweYuuYp38D1n0JzH0Hs4FVR0mrO/exec",
                     new Response.Listener<String>() {
                         @Override
-                        public void onResponse(String response) {
+                        public void onResponse(final String response) {
                             requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                      progressDialog.dismiss();
                                      carregarFormulariosCadastrados();
-                                     Toast.makeText(requireActivity().getApplicationContext(), "Sucesso", Toast.LENGTH_LONG).show();
+                                     Toast.makeText(requireActivity().getApplicationContext(), response, Toast.LENGTH_LONG).show();
                             }
                         });
                         }

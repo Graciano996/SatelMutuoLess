@@ -15,6 +15,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -24,6 +26,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +52,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -64,6 +68,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -71,6 +78,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import static android.app.Activity.RESULT_OK;
 
 public class MapsFragment extends Fragment {
     private List<Formulario> listaFormularioCadastro = new ArrayList<>();
@@ -80,6 +89,7 @@ public class MapsFragment extends Fragment {
     private List<String> listaCodigo = new ArrayList<>();
     private List<String> listaCadastrado = new ArrayList<>();
     private List<String> listaExiste = new ArrayList<>();
+    private static final int FILE=12;
     private GoogleMap mMap;
     private static final int REQUEST_CODE = 1;
     private LocationManager locationManager;
@@ -102,6 +112,7 @@ public class MapsFragment extends Fragment {
             locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
             googleMap2 = googleMap;
             ThreadGS threadGS = new ThreadGS();
+            loaddile();
             boolean connected = false;
             try {
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(localizacao.getLatitude(),localizacao.getLongitude())));
@@ -573,10 +584,40 @@ class ThreadGS extends Thread{
     }
 }
 
+    public void loaddile()
+    {
+        String type="*/*";
+
+        Intent i=new Intent(Intent.ACTION_GET_CONTENT);
+        i.setType(type);
+        startActivityForResult(Intent.createChooser(i,"select file") ,FILE);
+    }
+
+
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.i("DATA", "ENTRE AQUI 74");
+        if (requestCode == FILE && resultCode == RESULT_OK && data != null) {
+            Uri uri = data.getData();
+            File file = new File(uri.getPath());//create path from uri
+            String path = file.getAbsolutePath();
+            //final String[] split = file.getPath().split(":");//split the path.
+            //String filePath = split[1];//assign it to a string(your choice).
+            Log.i("PATH", path);
+            FileInputStream fis = null;
+            try {
+                fis = new FileInputStream (file);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            LatLng latLng = new LatLng(-8.783875, -63.903650);
+            googleMap2.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeFile(file.getPath()))));
+
+
+
+        }
     }
 }
 

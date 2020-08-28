@@ -1265,6 +1265,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
+        <TextView
+            android:id="@+id/textViewQuantidadeOcupante"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Quantidade de Ocupantes"
+            android:textSize="18sp"
+            android:visibility="gone"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnUpload17" />
+
         <EditText
             android:id="@+id/textCadastroQuantidadeMutuo"
             android:layout_width="0dp"
@@ -1273,13 +1286,15 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:ems="10"
-            android:hint="Quantidade de ocupantes"
-            android:inputType="textPersonName"
-            android:textColor="@color/textColor"
+            android:background="#FFFFFF"
+            android:backgroundTint="#FFFFFF"
+            android:inputType="number"
+            android:textColor="#000000"
+            android:text="0"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnUpload17" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewQuantidadeOcupante"/>
 
         <TextView
             android:id="@+id/textViewQuantidadeMutuo"

@@ -27,7 +27,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/side_nav_bar"
+        android:background="@drawable/button_selector_foto"
         android:text="Enviar"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"

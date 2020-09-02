@@ -132,7 +132,8 @@ public class CadastroFragment extends Fragment {
     private RelativeLayout relativeChFaca,relativeBanco,relativeRamal, relativeIPTipoEstrutura,
                             relativeIPTipoLampada,relativeIPTipoAtivacao, relativeFinalidade,
     relativeCeans, relativeTar, relativeReservaTec, relativeBackbone,relativeTipoCabo,relativeTipoCabodois,
-    relativeDimensaoVegetacao, relativeBaixa, relativeMedia, relativeEstadoArvore, relativeLocalArvore;
+    relativeDimensaoVegetacao, relativeBaixa, relativeMedia, relativeEstadoArvore,
+            relativeLocalArvore, relativeSpinMono,relativeSpinTri;
     private TextView textOutros, textLampada, textFusivel, textFusivelReligador, textQuantidadeCabo,
     textQuantidadeCabodois, textNome, textIrregularidade, textOcupante;
     private EditText codigo, endereco, latitude, longitude, observacaoFisicas,
@@ -173,6 +174,7 @@ public class CadastroFragment extends Fragment {
 
 
         root = inflater.inflate(R.layout.fragment_cadastro, container, false);
+        ((DrawerActivity) getActivity()).getSupportActionBar().setTitle("Cadastro");
         codigo = root.findViewById(R.id.textCadastroCodigo);
         fotoPan = root.findViewById(R.id.imageCadastroFoto);
         fotoAlt = root.findViewById(R.id.imageCadastroFoto2);
@@ -656,8 +658,10 @@ public class CadastroFragment extends Fragment {
         ativos = root.findViewById(R.id.chkAtivos);
         chkTrafoTrifasico = root.findViewById(R.id.chkCadastroTrafoTrifasico);
         chkTrafoMono = root.findViewById(R.id.chkCadastroTrafoMono);
+        relativeSpinMono = root.findViewById(R.id.relativeSpinTrafoMono);
         trafoTrifasico = root.findViewById(R.id.spinCadastroTrafoTrifasico);
         trafoTrifasico.setEnabled(false);
+        relativeSpinTri = root.findViewById(R.id.relativeSpinTrafoTrifasico);
         trafoMono = root.findViewById(R.id.spinCadastroTrafoMono);
         trafoMono.setEnabled(false);
         religador = root.findViewById(R.id.chkCadastroReligador);
@@ -771,12 +775,14 @@ public class CadastroFragment extends Fragment {
             formularioAtual = (Formulario) this.getArguments().getSerializable("formularioSelecionado");
             if (formularioAtual != null) {
                 final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.LightDialogTheme);
-                dialog.setMessage("O que deseja fazer:");
+                dialog.setTitle("O que deseja fazer:");
+                dialog.setCancelable(false);
                 dialog.setPositiveButton("Editar/Recuperar Dados Para Novo Poste", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         final AlertDialog.Builder dialog2 = new AlertDialog.Builder(getActivity(), R.style.LightDialogTheme);
-                        dialog2.setMessage("Escolha uma opção?");
+                        dialog2.setTitle("Escolha uma opção?");
+                        dialog2.setCancelable(false);
                         dialog2.setPositiveButton("Novo Poste", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -978,6 +984,8 @@ public class CadastroFragment extends Fragment {
                     chBanco.setVisibility(View.VISIBLE);
                     ramalSubt.setVisibility(View.VISIBLE);
                     textOutros.setVisibility(View.VISIBLE);
+                    relativeSpinMono.setVisibility(View.VISIBLE);
+                    relativeSpinTri.setVisibility(View.VISIBLE);
                     relativeBanco.setVisibility(View.VISIBLE);
                     relativeRamal.setVisibility(View.VISIBLE);
                     relativeChFaca.setVisibility(View.VISIBLE);
@@ -1028,6 +1036,8 @@ public class CadastroFragment extends Fragment {
                     fotoAtivos2.setVisibility(View.GONE);
                     btnFoto14.setVisibility(View.GONE);
                     btnUpload14.setVisibility(View.GONE);
+                    relativeSpinMono.setVisibility(View.GONE);
+                    relativeSpinTri.setVisibility(View.GONE);
                     relativeBanco.setVisibility(View.GONE);
                     relativeRamal.setVisibility(View.GONE);
                     relativeChFaca.setVisibility(View.GONE);
@@ -1346,7 +1356,7 @@ public class CadastroFragment extends Fragment {
                     @Override
                     public void run() {
                         progressDialog = new ProgressDialog(requireContext(), R.style.LightDialogTheme);
-                        progressDialog.setMessage("Carregando dados..."); // Setting Message
+                        progressDialog.setMessage("Enviando dados..."); // Setting Message
                         progressDialog.setTitle("Por favor Espere"); // Setting Title
                         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
                         progressDialog.show(); // Display Progress Dialog
@@ -2065,6 +2075,8 @@ public class CadastroFragment extends Fragment {
                     btnUpload13.setVisibility(View.VISIBLE);
                     fotoAtivos2.setVisibility(View.VISIBLE);
                     btnFoto14.setVisibility(View.VISIBLE);
+                    relativeSpinMono.setVisibility(View.VISIBLE);
+                    relativeSpinTri.setVisibility(View.VISIBLE);
                     btnUpload14.setVisibility(View.VISIBLE);
                     relativeBanco.setVisibility(View.VISIBLE);
                     relativeRamal.setVisibility(View.VISIBLE);
@@ -3624,6 +3636,7 @@ public class CadastroFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
         try {
             unbindDrawables(root.findViewById(R.id.nav_host_fragment_container));  //R.id.coordinator is the root layout of your fragment view
             System.gc();
@@ -3631,6 +3644,11 @@ public class CadastroFragment extends Fragment {
 
         }
         root = null;
+        try {
+            limparMemoria();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
     }
 
 
@@ -3710,5 +3728,9 @@ public class CadastroFragment extends Fragment {
         Runtime.getRuntime().gc();
         //this.finalize();
     }
+
+
+
+
 
 }

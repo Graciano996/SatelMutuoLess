@@ -113,7 +113,6 @@ public class DrawerActivity extends AppCompatActivity {
         if (conteudoDrawer.equals("Cadastrados")) {
             final AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.LightDialogTheme);
             dialog.setTitle("Sair da conta?");
-
             dialog.setMessage("Ao pressionar sim voltará a tela de login");
             dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                 @Override

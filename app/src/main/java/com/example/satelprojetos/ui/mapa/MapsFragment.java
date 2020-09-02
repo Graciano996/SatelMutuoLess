@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,6 +32,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -42,6 +44,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.satelprojetos.R;
+import com.example.satelprojetos.activity.DrawerActivity;
 import com.example.satelprojetos.helper.EnviadoDAO;
 import com.example.satelprojetos.helper.FormularioDAO;
 import com.example.satelprojetos.helper.MapaDAO;
@@ -105,6 +108,7 @@ public class MapsFragment extends Fragment {
     KmlLayer kmlLayer;
     MarkerManager.Collection markerCollection;
     GoogleMap googleMap2;
+    Button btnCadastrar,btnExcluir;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
         @Override
@@ -112,7 +116,7 @@ public class MapsFragment extends Fragment {
             locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
             googleMap2 = googleMap;
             ThreadGS threadGS = new ThreadGS();
-            loaddile();
+            //loaddile();
             boolean connected = false;
             try {
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(localizacao.getLatitude(),localizacao.getLongitude())));
@@ -128,6 +132,13 @@ public class MapsFragment extends Fragment {
                 MapaDAO mapaDAO = new MapaDAO(getActivity().getApplicationContext());
                 mapaDAO.deletarTudo();
                 threadGS.start();
+                /*try {
+                    progressDialog.dismiss();
+                }
+                catch (Exception e){
+
+                }*/
+
                 //getItems();
 
             } else {
@@ -267,24 +278,8 @@ public class MapsFragment extends Fragment {
 
                     }else {
                         final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.LightDialogTheme);
-                        dialog.setPositiveButton("Excluir", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                String codigoEnergisa = marker.getTitle();
-                                ConnectivityManager connectivityManager2 = (ConnectivityManager) requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-                                if (connectivityManager2.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
-                                        connectivityManager2.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
-                                    enviarParaGS(codigoEnergisa,FirebaseAuth.getInstance().getCurrentUser().getEmail());
-
-                                } else {
-
-                                    Toast.makeText(getActivity().getApplicationContext(), "Para utilizar essa opção é necessário conexão com a internet", Toast.LENGTH_SHORT).show();
-                                }
-
-                            }
-                        });
-                        dialog.setNegativeButton("Cadastrar", new DialogInterface.OnClickListener() {
+                        dialog.setTitle("O que deseja fazer:");
+                        dialog.setPositiveButton("Cadastrar", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 String codigoEnergisa = marker.getTitle();
@@ -307,6 +302,21 @@ public class MapsFragment extends Fragment {
                                 transaction.commit();
                             }
                         });
+                        dialog.setNegativeButton("Excluir", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String codigoEnergisa = marker.getTitle();
+                                ConnectivityManager connectivityManager2 = (ConnectivityManager) requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                                if (connectivityManager2.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                                        connectivityManager2.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+                                    enviarParaGS(codigoEnergisa,FirebaseAuth.getInstance().getCurrentUser().getEmail());
+
+                                } else {
+
+                                    Toast.makeText(getActivity().getApplicationContext(), "Para utilizar essa opção é necessário conexão com a internet", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
                         dialog.create();
                         dialog.show();
 
@@ -327,7 +337,6 @@ public class MapsFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         FormularioDAO formularioDAO = new FormularioDAO(getActivity().getApplicationContext());
@@ -375,14 +384,20 @@ public class MapsFragment extends Fragment {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        parseItems(response);
+                        Log.i("TESTE45", response);
+                        if(response.equals("ERRO")){
+                            progressDialog.dismiss();
+                        }else{
+                            parseItems(response);
+                        }
+
                     }
                 },
 
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        progressDialog.dismiss();
                     }
                 }
         );
@@ -606,7 +621,7 @@ class ThreadGS extends Thread{
             Log.i("PATH", path);
             FileInputStream fis = null;
             try {
-                fis = new FileInputStream (file);
+                fis = new FileInputStream(file);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -616,8 +631,8 @@ class ThreadGS extends Thread{
                     .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeFile(file.getPath()))));
 
 
-
         }
     }
+    
 }
 

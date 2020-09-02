@@ -33,6 +33,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.satelprojetos.R;
+import com.example.satelprojetos.activity.DrawerActivity;
 import com.example.satelprojetos.adapter.FormularioAdapter;
 import com.example.satelprojetos.config.ConfiguracaoFirebase;
 import com.example.satelprojetos.helper.Base64Custom;
@@ -68,6 +69,7 @@ public class CadastradosFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_cadastrados, container, false);
         //configurar RecyclerView
         ProgressDialog loading;
+        ((DrawerActivity) getActivity()).getSupportActionBar().setTitle("Cadastrado");
         btnEnviarCadastrados = root.findViewById(R.id.BtnEnviarCadastrados);
         recyclerCadastrados = root.findViewById(R.id.recyclerCadastrados);
         recyclerCadastrados.addOnItemTouchListener(
@@ -102,9 +104,7 @@ public class CadastradosFragment extends Fragment {
 
 
                                 final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.LightDialogTheme);
-                                dialog.setTitle("Confirmar exclusão?");
-
-                                dialog.setMessage("Deseja excluir o formulário: " + formularioSelecionado.getNome() + " ?");
+                                dialog.setTitle("Deseja excluir o formulário:\ncódigo: " + formularioSelecionado.getCodigo() + " ?");
                                 dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {

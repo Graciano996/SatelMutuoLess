@@ -7,14 +7,12 @@ import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -46,6 +44,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.muddzdev.styleabletoastlibrary.StyleableToast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,9 +110,10 @@ public class CadastradosFragment extends Fragment {
                                         FormularioDAO formularioDAO = new FormularioDAO(getActivity().getApplicationContext());
                                         if(formularioDAO.deletar(formularioSelecionado)){
                                             carregarFormulariosCadastrados();
-                                            Toast.makeText(getActivity().getApplicationContext(), "Sucesso ao excluir formulário", Toast.LENGTH_SHORT).show();
+                                            StyleableToast.makeText(requireActivity().getApplicationContext(), "Sucesso ao excluir formulário", R.style.ToastDone).show();
                                         }else{
-                                            Toast.makeText(getActivity().getApplicationContext(), "Erro ao excluir formulário", Toast.LENGTH_SHORT).show();
+                                            StyleableToast.makeText(requireActivity().getApplicationContext(), "Erro ao excluir formulário", R.style.ToastError).show();
+
                                         }
 
                                     }
@@ -196,7 +196,6 @@ public class CadastradosFragment extends Fragment {
                             public void run() {
                                      progressDialog.dismiss();
                                      carregarFormulariosCadastrados();
-                                     Toast.makeText(requireActivity().getApplicationContext(), response, Toast.LENGTH_LONG).show();
                             }
                         });
                         }
@@ -205,6 +204,7 @@ public class CadastradosFragment extends Fragment {
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            StyleableToast.makeText(requireActivity().getApplicationContext(), "Erro no upload do formulário", R.style.ToastError).show();
                         }
                     }
             ) {
@@ -327,19 +327,19 @@ public class CadastradosFragment extends Fragment {
                 ConnectivityManager connectivityManager = (ConnectivityManager) requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
                 if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                         connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
-                    FormularioDAO formularioDAO = new FormularioDAO(getActivity().getApplicationContext());
+                    /*FormularioDAO formularioDAO = new FormularioDAO(getActivity().getApplicationContext());
                     listaFormulario = formularioDAO.listar();
                     autentificacao = ConfiguracaoFirebase.getFirebaseAuth();
                     DatabaseReference formularios = referencia.child("usuarios").child(Base64Custom.codificarBase64(autentificacao.getCurrentUser().getEmail())).child("formulario");
                     for (int i = 0; i < listaFormulario.size(); i++) {
                         formularios.child(listaFormulario.get(i).getId().toString()).setValue(listaFormulario.get(i));
-                    }
+                    }*/
                     enviarParaGS(this.formularios, this.email);
                 }else{
                     requireActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getActivity().getApplicationContext(), "Sem conexão com a internet", Toast.LENGTH_SHORT).show();
+                            StyleableToast.makeText(requireActivity().getApplicationContext(), "Sem conexão com a internet", R.style.ToastWarning).show();
                         }
                     });
 

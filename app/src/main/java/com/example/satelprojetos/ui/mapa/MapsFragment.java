@@ -1,23 +1,12 @@
 package com.example.satelprojetos.ui.mapa;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -25,15 +14,20 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -44,7 +38,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.satelprojetos.R;
-import com.example.satelprojetos.activity.DrawerActivity;
 import com.example.satelprojetos.helper.EnviadoDAO;
 import com.example.satelprojetos.helper.FormularioDAO;
 import com.example.satelprojetos.helper.MapaDAO;
@@ -55,7 +48,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -63,26 +55,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.maps.android.collections.MarkerManager;
-import com.google.maps.android.data.Feature;
 import com.google.maps.android.data.kml.KmlLayer;
+import com.muddzdev.styleabletoastlibrary.StyleableToast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-
-import static android.app.Activity.RESULT_OK;
 
 public class MapsFragment extends Fragment {
     private List<Formulario> listaFormularioCadastro = new ArrayList<>();
@@ -162,11 +145,12 @@ public class MapsFragment extends Fragment {
                         continue;
                     }
                     else if (listaCadastrado.get(i).equals("SIM")) {
+                        Log.i("DADO","ENTREI AQUI");
                         LatLng local = new LatLng(Double.parseDouble(listaLatitude.get(i)), Double.parseDouble(listaLongitude.get(i)));
                         googleMap2.addMarker(new MarkerOptions()
                                 .position(local)
                                 .title(listaCodigo.get(i))
-                                .icon(BitmapDescriptorFactory.defaultMarker(50)));
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
                     }else{
                         try {
                             LatLng local = new LatLng(Double.parseDouble(listaLatitude.get(i)), Double.parseDouble(listaLongitude.get(i)));
@@ -247,7 +231,7 @@ public class MapsFragment extends Fragment {
 
                 @Override
                 public void onProviderDisabled(String provider) {
-                    Toast.makeText(requireActivity().getApplicationContext(), "Por favor ative seu GPS", Toast.LENGTH_SHORT).show();
+                    StyleableToast.makeText(requireActivity().getApplicationContext(), "Por favor ative seu GPS", R.style.ToastWarning).show();
                 }
             };
             if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -312,8 +296,7 @@ public class MapsFragment extends Fragment {
                                     enviarParaGS(codigoEnergisa,FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
                                 } else {
-
-                                    Toast.makeText(getActivity().getApplicationContext(), "Para utilizar essa opção é necessário conexão com a internet", Toast.LENGTH_SHORT).show();
+                                    StyleableToast.makeText(requireActivity().getApplicationContext(), "Para utilizar essa opção é necessário conexão com a internet", R.style.ToastWarning).show();
                                 }
                             }
                         });
@@ -447,6 +430,14 @@ public class MapsFragment extends Fragment {
                         continue;
                     }
                     else if (listaCadastrado.get(i).equals("SIM")) {
+                        Mapa mapa = new Mapa();
+                        mapa.setLatitude(listaLatitude.get(i));
+                        mapa.setLongitude(listaLongitude.get(i));
+                        mapa.setCodigo(listaCodigo.get(i));
+                        Log.i("TAG", "Entrei " + i);
+                        mapa.setCadastrado(listaCadastrado.get(i));
+                        mapa.setExiste(listaExiste.get(i));
+                        mapaDAO.salvar(mapa);
                         LatLng local = new LatLng(Double.parseDouble(listaLatitude.get(i)), Double.parseDouble(listaLongitude.get(i)));
                         googleMap2.addMarker(new MarkerOptions()
                                 .position(local)
@@ -499,7 +490,7 @@ public class MapsFragment extends Fragment {
                             googleMap2.addMarker(new MarkerOptions()
                                     .position(local)
                                     .title(listaCodigo.get(i))
-                                    .icon(BitmapDescriptorFactory.defaultMarker(50)));
+                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
                         }
                         else {
                             try {
@@ -553,8 +544,6 @@ public class MapsFragment extends Fragment {
                     public void onResponse(String response) {
 
                         progressDialog.dismiss();
-                        //getItems();
-                        Toast.makeText(requireActivity().getApplicationContext(), response, Toast.LENGTH_LONG).show();
                         MapsFragment mapsFragment = new MapsFragment();
                         NavigationView navigationView = requireActivity().findViewById(R.id.nav_view);
                         navigationView.setCheckedItem(R.id.nav_mapa);
@@ -609,30 +598,7 @@ class ThreadGS extends Thread{
     }
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == FILE && resultCode == RESULT_OK && data != null) {
-            Uri uri = data.getData();
-            File file = new File(uri.getPath());//create path from uri
-            String path = file.getAbsolutePath();
-            //final String[] split = file.getPath().split(":");//split the path.
-            //String filePath = split[1];//assign it to a string(your choice).
-            Log.i("PATH", path);
-            FileInputStream fis = null;
-            try {
-                fis = new FileInputStream(file);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            LatLng latLng = new LatLng(-8.783875, -63.903650);
-            googleMap2.addMarker(new MarkerOptions()
-                    .position(latLng)
-                    .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeFile(file.getPath()))));
 
 
-        }
-    }
-    
 }
 

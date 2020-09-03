@@ -1,37 +1,30 @@
 package com.example.satelprojetos.activity;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.satelprojetos.R;
 import com.example.satelprojetos.config.ConfiguracaoFirebase;
 import com.example.satelprojetos.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
+import com.muddzdev.styleabletoastlibrary.StyleableToast;
 
 public class MainActivity extends AppCompatActivity {
     private DatabaseReference referencia = FirebaseDatabase.getInstance().getReference();
@@ -69,10 +62,11 @@ public class MainActivity extends AppCompatActivity {
                 usuario.setSenha(senha);
                 validarLogin();
             }else {
-                Toast.makeText(MainActivity.this, "Digite uma senha", Toast.LENGTH_SHORT).show();
+                StyleableToast.makeText(MainActivity.this, "Digite uma senha", R.style.ToastWarning).show();
+
             }
         }else {
-            Toast.makeText(MainActivity.this, "Digite um email", Toast.LENGTH_SHORT).show();
+            StyleableToast.makeText(MainActivity.this, "Digite um email", R.style.ToastWarning).show();
 
         }
 
@@ -105,12 +99,12 @@ public class MainActivity extends AppCompatActivity {
                     }catch (FirebaseAuthInvalidUserException e){
                         excecao = "Usuário não está cadastrado.";
                     }catch (FirebaseAuthInvalidCredentialsException e){
-                        excecao = "Email e senha não correspondem a um usuário cadastrado.";
+                        excecao = "Email ou senha não corresponde a um usuário cadastrado.";
                     }
                     catch (Exception e) {
                         e.printStackTrace();
                     }
-                    Toast.makeText(MainActivity.this, excecao, Toast.LENGTH_SHORT).show();
+                    StyleableToast.makeText(MainActivity.this, excecao, R.style.ToastError).show();
                     btnLogin.setEnabled(true);
                 }
 progressDialog.dismiss();

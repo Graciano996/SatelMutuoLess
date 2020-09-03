@@ -2,10 +2,8 @@ package com.example.satelprojetos.helper;
 
 import android.content.ContentValues;
 import android.content.Context;
-
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
 import android.util.Log;
 
 import com.example.satelprojetos.model.Formulario;

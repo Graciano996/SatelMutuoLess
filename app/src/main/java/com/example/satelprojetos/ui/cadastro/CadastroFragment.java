@@ -3,7 +3,6 @@ package com.example.satelprojetos.ui.cadastro;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,8 +10,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -23,14 +20,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,35 +34,26 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ThemedSpinnerAdapter;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
-import androidx.core.graphics.BitmapCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-
-import com.bumptech.glide.Glide;
 import com.example.satelprojetos.R;
 import com.example.satelprojetos.activity.DrawerActivity;
-import com.example.satelprojetos.activity.MainActivity;
 import com.example.satelprojetos.config.ConfiguracaoFirebase;
 import com.example.satelprojetos.helper.Base64Custom;
 import com.example.satelprojetos.helper.FormularioDAO;
 import com.example.satelprojetos.model.Formulario;
 import com.example.satelprojetos.ui.cadastrados.CadastradosFragment;
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -77,24 +62,19 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.muddzdev.styleabletoastlibrary.StyleableToast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.lang.ref.WeakReference;
-import java.net.URI;
-import java.net.URLStreamHandlerFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
-import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
 import static com.bumptech.glide.load.resource.bitmap.TransformationUtils.rotateImage;
@@ -203,7 +183,7 @@ public class CadastroFragment extends Fragment {
 
             @Override
             public void onProviderDisabled(String provider) {
-                Toast.makeText(requireActivity().getApplicationContext(), "Por favor ative seu GPS", Toast.LENGTH_SHORT).show();
+                StyleableToast.makeText(requireActivity().getApplicationContext(), "Por favor ative seu GPS", R.style.ToastWarning).show();
             }
         };
         geocoder = new Geocoder(requireContext(), Locale.getDefault());
@@ -230,7 +210,7 @@ public class CadastroFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (localizacao == null) {
-                    Toast.makeText(requireActivity().getApplicationContext(), "Não é possui utilizar essa função no estado de economia de energia", Toast.LENGTH_SHORT).show();
+                    StyleableToast.makeText(requireActivity().getApplicationContext(), "Não foi possivel recuperar a localização, por favor verifique seu nivel de bateria", R.style.ToastWarning).show();
                 } else {
                     latitude.setText(String.format("%.5f", localizacao.getLatitude()));
                     longitude.setText(String.format("%.5f", localizacao.getLongitude()));
@@ -1337,7 +1317,7 @@ public class CadastroFragment extends Fragment {
             requireActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(requireActivity().getApplicationContext(), "Escolha primeiro uma foto para fazer o upload", Toast.LENGTH_SHORT).show();
+                    StyleableToast.makeText(requireActivity().getApplicationContext(), "Escolha primeiro uma foto para fazer o upload", R.style.ToastWarning).show();
                 }
             });
 
@@ -1346,7 +1326,7 @@ public class CadastroFragment extends Fragment {
             requireActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(requireActivity().getApplicationContext(), "Insira o código do poste primeiro", Toast.LENGTH_SHORT).show();
+                    StyleableToast.makeText(requireActivity().getApplicationContext(), "Insira o código do poste primeiro", R.style.ToastWarning).show();
                 }
             });
 
@@ -1389,7 +1369,7 @@ public class CadastroFragment extends Fragment {
                         requireActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(requireActivity().getApplicationContext(), "Erro ao fazer upload verifique a conexão com a internet", Toast.LENGTH_SHORT).show();
+                                StyleableToast.makeText(requireActivity().getApplicationContext(), "Erro ao fazer upload, verifique a conexão com a internet", R.style.ToastError).show();
                             }
                         });
                     }
@@ -1475,7 +1455,7 @@ public class CadastroFragment extends Fragment {
                 requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(requireActivity().getApplicationContext(), "Erro ao fazer upload verifique a conexão com a internet", Toast.LENGTH_SHORT).show();
+                        StyleableToast.makeText(requireActivity().getApplicationContext(), "Erro ao fazer upload, verifique a conexão com a internet", R.style.ToastError).show();
                     }
                 });
 
@@ -3245,10 +3225,10 @@ public class CadastroFragment extends Fragment {
         progressDialog.show(); // Display Progress Dialog
         progressDialog.setCancelable(false);
         if ((imgPathPan == null) && (imgPathAlt == null) && (imgPathQualidade == null)) {
-            Toast.makeText(requireContext(), "Preencha pelo menos uma foto", Toast.LENGTH_SHORT).show();
+            StyleableToast.makeText(requireActivity().getApplicationContext(), "Preencha pelo menos uma foto", R.style.ToastWarning).show();
             progressDialog.dismiss();
         } else if (codigo.getText().toString().equals("") || codigo == null) {
-            Toast.makeText(requireContext(), "Preencha o campo de código", Toast.LENGTH_SHORT).show();
+            StyleableToast.makeText(requireActivity().getApplicationContext(), "Preencha o campo de código", R.style.ToastWarning).show();
             progressDialog.dismiss();
         } else {
             FormularioDAO formularioDAO = new FormularioDAO(requireActivity().getApplicationContext());
@@ -3555,11 +3535,11 @@ public class CadastroFragment extends Fragment {
                         transaction.replace(R.id.nav_host_fragment, cadastradosFragment);
                         transaction.addToBackStack(null);
                         transaction.commit();
-                        Toast.makeText(requireActivity().getApplicationContext(), "Sucesso ao atualizar formulário", Toast.LENGTH_SHORT).show();
+                        StyleableToast.makeText(requireActivity().getApplicationContext(), "Sucesso ao atualizar formulário", R.style.ToastDone).show();
                         progressDialog.dismiss();
                         limparMemoria();
                     } else {
-                        Toast.makeText(requireActivity().getApplicationContext(), "Erro ao atualizar formulário", Toast.LENGTH_SHORT).show();
+                        StyleableToast.makeText(requireActivity().getApplicationContext(), "Erro ao atualizar formulário", R.style.ToastError).show();
                         progressDialog.dismiss();
                     }
             } else {
@@ -3616,11 +3596,11 @@ public class CadastroFragment extends Fragment {
                     transaction.detach(cadastroFragment);
                     transaction.addToBackStack(null);
                     transaction.commit();
-                    Toast.makeText(requireActivity().getApplicationContext(), "Sucesso ao salvar formulário", Toast.LENGTH_SHORT).show();
+                    StyleableToast.makeText(requireActivity().getApplicationContext(), "Sucesso ao atualizar formulário", R.style.ToastDone).show();
                     progressDialog.dismiss();
                     limparMemoria();
                 } else {
-                    Toast.makeText(requireActivity().getApplicationContext(), "Erro ao salvar formulário", Toast.LENGTH_SHORT).show();
+                    StyleableToast.makeText(requireActivity().getApplicationContext(), "Erro ao atualizar formulário", R.style.ToastError).show();
                     progressDialog.dismiss();
                 }
 

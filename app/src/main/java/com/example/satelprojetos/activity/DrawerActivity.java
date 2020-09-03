@@ -2,7 +2,6 @@ package com.example.satelprojetos.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,37 +9,25 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.satelprojetos.R;
-import com.example.satelprojetos.config.ConfiguracaoFirebase;
-import com.example.satelprojetos.helper.FormularioDAO;
-import com.example.satelprojetos.ui.cadastro.CadastroFragment;
-import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import org.w3c.dom.Text;
-
-import java.util.List;
-
-import static java.lang.Integer.valueOf;
+import com.example.satelprojetos.R;
+import com.example.satelprojetos.config.ConfiguracaoFirebase;
+import com.example.satelprojetos.ui.cadastro.CadastroFragment;
+import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class DrawerActivity extends AppCompatActivity {
 
@@ -113,8 +100,9 @@ public class DrawerActivity extends AppCompatActivity {
         if (conteudoDrawer.equals("Cadastrados")) {
             final AlertDialog.Builder dialog = new AlertDialog.Builder(this, R.style.LightDialogTheme);
             dialog.setTitle("Sair da conta?");
+
             dialog.setMessage("Ao pressionar sim voltará a tela de login");
-            dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            dialog.setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     ConfiguracaoFirebase.getFirebaseAuth().signOut();
@@ -123,7 +111,7 @@ public class DrawerActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-            dialog.setNegativeButton("Não", null);
+            dialog.setNegativeButton("NÃO", null);
             dialog.create();
             dialog.show();
 

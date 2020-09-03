@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.example.satelprojetos.helper.DbHelper;
-import com.example.satelprojetos.model.Formulario;
 import com.example.satelprojetos.model.Mapa;
 
 import java.util.ArrayList;

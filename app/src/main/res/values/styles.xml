@@ -23,6 +23,7 @@
 
     <style name="LightDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:textColor">#FFF</item>
+        <item name="android:backgroundTint">@android:color/transparent</item>
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:textColorPrimary">#FFF</item>
         <item name="android:background">@drawable/button_selector_dialog</item>
@@ -32,6 +33,38 @@
     <style name="DialogButtonStyle" parent="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:textColor">#007fff</item>
 
+    </style>
+
+    <style name="ToastWarning">
+      <item name="android:textColor">#FFF</item>
+      <item name="colorAccent">@color/colorPrimary</item>
+      <item name="android:textColorPrimary">#FFF</item>
+      <item name="iconLeft">@drawable/ic_baseline_warning_yellow_24</item>
+      <item name="android:background">@drawable/button_selector_dialog</item>
+    </style>
+
+    <style name="ToastError">
+        <item name="android:textColor">#FFF</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">#FFF</item>
+        <item name="iconLeft">@drawable/ic_baseline_error_24</item>
+        <item name="android:background">@drawable/button_selector_dialog</item>
+    </style>
+
+    <style name="ToastDone">
+        <item name="android:textColor">#FFF</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">#FFF</item>
+        <item name="iconLeft">@drawable/ic_baseline_done_24</item>
+        <item name="android:background">@drawable/button_selector_dialog</item>
+    </style>
+
+    <style name="ToastCloudDone">
+        <item name="android:textColor">#FFF</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">#FFF</item>
+        <item name="iconLeft">@drawable/ic_baseline_cloud_done_24</item>
+        <item name="android:background">@drawable/button_selector_dialog</item>
     </style>
 
 </resources>

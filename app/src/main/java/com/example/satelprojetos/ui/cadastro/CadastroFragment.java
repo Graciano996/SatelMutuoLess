@@ -107,6 +107,7 @@ public class CadastroFragment extends Fragment {
     private FirebaseAuth autentificacao;
     private ProgressDialog progressDialog;
     Geocoder geocoder;
+    Boolean controle = false;
     List<Address> addresses;
 
     private RelativeLayout relativeChFaca,relativeBanco,relativeRamal, relativeIPTipoEstrutura,
@@ -715,9 +716,6 @@ public class CadastroFragment extends Fragment {
                     estadoArvore.setVisibility(View.VISIBLE);
                     quedaArvore.setVisibility(View.VISIBLE);
                     localArvore.setVisibility(View.VISIBLE);
-                    fotoVeg.setVisibility(View.VISIBLE);
-                    btnFoto30.setVisibility(View.VISIBLE);
-                    btnUpload30.setVisibility(View.VISIBLE);
                     relativeDimensaoVegetacao.setVisibility(View.VISIBLE);
                     relativeBaixa.setVisibility(View.VISIBLE);
                     relativeMedia.setVisibility(View.VISIBLE);
@@ -730,9 +728,6 @@ public class CadastroFragment extends Fragment {
                     estadoArvore.setVisibility(View.GONE);
                     quedaArvore.setVisibility(View.GONE);
                     localArvore.setVisibility(View.GONE);
-                    fotoVeg.setVisibility(View.GONE);
-                    btnFoto30.setVisibility(View.GONE);
-                    btnUpload30.setVisibility(View.GONE);
                     relativeDimensaoVegetacao.setVisibility(View.GONE);
                     relativeBaixa.setVisibility(View.GONE);
                     relativeMedia.setVisibility(View.GONE);
@@ -878,10 +873,6 @@ public class CadastroFragment extends Fragment {
                     quantidadeLampada.setEnabled(true);
                     ipAtivacao.setEnabled(true);
                     vinteEQuatro.setEnabled(true);
-                    fotoIP.setEnabled(true);
-                    fotoIP.setVisibility(View.VISIBLE);
-                    btnFoto4.setVisibility(View.VISIBLE);
-                    btnUpload4.setVisibility(View.VISIBLE);
                     textLampada.setVisibility(View.VISIBLE);
                     relativeIPTipoEstrutura.setVisibility(View.VISIBLE);
                     relativeIPTipoLampada.setVisibility(View.VISIBLE);
@@ -907,9 +898,6 @@ public class CadastroFragment extends Fragment {
                     vinteEQuatro.setEnabled(false);
                     vinteEQuatro.setChecked(false);
                     ipAtivacao.setSelection(0);
-                    fotoIP.setVisibility(View.GONE);
-                    btnFoto4.setVisibility(View.GONE);
-                    btnUpload4.setVisibility(View.GONE);
                     textLampada.setVisibility(View.GONE);
 
                     ipEstrutura.setVisibility(View.GONE);
@@ -943,14 +931,6 @@ public class CadastroFragment extends Fragment {
                     ramalSubt.setEnabled(true);
                     outros.setEnabled(true);
 
-                    fotoAtivos.setEnabled(true);
-                    fotoAtivos.setVisibility(View.VISIBLE);
-                    btnFoto13.setVisibility(View.VISIBLE);
-                    btnUpload13.setVisibility(View.VISIBLE);
-                    fotoAtivos2.setEnabled(true);
-                    fotoAtivos2.setVisibility(View.VISIBLE);
-                    btnFoto14.setVisibility(View.VISIBLE);
-                    btnUpload14.setVisibility(View.VISIBLE);
 
                     trafoMono.setVisibility(View.VISIBLE);
                     trafoTrifasico.setVisibility(View.VISIBLE);
@@ -1010,12 +990,6 @@ public class CadastroFragment extends Fragment {
                     chBanco.setVisibility(View.GONE);
                     ramalSubt.setVisibility(View.GONE);
                     outros.setVisibility(View.GONE);
-                    fotoAtivos.setVisibility(View.GONE);
-                    btnFoto13.setVisibility(View.GONE);
-                    btnUpload13.setVisibility(View.GONE);
-                    fotoAtivos2.setVisibility(View.GONE);
-                    btnFoto14.setVisibility(View.GONE);
-                    btnUpload14.setVisibility(View.GONE);
                     relativeSpinMono.setVisibility(View.GONE);
                     relativeSpinTri.setVisibility(View.GONE);
                     relativeBanco.setVisibility(View.GONE);
@@ -1079,14 +1053,6 @@ public class CadastroFragment extends Fragment {
                     descidaCabos.setVisibility(View.VISIBLE);
                     descidaCabos.setEnabled(true);
                     fotoMutuo.setVisibility(View.VISIBLE);
-                    btnFoto15.setVisibility(View.VISIBLE);
-                    btnUpload15.setVisibility(View.VISIBLE);
-                    fotoMutuo2.setVisibility(View.VISIBLE);
-                    btnFoto16.setVisibility(View.VISIBLE);
-                    btnUpload16.setVisibility(View.VISIBLE);
-                    fotoMutuo3.setVisibility(View.VISIBLE);
-                    btnFoto17.setVisibility(View.VISIBLE);
-                    btnUpload17.setVisibility(View.VISIBLE);
                     textOcupante.setVisibility(View.VISIBLE);
                     quantidadeOcupantes.setVisibility(View.VISIBLE);
                     textQuantidadeCabo.setVisibility(View.VISIBLE);
@@ -1119,15 +1085,6 @@ public class CadastroFragment extends Fragment {
                     descidaCabos.setChecked(false);
                     descidaCabos.setEnabled(false);
                     descidaCabos.setVisibility(View.GONE);
-                    fotoMutuo.setVisibility(View.GONE);
-                    btnFoto15.setVisibility(View.GONE);
-                    btnUpload15.setVisibility(View.GONE);
-                    fotoMutuo2.setVisibility(View.GONE);
-                    btnFoto16.setVisibility(View.GONE);
-                    btnUpload16.setVisibility(View.GONE);
-                    fotoMutuo3.setVisibility(View.GONE);
-                    btnFoto17.setVisibility(View.GONE);
-                    btnUpload17.setVisibility(View.GONE);
                     textOcupante.setVisibility(View.GONE);
                     quantidadeOcupantes.setVisibility(View.GONE);
                     textQuantidadeCabo.setVisibility(View.GONE);
@@ -1141,6 +1098,15 @@ public class CadastroFragment extends Fragment {
                     relativeBackbone.setVisibility(View.GONE);
                     relativeTipoCabo.setVisibility(View.GONE);
                     relativeTipoCabodois.setVisibility(View.GONE);
+                }
+                try {
+                    if (formularioAtual != null && controle == false) {
+
+                        quantidadeOcupantes.setText(formularioAtual.getQuantidadeOcupantes());
+                        quantidadeOcupantes.setEnabled(false);
+                    }
+                }catch (Exception e){
+
                 }
             }
         });
@@ -1261,6 +1227,9 @@ public class CadastroFragment extends Fragment {
                     cameraIntent.setFlags(cameraIntent .getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
                     startActivityForResult(cameraIntent, imagemCodigo);
                 }
+                else{
+
+                }
             } catch (Exception ex) {
             }
         } else {
@@ -1270,7 +1239,9 @@ public class CadastroFragment extends Fragment {
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        Log.i("NOEM", timeStamp);
         String imageFileName = "JPEG_" + timeStamp + "_";
+        Log.i("Entrei aqui","2");
         File storageDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
@@ -2348,7 +2319,7 @@ public class CadastroFragment extends Fragment {
                 contadorAt = formularioAtual.getContadorAt();
                 contadorIp = formularioAtual.getContadorIp();
                 codigo.setText(formularioAtual.getCodigo());
-
+                controle = true;
                 imgPathPan = formularioAtual.getCaminhoImagem();
                 if (imgPathPan == null || imgPathPan.equals("")) {
 
@@ -2952,6 +2923,7 @@ public class CadastroFragment extends Fragment {
                 contadorAt = formularioAtual.getContadorAt();
                 contadorIp = formularioAtual.getContadorIp();
                 codigo.setText(formularioAtual.getCodigo());
+
 
                 imgPathPan = formularioAtual.getCaminhoImagem();
                 if (imgPathPan == null || imgPathPan.equals("")) {
@@ -3613,23 +3585,6 @@ public class CadastroFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-        try {
-            unbindDrawables(root.findViewById(R.id.nav_host_fragment_container));  //R.id.coordinator is the root layout of your fragment view
-            System.gc();
-        } catch (Exception e) {
-
-        }
-        root = null;
-        try {
-            limparMemoria();
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-        }
-    }
 
 
     //free up any drawables..views

@@ -2,8 +2,10 @@ package com.example.satelprojetos.helper;
 
 import android.content.ContentValues;
 import android.content.Context;
+
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import android.util.Log;
 
 import com.example.satelprojetos.model.Formulario;
@@ -24,7 +26,115 @@ public class FormularioDAO implements IFormularioDAO {
     }
     @Override
     public boolean salvar(Formulario formulario) {
-        ContentValues cv = setCV(formulario);
+        ContentValues cv = new ContentValues();
+        cv.put("contadorIp", formulario.getContadorIp());
+        cv.put("contadorAr", formulario.getContadorAr());
+        cv.put("contadorAt", formulario.getContadorAt());
+        cv.put("color", formulario.getColor());
+        cv.put("color2", formulario.getColor2());
+        cv.put("color3", formulario.getColor3());
+        cv.put("color4", formulario.getColor4());
+        cv.put("color7", formulario.getColor7());
+        cv.put("color8", formulario.getColor8());
+        cv.put("color9", formulario.getColor9());
+        cv.put("color10", formulario.getColor10());
+        cv.put("color11", formulario.getColor11());
+        cv.put("color12", formulario.getColor12());
+        cv.put("codigo", formulario.getCodigo());
+        cv.put("caminhoImagem", formulario.getCaminhoImagem());
+        cv.put("caminhoImagem2", formulario.getCaminhoImagem2());
+        cv.put("caminhoImagem3", formulario.getCaminhoImagem3());
+        cv.put("caminhoImagem4", formulario.getCaminhoImagem4());
+        cv.put("caminhoImagem7", formulario.getCaminhoImagem7());
+        cv.put("caminhoImagem8", formulario.getCaminhoImagem8());
+        cv.put("caminhoImagem9", formulario.getCaminhoImagem9());
+        cv.put("caminhoImagem10", formulario.getCaminhoImagem10());
+        cv.put("caminhoImagem11", formulario.getCaminhoImagem11());
+        cv.put("caminhoImagem12", formulario.getCaminhoImagem12());
+        cv.put("urlImagem", formulario.getUrlImagem());
+        cv.put("urlImagem2", formulario.getUrlImagem2());
+        cv.put("urlImagem3", formulario.getUrlImagem3());
+        cv.put("urlImagem4", formulario.getUrlImagem4());
+        cv.put("urlImagem7", formulario.getUrlImagem7());
+        cv.put("urlImagem8", formulario.getUrlImagem8());
+        cv.put("urlImagem9", formulario.getUrlImagem9());
+        cv.put("urlImagem10", formulario.getUrlImagem10());
+        cv.put("urlImagem11", formulario.getUrlImagem11());
+        cv.put("urlImagem12", formulario.getUrlImagem12());
+
+        cv.put("data", formulario.getData());
+        cv.put("endereco", formulario.getEndereco());
+        cv.put("nome", formulario.getNome());
+        cv.put("municipio", formulario.getMunicipio());
+        cv.put("alturaCarga", formulario.getAlturaCarga());
+        cv.put("latitude", formulario.getLatitude());
+        cv.put("longitude", formulario.getLongitude());
+
+
+        cv.put("tipoPoste",formulario.getTipoPoste());
+        cv.put("normal", formulario.getNormal());
+        cv.put("ferragemExposta", formulario.getFerragemExposta());
+        cv.put("fletido", formulario.getFletido());
+        cv.put("danificado", formulario.getDanificado());
+        cv.put("fletido", formulario.getFletido());
+        cv.put("abalroado", formulario.getAbalroado());
+        cv.put("trincado", formulario.getTrincado());
+        cv.put("observacaoFisicas", formulario.getObservacaoFisicas());
+
+
+        cv.put("ip", formulario.getIp());
+        cv.put("ipEstrutura", formulario.getIpEstrutura());
+        cv.put("quantidadeLampada", formulario.getQuantidadeLampada());
+        cv.put("tipoPot", formulario.getTipoPot());
+        cv.put("potReator", formulario.getPotReator());
+        cv.put("ipAtivacao", formulario.getIpAtivacao());
+        cv.put("vinteEQuatro", formulario.getVinteEQuatro());
+        cv.put("quantidade24H", formulario.getQuantidade24H());
+        cv.put("observacaoIP", formulario.getObservacaoIP());
+
+        cv.put("ativos", formulario.getAtivos());
+        cv.put("chkTrafoTrifasico", formulario.getChkTrafoTrifasico());
+        cv.put("chkTrafoMono", formulario.getChkTrafoMono());
+        cv.put("trafoTrifasico", formulario.getTrafoTrifasico());
+        cv.put("trafoMono", formulario.getTrafoMono());
+        cv.put("religador", formulario.getReligador());
+        cv.put("medicao", formulario.getMedicao());
+        cv.put("chFusivel", formulario.getChFusivel());
+        cv.put("chFaca", formulario.getChFaca());
+        cv.put("banco", formulario.getBanco());
+        cv.put("chFusivelReligador", formulario.getChFusivelReligador());
+        cv.put("ramalSubt", formulario.getRamalSubt());
+        cv.put("observacaoAtivos", formulario.getObservacaoAtivos());
+        cv.put("outros", formulario.getOutros());
+
+
+        cv.put("mutuo", formulario.getMutuo());
+        cv.put("quantidadeOcupantes", formulario.getQuantidadeOcupantes());
+
+        cv.put("quantidadeCabos",formulario.getQuantidadeCabos());
+        cv.put("tipoCabo", formulario.getTipoCabo());
+        cv.put("quantidadeCabosdois",formulario.getQuantidadeCabosdois());
+        cv.put("tipoCabodois", formulario.getTipoCabodois());
+        cv.put("nomeEmpresa", formulario.getNome());
+        cv.put("finalidade",formulario.getFinalidade());
+        cv.put("ceans", formulario.getCeans());
+        cv.put("tar", formulario.getTar());
+        cv.put("reservaTec", formulario.getReservaTec());
+        cv.put("backbone", formulario.getBackbone());
+        cv.put("placaIdent", formulario.getPlacaIdent());
+        cv.put("descidaCabos", formulario.getDescidaCabos());
+        cv.put("descricaoIrregularidade", formulario.getDescricaoIrregularidade());
+        cv.put("observacaoMutuo",formulario.getObservacaoMutuo());
+
+        cv.put("vegetacao", formulario.getVegetacao());
+        cv.put("dimensaoVegetacao", formulario.getDimensaoVegetacao());
+        cv.put("distanciaBaixa", formulario.getDistaciaBaixa());
+        cv.put("distanciaMedia", formulario.getDistanciaMedia());
+        cv.put("estadoArvore", formulario.getEstadoArvore());
+        cv.put("quedaArvore", formulario.getQuedaArvore());
+        cv.put("localArvore", formulario.getLocalArvore());
+        cv.put("observacaoVegetacao", formulario.getObservacaoVegetacao());
+
         try{
             escreve.insert(DbHelper.TABLE_FORMULARIO,null, cv);
             Log.i("INFO","Formulario salvo com sucesso!");
@@ -38,7 +148,115 @@ public class FormularioDAO implements IFormularioDAO {
 
     @Override
     public boolean atualizar(Formulario formulario) {
-        ContentValues cv = setCV(formulario);
+        ContentValues cv = new ContentValues();
+        cv.put("contadorIp", formulario.getContadorIp());
+        cv.put("contadorAr", formulario.getContadorAr());
+        cv.put("contadorAt", formulario.getContadorAt());
+        cv.put("color", formulario.getColor());
+        cv.put("color2", formulario.getColor2());
+        cv.put("color3", formulario.getColor3());
+        cv.put("color4", formulario.getColor4());
+        cv.put("color7", formulario.getColor7());
+        cv.put("color8", formulario.getColor8());
+        cv.put("color9", formulario.getColor9());
+        cv.put("color10", formulario.getColor10());
+        cv.put("color11", formulario.getColor11());
+        cv.put("color12", formulario.getColor12());
+        cv.put("codigo", formulario.getCodigo());
+        cv.put("caminhoImagem", formulario.getCaminhoImagem());
+        cv.put("caminhoImagem2", formulario.getCaminhoImagem2());
+        cv.put("caminhoImagem3", formulario.getCaminhoImagem3());
+        cv.put("caminhoImagem4", formulario.getCaminhoImagem4());
+        cv.put("caminhoImagem7", formulario.getCaminhoImagem7());
+        cv.put("caminhoImagem8", formulario.getCaminhoImagem8());
+        cv.put("caminhoImagem9", formulario.getCaminhoImagem9());
+        cv.put("caminhoImagem10", formulario.getCaminhoImagem10());
+        cv.put("caminhoImagem11", formulario.getCaminhoImagem11());
+        cv.put("caminhoImagem12", formulario.getCaminhoImagem12());
+        cv.put("urlImagem", formulario.getUrlImagem());
+        cv.put("urlImagem2", formulario.getUrlImagem2());
+        cv.put("urlImagem3", formulario.getUrlImagem3());
+        cv.put("urlImagem4", formulario.getUrlImagem4());
+        cv.put("urlImagem7", formulario.getUrlImagem7());
+        cv.put("urlImagem8", formulario.getUrlImagem8());
+        cv.put("urlImagem9", formulario.getUrlImagem9());
+        cv.put("urlImagem10", formulario.getUrlImagem10());
+        cv.put("urlImagem11", formulario.getUrlImagem11());
+        cv.put("urlImagem12", formulario.getUrlImagem12());
+
+        cv.put("data", formulario.getData());
+        cv.put("endereco", formulario.getEndereco());
+        cv.put("nome", formulario.getNome());
+        cv.put("municipio", formulario.getMunicipio());
+        cv.put("alturaCarga", formulario.getAlturaCarga());
+        cv.put("latitude", formulario.getLatitude());
+        cv.put("longitude", formulario.getLongitude());
+
+
+        cv.put("tipoPoste",formulario.getTipoPoste());
+        cv.put("normal", formulario.getNormal());
+        cv.put("ferragemExposta", formulario.getFerragemExposta());
+        cv.put("fletido", formulario.getFletido());
+        cv.put("danificado", formulario.getDanificado());
+        cv.put("fletido", formulario.getFletido());
+        cv.put("abalroado", formulario.getAbalroado());
+        cv.put("trincado", formulario.getTrincado());
+        cv.put("observacaoFisicas", formulario.getObservacaoFisicas());
+
+
+        cv.put("ip", formulario.getIp());
+        cv.put("ipEstrutura", formulario.getIpEstrutura());
+        cv.put("quantidadeLampada", formulario.getQuantidadeLampada());
+        cv.put("tipoPot", formulario.getTipoPot());
+        cv.put("potReator", formulario.getPotReator());
+        cv.put("ipAtivacao", formulario.getIpAtivacao());
+        cv.put("vinteEQuatro", formulario.getVinteEQuatro());
+        cv.put("quantidade24H", formulario.getQuantidade24H());
+        cv.put("observacaoIP", formulario.getObservacaoIP());
+
+        cv.put("ativos", formulario.getAtivos());
+        cv.put("chkTrafoTrifasico", formulario.getChkTrafoTrifasico());
+        cv.put("chkTrafoMono", formulario.getChkTrafoMono());
+        cv.put("trafoTrifasico", formulario.getTrafoTrifasico());
+        cv.put("trafoMono", formulario.getTrafoMono());
+        cv.put("religador", formulario.getReligador());
+        cv.put("medicao", formulario.getMedicao());
+        cv.put("chFusivel", formulario.getChFusivel());
+        cv.put("chFaca", formulario.getChFaca());
+        cv.put("banco", formulario.getBanco());
+        cv.put("chFusivelReligador", formulario.getChFusivelReligador());
+        cv.put("ramalSubt", formulario.getRamalSubt());
+        cv.put("observacaoAtivos", formulario.getObservacaoAtivos());
+        cv.put("outros", formulario.getOutros());
+
+
+        cv.put("mutuo", formulario.getMutuo());
+        cv.put("quantidadeOcupantes", formulario.getQuantidadeOcupantes());
+
+        cv.put("quantidadeCabos",formulario.getQuantidadeCabos());
+        cv.put("tipoCabo", formulario.getTipoCabo());
+        cv.put("quantidadeCabosdois",formulario.getQuantidadeCabosdois());
+        cv.put("tipoCabodois", formulario.getTipoCabodois());
+        cv.put("nomeEmpresa", formulario.getNome());
+        cv.put("finalidade",formulario.getFinalidade());
+        cv.put("ceans", formulario.getCeans());
+        cv.put("tar", formulario.getTar());
+        cv.put("reservaTec", formulario.getReservaTec());
+        cv.put("backbone", formulario.getBackbone());
+        cv.put("placaIdent", formulario.getPlacaIdent());
+        cv.put("descidaCabos", formulario.getDescidaCabos());
+        cv.put("descricaoIrregularidade", formulario.getDescricaoIrregularidade());
+        cv.put("observacaoMutuo",formulario.getObservacaoMutuo());
+
+        cv.put("vegetacao", formulario.getVegetacao());
+        cv.put("dimensaoVegetacao", formulario.getDimensaoVegetacao());
+        cv.put("distanciaBaixa", formulario.getDistaciaBaixa());
+        cv.put("distanciaMedia", formulario.getDistanciaMedia());
+        cv.put("estadoArvore", formulario.getEstadoArvore());
+        cv.put("quedaArvore", formulario.getQuedaArvore());
+        cv.put("localArvore", formulario.getLocalArvore());
+        cv.put("observacaoVegetacao", formulario.getObservacaoVegetacao());
+
         String[] args = {formulario.getId().toString()};
 
         try{
@@ -306,117 +524,5 @@ public class FormularioDAO implements IFormularioDAO {
         }
 
         return formularios;
-    }
-
-    public ContentValues setCV(Formulario formulario){
-        ContentValues cv = new ContentValues();
-        cv.put("contadorIp", formulario.getContadorIp());
-        cv.put("contadorAr", formulario.getContadorAr());
-        cv.put("contadorAt", formulario.getContadorAt());
-        cv.put("color", formulario.getColor());
-        cv.put("color2", formulario.getColor2());
-        cv.put("color3", formulario.getColor3());
-        cv.put("color4", formulario.getColor4());
-        cv.put("color7", formulario.getColor7());
-        cv.put("color8", formulario.getColor8());
-        cv.put("color9", formulario.getColor9());
-        cv.put("color10", formulario.getColor10());
-        cv.put("color11", formulario.getColor11());
-        cv.put("color12", formulario.getColor12());
-        cv.put("codigo", formulario.getCodigo());
-        cv.put("caminhoImagem", formulario.getCaminhoImagem());
-        cv.put("caminhoImagem2", formulario.getCaminhoImagem2());
-        cv.put("caminhoImagem3", formulario.getCaminhoImagem3());
-        cv.put("caminhoImagem4", formulario.getCaminhoImagem4());
-        cv.put("caminhoImagem7", formulario.getCaminhoImagem7());
-        cv.put("caminhoImagem8", formulario.getCaminhoImagem8());
-        cv.put("caminhoImagem9", formulario.getCaminhoImagem9());
-        cv.put("caminhoImagem10", formulario.getCaminhoImagem10());
-        cv.put("caminhoImagem11", formulario.getCaminhoImagem11());
-        cv.put("caminhoImagem12", formulario.getCaminhoImagem12());
-        cv.put("urlImagem", formulario.getUrlImagem());
-        cv.put("urlImagem2", formulario.getUrlImagem2());
-        cv.put("urlImagem3", formulario.getUrlImagem3());
-        cv.put("urlImagem4", formulario.getUrlImagem4());
-        cv.put("urlImagem7", formulario.getUrlImagem7());
-        cv.put("urlImagem8", formulario.getUrlImagem8());
-        cv.put("urlImagem9", formulario.getUrlImagem9());
-        cv.put("urlImagem10", formulario.getUrlImagem10());
-        cv.put("urlImagem11", formulario.getUrlImagem11());
-        cv.put("urlImagem12", formulario.getUrlImagem12());
-
-        cv.put("data", formulario.getData());
-        cv.put("endereco", formulario.getEndereco());
-        cv.put("nome", formulario.getNome());
-        cv.put("municipio", formulario.getMunicipio());
-        cv.put("alturaCarga", formulario.getAlturaCarga());
-        cv.put("latitude", formulario.getLatitude());
-        cv.put("longitude", formulario.getLongitude());
-
-
-        cv.put("tipoPoste",formulario.getTipoPoste());
-        cv.put("normal", formulario.getNormal());
-        cv.put("ferragemExposta", formulario.getFerragemExposta());
-        cv.put("fletido", formulario.getFletido());
-        cv.put("danificado", formulario.getDanificado());
-        cv.put("fletido", formulario.getFletido());
-        cv.put("abalroado", formulario.getAbalroado());
-        cv.put("trincado", formulario.getTrincado());
-        cv.put("observacaoFisicas", formulario.getObservacaoFisicas());
-
-
-        cv.put("ip", formulario.getIp());
-        cv.put("ipEstrutura", formulario.getIpEstrutura());
-        cv.put("quantidadeLampada", formulario.getQuantidadeLampada());
-        cv.put("tipoPot", formulario.getTipoPot());
-        cv.put("potReator", formulario.getPotReator());
-        cv.put("ipAtivacao", formulario.getIpAtivacao());
-        cv.put("vinteEQuatro", formulario.getVinteEQuatro());
-        cv.put("quantidade24H", formulario.getQuantidade24H());
-        cv.put("observacaoIP", formulario.getObservacaoIP());
-
-        cv.put("ativos", formulario.getAtivos());
-        cv.put("chkTrafoTrifasico", formulario.getChkTrafoTrifasico());
-        cv.put("chkTrafoMono", formulario.getChkTrafoMono());
-        cv.put("trafoTrifasico", formulario.getTrafoTrifasico());
-        cv.put("trafoMono", formulario.getTrafoMono());
-        cv.put("religador", formulario.getReligador());
-        cv.put("medicao", formulario.getMedicao());
-        cv.put("chFusivel", formulario.getChFusivel());
-        cv.put("chFaca", formulario.getChFaca());
-        cv.put("banco", formulario.getBanco());
-        cv.put("chFusivelReligador", formulario.getChFusivelReligador());
-        cv.put("ramalSubt", formulario.getRamalSubt());
-        cv.put("observacaoAtivos", formulario.getObservacaoAtivos());
-        cv.put("outros", formulario.getOutros());
-
-
-        cv.put("mutuo", formulario.getMutuo());
-        cv.put("quantidadeOcupantes", formulario.getQuantidadeOcupantes());
-
-        cv.put("quantidadeCabos",formulario.getQuantidadeCabos());
-        cv.put("tipoCabo", formulario.getTipoCabo());
-        cv.put("quantidadeCabosdois",formulario.getQuantidadeCabosdois());
-        cv.put("tipoCabodois", formulario.getTipoCabodois());
-        cv.put("nomeEmpresa", formulario.getNome());
-        cv.put("finalidade",formulario.getFinalidade());
-        cv.put("ceans", formulario.getCeans());
-        cv.put("tar", formulario.getTar());
-        cv.put("reservaTec", formulario.getReservaTec());
-        cv.put("backbone", formulario.getBackbone());
-        cv.put("placaIdent", formulario.getPlacaIdent());
-        cv.put("descidaCabos", formulario.getDescidaCabos());
-        cv.put("descricaoIrregularidade", formulario.getDescricaoIrregularidade());
-        cv.put("observacaoMutuo",formulario.getObservacaoMutuo());
-
-        cv.put("vegetacao", formulario.getVegetacao());
-        cv.put("dimensaoVegetacao", formulario.getDimensaoVegetacao());
-        cv.put("distanciaBaixa", formulario.getDistaciaBaixa());
-        cv.put("distanciaMedia", formulario.getDistanciaMedia());
-        cv.put("estadoArvore", formulario.getEstadoArvore());
-        cv.put("quedaArvore", formulario.getQuedaArvore());
-        cv.put("localArvore", formulario.getLocalArvore());
-        cv.put("observacaoVegetacao", formulario.getObservacaoVegetacao());
-        return cv;
     }
 }

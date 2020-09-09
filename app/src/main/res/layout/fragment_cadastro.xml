@@ -143,7 +143,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnFoto3" />
+            app:layout_constraintTop_toBottomOf="@+id/textCadastroCodigo"/>
 
         <EditText
             android:id="@+id/textCadastroEndereco"
@@ -588,7 +588,7 @@
             android:textStyle="bold"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relativeSpinTipoCabodois" />
+            app:layout_constraintTop_toBottomOf="@+id/textCadastroQuantidadeMutuo" />
 
         <EditText
             android:id="@+id/textCadastroNome"
@@ -681,10 +681,9 @@
             android:layout_width="300dp"
             android:layout_height="200dp"
             android:layout_marginTop="16dp"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chkCadastroVegetacao"
+            app:layout_constraintTop_toBottomOf="@+id/btnUpload17"
             app:srcCompat="@drawable/ic_menu_camera" />
 
         <Button
@@ -695,9 +694,8 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/button_selector_foto"
             android:padding="5dp"
-            android:text="Adicionar Foto"
+            android:text="Adicionar Foto Vegetecação"
             android:textColor="@color/textColor"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto30" />
 
@@ -709,9 +707,8 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/button_selector"
             android:padding="5dp"
-            android:text="Upload de Foto"
+            android:text="Upload de Vegetação"
             android:textColor="@color/textColor"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto30" />
 
@@ -726,7 +723,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnUpload30">
+            app:layout_constraintTop_toBottomOf="@+id/chkCadastroVegetacao">
 
             <Spinner
                 android:id="@+id/spinCadastroDimensaoVegetacao"
@@ -781,7 +778,7 @@
             android:text="Salvar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textCadastroObservacaoVegetacao" />
+            app:layout_constraintTop_toBottomOf="@+id/btnUpload30" />
 
         <Button
             android:id="@+id/btnNovoPoste"
@@ -888,10 +885,9 @@
             android:layout_width="300dp"
             android:layout_height="200dp"
             android:layout_marginTop="16dp"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chkCadastroIP"
+            app:layout_constraintTop_toBottomOf="@+id/btnUpload3"
             app:srcCompat="@drawable/ic_menu_camera" />
 
         <Button
@@ -904,7 +900,6 @@
             android:padding="5dp"
             android:text="Adicionar Foto Lampada"
             android:textColor="@color/textColor"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto4" />
 
@@ -918,7 +913,6 @@
             android:padding="5dp"
             android:text="Upload de Foto Lampada"
             android:textColor="@color/textColor"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto4" />
 
@@ -933,7 +927,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/btnUpload4">
+            app:layout_constraintTop_toBottomOf="@+id/chkCadastroIP">
 
             <Spinner
                 android:id="@+id/spinCadastroIPEstrutura"
@@ -1095,7 +1089,7 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/spinner_style"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnUpload14"
+            app:layout_constraintTop_toBottomOf="@+id/chkAtivos"
             android:visibility="gone">
 
             <Spinner
@@ -1126,10 +1120,9 @@
             android:layout_width="300dp"
             android:layout_height="200dp"
             android:layout_marginTop="16dp"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chkAtivos"
+            app:layout_constraintTop_toBottomOf="@+id/btnUpload4"
             app:srcCompat="@drawable/ic_menu_camera" />
 
         <Button
@@ -1140,9 +1133,8 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/button_selector_foto"
             android:padding="5dp"
-            android:text="Adicionar Foto"
+            android:text="Adicionar Foto Ativos 1"
             android:textColor="@color/textColor"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto13" />
 
@@ -1154,9 +1146,8 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/button_selector"
             android:padding="5dp"
-            android:text="Upload de Foto"
+            android:text="Upload de Foto Ativos 1"
             android:textColor="@color/textColor"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto13" />
 
@@ -1165,7 +1156,6 @@
             android:layout_width="300dp"
             android:layout_height="200dp"
             android:layout_marginTop="16dp"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnUpload13"
@@ -1179,9 +1169,8 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/button_selector_foto"
             android:padding="5dp"
-            android:text="Adicionar Foto"
+            android:text="Adicionar Foto Ativos 2"
             android:textColor="@color/textColor"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto14" />
 
@@ -1193,9 +1182,8 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/button_selector"
             android:padding="5dp"
-            android:text="Upload de Foto"
+            android:text="Upload de Foto Ativos 2"
             android:textColor="@color/textColor"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto14" />
 
@@ -1231,7 +1219,7 @@
             android:text="Trifásico"
             android:textColor="@color/textColor"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnUpload14"
+            app:layout_constraintTop_toBottomOf="@+id/chkAtivos"
             android:visibility="gone" />
 
         <CheckBox
@@ -1293,7 +1281,7 @@
             android:visibility="gone"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnUpload17" />
+            app:layout_constraintTop_toBottomOf="@+id/chkCadastroMutuo" />
 
         <EditText
             android:id="@+id/textCadastroQuantidadeMutuo"
@@ -1325,7 +1313,7 @@
             android:visibility="gone"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textCadastroQuantidadeMutuo" />
+            app:layout_constraintTop_toBottomOf="@+id/textCadastroNome" />
 
         <EditText
             android:id="@+id/textCadastroMutuoQuantidadeCabos"
@@ -1433,10 +1421,9 @@
             android:layout_width="300dp"
             android:layout_height="200dp"
             android:layout_marginTop="16dp"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chkCadastroMutuo"
+            app:layout_constraintTop_toBottomOf="@+id/btnUpload14"
             app:srcCompat="@drawable/ic_menu_camera" />
 
         <Button
@@ -1447,9 +1434,8 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/button_selector_foto"
             android:padding="5dp"
-            android:text="Adicionar Foto"
+            android:text="Adicionar Foto Mutuo 1"
             android:textColor="@color/textColor"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto15" />
 
@@ -1461,9 +1447,8 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/button_selector"
             android:padding="5dp"
-            android:text="Upload de Foto"
+            android:text="Upload de Foto Mutuo 1"
             android:textColor="@color/textColor"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto15" />
 
@@ -1472,7 +1457,6 @@
             android:layout_width="300dp"
             android:layout_height="200dp"
             android:layout_marginTop="16dp"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnUpload15"
@@ -1486,9 +1470,8 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/button_selector_foto"
             android:padding="5dp"
-            android:text="Adicionar Foto"
+            android:text="Adicionar Foto Mutuo 2"
             android:textColor="@color/textColor"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto16" />
 
@@ -1500,9 +1483,8 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/button_selector"
             android:padding="5dp"
-            android:text="Upload de Foto"
+            android:text="Upload de Foto Mutuo 2"
             android:textColor="@color/textColor"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto16" />
 
@@ -1511,7 +1493,6 @@
             android:layout_width="300dp"
             android:layout_height="200dp"
             android:layout_marginTop="16dp"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnUpload16"
@@ -1525,9 +1506,8 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/button_selector_foto"
             android:padding="5dp"
-            android:text="Adicionar Foto"
+            android:text="Adicionar Foto Mutuo 3"
             android:textColor="@color/textColor"
-            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto17" />
 
@@ -1539,9 +1519,8 @@
             android:layout_marginEnd="16dp"
             android:background="@drawable/button_selector"
             android:padding="5dp"
-            android:text="Upload de Foto"
+            android:text="Upload de Foto Mutuo 3"
             android:textColor="@color/textColor"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto17" />
 
@@ -1556,7 +1535,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textCadastroNome">
+            app:layout_constraintTop_toBottomOf="@+id/relativeSpinTipoCabodois">
 
             <Spinner
                 android:id="@+id/spinCadastroFinalidade"
@@ -1842,7 +1821,7 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textCadastroCodigo"
+            app:layout_constraintTop_toBottomOf="@+id/textCadastroObservacaoVegetacao"
             app:srcCompat="@drawable/ic_menu_camera" />
 
         <TextView

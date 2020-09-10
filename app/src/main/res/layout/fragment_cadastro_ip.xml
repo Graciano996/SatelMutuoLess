@@ -106,19 +106,4 @@
             android:inputType="textPersonName" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView20"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Observacão"
-        android:textStyle="bold" />
-
-    <EditText
-        android:id="@+id/editTextTextPersonName5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/edit_round"
-        android:ems="10"
-        android:inputType="textPersonName" />
-
 </LinearLayout>

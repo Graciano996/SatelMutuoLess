@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -29,11 +30,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -69,6 +72,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -80,6 +84,7 @@ import static android.app.Activity.RESULT_OK;
 import static com.bumptech.glide.load.resource.bitmap.TransformationUtils.rotateImage;
 
 public class CadastroFragment extends Fragment {
+    public int contadorIPLayout = 1;
     private static final int REQUEST_CODE = 1;
     private static final int IMAGE_CAPTURE_CODE_PAN = 2;
     private static final int IMAGE_PICK_CODE_PAN = 3;
@@ -110,26 +115,32 @@ public class CadastroFragment extends Fragment {
     Boolean controle = false;
     List<Address> addresses;
 
-    private RelativeLayout relativeChFaca,relativeBanco,relativeRamal, relativeIPTipoEstrutura,
-                            relativeIPTipoLampada,relativeIPTipoAtivacao, relativeFinalidade,
+    public Button btnIPLayoutRemove, btnAtivoRemove;
+    private List<EditText> editIPQuantidadeLampada, editIPPot,editIP24H,editAtivoChFusivel,
+            editAtivoChFusivelReligador,editAtivoOutro;
+    private List<Spinner> spinIPEstrutura, spinIPTipo, spinIPTipoAtivacao,spinAtivoTrifasico,
+    spinAtivoMono,spinAtivoChFaca,spinAtivoBanco,spinAtivoRamal;
+    private List<CheckBox> checkIP24,checkAtivoTrifasico,checkAtivoMono,checkAtivoReligador,
+    checkAtivoMedicao;
+    private List<TextView> textIPQLampada, textIP,textAtivoChFusivel,textAtivoChFusivelReligador,
+    textAtivoOutro,textAtivo;
+    private RelativeLayout relativeFinalidade,
     relativeCeans, relativeTar, relativeReservaTec, relativeBackbone,relativeTipoCabo,relativeTipoCabodois,
     relativeDimensaoVegetacao, relativeBaixa, relativeMedia, relativeEstadoArvore,
-            relativeLocalArvore, relativeSpinMono,relativeSpinTri;
-    private TextView textOutros, textLampada, textFusivel, textFusivelReligador, textQuantidadeCabo,
+            relativeLocalArvore;
+    private TextView textQuantidadeCabo,
     textQuantidadeCabodois, textNome, textIrregularidade, textOcupante;
     private EditText codigo, endereco, latitude, longitude, observacaoFisicas,
-            observacaoAtivos, quantidadeLampada,
-            potReator, quantidade24H,
-            observacaoVegetacao, observacaoIP,outros, quantidadeOcupantes, chFusivel,chFusivelReligador,
+            observacaoAtivos,
+            observacaoVegetacao, observacaoIP, quantidadeOcupantes,
             quantidadeCabos, quantidadeCabosdois, nome,  descricaoIrregularidade, observacaoMutuo;
-    private Spinner municipio, alturaCarga, tipoPoste, ipEstrutura, tipoPot,
-            dimensaoVegetacao, ipAtivacao,
-            trafoTrifasico, trafoMono, ramalSubt,
+    private Spinner municipio, alturaCarga, tipoPoste,
+            dimensaoVegetacao,
+
             tipoCabo, tipoCabodois, distaciaBaixa, distanciaMedia, estadoArvore,
-            localArvore, finalidade, ceans,tar,reservaTec,backbone,chBanco,chFaca;
-    private CheckBox normal, ferragemExposta, fletido, danificado, abalroado, trincado, religador, medicao,
-            vinteEQuatro,
-            ativos, chkTrafoTrifasico, chkTrafoMono, ip, mutuo,
+            localArvore, finalidade, ceans,tar,reservaTec,backbone;
+    private CheckBox normal, ferragemExposta, fletido, danificado, abalroado, trincado,
+            ativos, ip, mutuo,
             placaIdentificadora, descidaCabos, quedaArvore,chkVegetacao;
     private Formulario formularioAtual;
     private File photoFile = null;
@@ -157,6 +168,33 @@ public class CadastroFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_cadastro, container, false);
         ((DrawerActivity) getActivity()).getSupportActionBar().setTitle("Cadastro");
         codigo = root.findViewById(R.id.textCadastroCodigo);
+        editIPQuantidadeLampada = new ArrayList<>();
+        editIPPot = new ArrayList<>();
+        editIP24H = new ArrayList<>();
+        spinIPEstrutura = new ArrayList<>();
+        spinIPTipo = new ArrayList<>();
+        spinIPTipoAtivacao = new ArrayList<>();
+        checkIP24= new ArrayList<>();
+        textIPQLampada = new ArrayList<>();
+        textIP = new ArrayList<>();
+        textAtivo = new ArrayList<>();
+        textAtivoChFusivel = new ArrayList<>();
+        textAtivoChFusivelReligador = new ArrayList<>();
+        textAtivoOutro = new ArrayList<>();
+        editAtivoChFusivel = new ArrayList<>();
+        editAtivoChFusivelReligador = new ArrayList<>();
+        editAtivoOutro = new ArrayList<>();
+        spinAtivoTrifasico = new ArrayList<>();
+        spinAtivoMono = new ArrayList<>();
+        spinAtivoChFaca = new ArrayList<>();
+        spinAtivoBanco = new ArrayList<>();
+        spinAtivoRamal = new ArrayList<>();
+        checkAtivoTrifasico = new ArrayList<>();
+        checkAtivoMono = new ArrayList<>();
+        checkAtivoReligador = new ArrayList<>();
+        checkAtivoMedicao = new ArrayList<>();
+
+
         fotoPan = root.findViewById(R.id.imageCadastroFoto);
         fotoAlt = root.findViewById(R.id.imageCadastroFoto2);
         fotoQualidade = root.findViewById(R.id.imageCadastroFoto3);
@@ -602,64 +640,10 @@ public class CadastroFragment extends Fragment {
 
         //Iluminação
         ip = root.findViewById(R.id.chkCadastroIP);
-        textLampada = root.findViewById(R.id.textView17);
-        relativeIPTipoEstrutura = root.findViewById(R.id.relativeSpinIluminacaoTipo);
-        ipEstrutura = root.findViewById(R.id.spinCadastroIPEstrutura);
-        quantidadeLampada = root.findViewById(R.id.textCadastroQuantidadeLampada);
-        ipEstrutura.setEnabled(false);
-        relativeIPTipoLampada = root.findViewById(R.id.relativeSpinIluminacaoTipoPot);
-        tipoPot = root.findViewById(R.id.spinCadastroTipoPot);
-        tipoPot.setEnabled(false);
-        potReator = root.findViewById(R.id.textCadastroPotReator);
-        potReator.setEnabled(false);
-        tipoPot.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String[] texto = (tipoPot.getSelectedItem().toString()).split(" ");
-                try {
-                    potReator.setText(texto[1]);
-                } catch (Exception e) {
-
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        relativeIPTipoAtivacao = root.findViewById(R.id.relativeSpinIPAtivacao);
-        ipAtivacao = root.findViewById(R.id.spinCadastroIPAtivacao);
-        ipAtivacao.setEnabled(false);
-        vinteEQuatro = root.findViewById(R.id.chkCadastroVinteEQuatro);
-        quantidade24H = root.findViewById(R.id.txtCadastroQuantidade24H);
         observacaoIP = root.findViewById(R.id.textCadastroObservacaoIP);
 
         //TRAFO
         ativos = root.findViewById(R.id.chkAtivos);
-        chkTrafoTrifasico = root.findViewById(R.id.chkCadastroTrafoTrifasico);
-        chkTrafoMono = root.findViewById(R.id.chkCadastroTrafoMono);
-        relativeSpinMono = root.findViewById(R.id.relativeSpinTrafoMono);
-        trafoTrifasico = root.findViewById(R.id.spinCadastroTrafoTrifasico);
-        trafoTrifasico.setEnabled(false);
-        relativeSpinTri = root.findViewById(R.id.relativeSpinTrafoTrifasico);
-        trafoMono = root.findViewById(R.id.spinCadastroTrafoMono);
-        trafoMono.setEnabled(false);
-        religador = root.findViewById(R.id.chkCadastroReligador);
-        medicao = root.findViewById(R.id.chkCadastroMedicao);
-        textFusivel = root.findViewById(R.id.textView18);
-        chFusivel = root.findViewById(R.id.textChaveFusivel);
-        relativeChFaca = root.findViewById(R.id.relativeChFaca);
-        chFaca = root.findViewById(R.id.spinCadastroChFaca);
-        relativeBanco = root.findViewById(R.id.relativeBanco);
-        chBanco = root.findViewById(R.id.spinCadastroBanco);
-        textFusivelReligador = root.findViewById(R.id.textView19);
-        chFusivelReligador = root.findViewById(R.id.textChaveFusivelReligador);
-        relativeRamal = root.findViewById(R.id.relativeSpinRamalSubt);
-        ramalSubt = root.findViewById(R.id.spinCadastroRamalSubt);
-        ramalSubt.setEnabled(false);
-        textOutros = root.findViewById(R.id.textViewOutros);
-        outros = root.findViewById(R.id.textCadastroOutrosAtivos);
         observacaoAtivos = root.findViewById(R.id.textCadastroObservacaoAtivo);
 
         //MUTUO
@@ -752,35 +736,16 @@ public class CadastroFragment extends Fragment {
                 final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.LightDialogTheme);
                 dialog.setTitle("O que deseja fazer:");
                 dialog.setCancelable(false);
-                dialog.setPositiveButton("Editar/Recuperar Dados Para Novo Poste", new DialogInterface.OnClickListener() {
+                dialog.setPositiveButton("Editar dados do poste atual", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        final AlertDialog.Builder dialog2 = new AlertDialog.Builder(getActivity(), R.style.LightDialogTheme);
-                        dialog2.setTitle("Escolha uma opção?");
-                        dialog2.setCancelable(false);
-                        dialog2.setPositiveButton("Novo Poste", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                new NovoPosteTask().execute();
-
-
-                            }
-                        });
-                        dialog2.setNegativeButton("Editar Dados No Mesmo Poste", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                new MesmoPosteTask().execute();
-
-                            }
-                        });
-                        dialog2.create();
-                        dialog2.show();
+                        new MesmoPosteTask().execute();
                     }
                 });
-                dialog.setNegativeButton("Inisirir Outro Ocupante Ao Mesmo Poste", new DialogInterface.OnClickListener() {
+                dialog.setNegativeButton("Recuperar dados para novo poste", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        new OutroOcupanteTask().execute();
+                        new NovoPosteTask().execute();
 
                     }
                 });
@@ -846,71 +811,59 @@ public class CadastroFragment extends Fragment {
                                           }
         );
 
-        vinteEQuatro.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-                                                    @Override
-                                                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                                        if (vinteEQuatro.isChecked()) {
-                                                            quantidade24H.setEnabled(true);
-                                                        } else {
-                                                            quantidade24H.setEnabled(false);
-                                                            quantidade24H.setText("");
-                                                        }
-                                                    }
-                                                }
-        );
-
-
         //Listener para só habilitar os dados da própria ip e as próximas ip caso a primeira
         // tenha sido checada
+        btnIPLayoutRemove = root.findViewById(R.id.buttonIPLayoutRemove);
+        btnIPLayoutRemove.setVisibility(View.GONE);
+        btnIPLayoutRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeIP();
+            }
+        });
+        final Button btnIPLayout = root.findViewById(R.id.buttonIPLayout);
+        btnIPLayout.setVisibility(View.GONE);
+        btnIPLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createIP();
+                try {
+                    btnIPLayoutRemove.setVisibility(View.VISIBLE);
+                }catch (Exception e){
+
+                }
+            }
+        });
         ip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (ip.isChecked()) {
-                    ipEstrutura.setEnabled(true);
-                    tipoPot.setEnabled(true);
-                    potReator.setEnabled(true);
-                    quantidadeLampada.setEnabled(true);
-                    ipAtivacao.setEnabled(true);
-                    vinteEQuatro.setEnabled(true);
-                    textLampada.setVisibility(View.VISIBLE);
-                    relativeIPTipoEstrutura.setVisibility(View.VISIBLE);
-                    relativeIPTipoLampada.setVisibility(View.VISIBLE);
-                    relativeIPTipoAtivacao.setVisibility(View.VISIBLE);
+                    btnIPLayout.setVisibility(View.VISIBLE);
 
-                    ipEstrutura.setVisibility(View.VISIBLE);
-                    tipoPot.setVisibility(View.VISIBLE);
-                    potReator.setVisibility(View.VISIBLE);
-                    quantidadeLampada.setVisibility(View.VISIBLE);
-                    ipAtivacao.setVisibility(View.VISIBLE);
-                    vinteEQuatro.setVisibility(View.VISIBLE);
-                    quantidade24H.setVisibility(View.VISIBLE);
                 } else {
-                    ipEstrutura.setEnabled(false);
-                    quantidadeLampada.setEnabled(false);
-                    quantidadeLampada.setText("0");
-                    tipoPot.setEnabled(false);
-                    tipoPot.setSelection(0);
-                    potReator.setEnabled(false);
-                    quantidadeLampada.setText("0");
-                    ipEstrutura.setSelection(0);
-                    ipAtivacao.setEnabled(false);
-                    vinteEQuatro.setEnabled(false);
-                    vinteEQuatro.setChecked(false);
-                    ipAtivacao.setSelection(0);
-                    textLampada.setVisibility(View.GONE);
-
-                    ipEstrutura.setVisibility(View.GONE);
-                    tipoPot.setVisibility(View.GONE);
-                    potReator.setVisibility(View.GONE);
-                    quantidadeLampada.setVisibility(View.GONE);
-                    quantidade24H.setVisibility(View.GONE);
-                    ipAtivacao.setVisibility(View.GONE);
-                    vinteEQuatro.setVisibility(View.GONE);
-                    relativeIPTipoEstrutura.setVisibility(View.GONE);
-                    relativeIPTipoLampada.setVisibility(View.GONE);
-                    relativeIPTipoAtivacao.setVisibility(View.GONE);
+                    btnIPLayout.setVisibility(View.GONE);
+                    removeIPAll();
+                    btnIPLayoutRemove.setVisibility(View.GONE);
                 }
+            }
+        });
+
+        btnAtivoRemove = root.findViewById(R.id.buttonAtivoRemove);
+        btnAtivoRemove.setVisibility(View.GONE);
+        btnAtivoRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeAtivo();
+            }
+        });
+
+        final Button btnAtivo = root.findViewById(R.id.buttonAtivo);
+        btnAtivo.setVisibility(View.GONE);
+        btnAtivo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createAtivo();
+                btnAtivoRemove.setVisibility(View.VISIBLE);
             }
         });
 
@@ -920,115 +873,14 @@ public class CadastroFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (ativos.isChecked()) {
-                    chkTrafoTrifasico.setEnabled(true);
-                    chkTrafoMono.setEnabled(true);
-                    religador.setEnabled(true);
-                    medicao.setEnabled(true);
-                    chFusivel.setEnabled(true);
-                    chFaca.setEnabled(true);
-                    chFusivelReligador.setEnabled(true);
-                    chBanco.setEnabled(true);
-                    ramalSubt.setEnabled(true);
-                    outros.setEnabled(true);
+                    btnAtivo.setVisibility(View.VISIBLE);
 
 
-                    trafoMono.setVisibility(View.VISIBLE);
-                    trafoTrifasico.setVisibility(View.VISIBLE);
-                    chkTrafoTrifasico.setVisibility(View.VISIBLE);
-                    chkTrafoMono.setVisibility(View.VISIBLE);
-                    religador.setVisibility(View.VISIBLE);
-                    medicao.setVisibility(View.VISIBLE);
-                    chFusivel.setVisibility(View.VISIBLE);
-                    chFaca.setVisibility(View.VISIBLE);
-                    chFusivelReligador.setVisibility(View.VISIBLE);
-                    chBanco.setVisibility(View.VISIBLE);
-                    ramalSubt.setVisibility(View.VISIBLE);
-                    textOutros.setVisibility(View.VISIBLE);
-                    relativeSpinMono.setVisibility(View.VISIBLE);
-                    relativeSpinTri.setVisibility(View.VISIBLE);
-                    relativeBanco.setVisibility(View.VISIBLE);
-                    relativeRamal.setVisibility(View.VISIBLE);
-                    relativeChFaca.setVisibility(View.VISIBLE);
-                    outros.setVisibility(View.VISIBLE);
-                    textFusivel.setVisibility(View.VISIBLE);
-                    textFusivelReligador.setVisibility(View.VISIBLE);
                 } else {
-                    chkTrafoTrifasico.setChecked(false);
-                    chkTrafoTrifasico.setEnabled(false);
-                    chkTrafoMono.setChecked(false);
-                    chkTrafoMono.setEnabled(false);
-                    chkTrafoTrifasico.setChecked(false);
-                    trafoTrifasico.setSelection(0);
-                    trafoTrifasico.setEnabled(false);
-                    trafoMono.setSelection(0);
-                    trafoMono.setEnabled(false);
-                    religador.setEnabled(false);
-                    religador.setChecked(false);
-                    medicao.setEnabled(false);
-                    medicao.setChecked(false);
-                    chFusivel.setText("0");
-                    chFaca.setEnabled(false);
-                    chFaca.setSelection(0);
-                    chFusivelReligador.setEnabled(false);
-                    chFusivelReligador.setText("0");
-                    chBanco.setEnabled(false);
-                    chBanco.setSelection(0);
-                    ramalSubt.setSelection(0);
-                    ramalSubt.setEnabled(false);
-                    outros.setEnabled(false);
-
-                    trafoMono.setVisibility(View.GONE);
-                    trafoTrifasico.setVisibility(View.GONE);
-                    chkTrafoTrifasico.setVisibility(View.GONE);
-                    chkTrafoMono.setVisibility(View.GONE);
-                    religador.setVisibility(View.GONE);
-                    medicao.setVisibility(View.GONE);
-                    chFusivel.setVisibility(View.GONE);
-                    textOutros.setVisibility(View.GONE);
-                    chFaca.setVisibility(View.GONE);
-                    chFusivelReligador.setVisibility(View.GONE);
-                    chBanco.setVisibility(View.GONE);
-                    ramalSubt.setVisibility(View.GONE);
-                    outros.setVisibility(View.GONE);
-                    relativeSpinMono.setVisibility(View.GONE);
-                    relativeSpinTri.setVisibility(View.GONE);
-                    relativeBanco.setVisibility(View.GONE);
-                    relativeRamal.setVisibility(View.GONE);
-                    relativeChFaca.setVisibility(View.GONE);
-                    textFusivel.setVisibility(View.GONE);
-                    textFusivelReligador.setVisibility(View.GONE);
+                    btnAtivo.setVisibility(View.GONE);
+                    removeAtivoAll();
+                    btnAtivoRemove.setVisibility(View.GONE);
                 }
-            }
-        });
-
-        chkTrafoTrifasico.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (chkTrafoTrifasico.isChecked()) {
-                    chkTrafoMono.setChecked(false);
-                    trafoMono.setSelection(0);
-                    trafoMono.setEnabled(false);
-                    trafoTrifasico.setEnabled(true);
-                } else {
-                    trafoTrifasico.setSelection(0);
-                    trafoTrifasico.setEnabled(false);
-                }
-
-            }
-        });
-        chkTrafoMono.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (chkTrafoMono.isChecked()) {
-                    chkTrafoTrifasico.setChecked(false);
-                    trafoTrifasico.setSelection(0);
-                    trafoTrifasico.setEnabled(false);
-                    trafoMono.setEnabled(true);
-                } else {
-                    trafoMono.setSelection(0);
-                    trafoMono.setEnabled(false);
-                }
-
             }
         });
 
@@ -1505,18 +1357,6 @@ public class CadastroFragment extends Fragment {
         }
     }
 
-    class ThreadOutroOcupante extends Thread {
-        private View root;
-
-        public ThreadOutroOcupante(View root) {
-            this.root = root;
-        }
-
-        @Override
-        public void run() {
-            novoOcupante(this.root);
-        }
-    }
 
     public void intentGet(int requestCode, int resultCode, @Nullable final Intent data) {
         if (resultCode == RESULT_OK) {
@@ -1926,66 +1766,67 @@ public class CadastroFragment extends Fragment {
 
 
                 //ILUMINAÇÃO
-
+                Log.i("SIZES","OI");
                 if (formularioAtual.getIp().equals("Sim")) {
                     ip.setChecked(true);
-                    ipEstrutura.setVisibility(View.VISIBLE);
-                    tipoPot.setVisibility(View.VISIBLE);
-                    potReator.setVisibility(View.VISIBLE);
-                    quantidadeLampada.setVisibility(View.VISIBLE);
-                    ipAtivacao.setVisibility(View.VISIBLE);
-                    vinteEQuatro.setVisibility(View.VISIBLE);
-                    quantidade24H.setVisibility(View.VISIBLE);
-                    fotoIP.setVisibility(View.VISIBLE);
-                    btnFoto4.setVisibility(View.VISIBLE);
-                    btnUpload4.setVisibility(View.VISIBLE);
-                    textLampada.setVisibility(View.VISIBLE);
-                    relativeIPTipoEstrutura.setVisibility(View.VISIBLE);
-                    relativeIPTipoLampada.setVisibility(View.VISIBLE);
-                    relativeIPTipoAtivacao.setVisibility(View.VISIBLE);
-                    if (formularioAtual.getIpEstrutura().equals("-")) {
-                        ipEstrutura.setSelection(0);
-                    } else {
-                        for (int i = 0; i < ipEstrutura.getAdapter().getCount(); i++) {
-                            ipEstrutura.setSelection(i);
-                            if (ipEstrutura.getSelectedItem().toString().equals(formularioAtual.getIpEstrutura())) {
-                                break;
+                    String[] textoIPEstruturaPartido = formularioAtual.getIpEstrutura().split(",");
+                    for (int i = 1;i< textoIPEstruturaPartido.length; i++) {
+                        createIP();
+                    }
+                    for (int i = 1;i< textoIPEstruturaPartido.length; i++){
+                        if (textoIPEstruturaPartido[i].equals("-")) {
+                            spinIPEstrutura.get(i-1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinIPEstrutura.get(i-1).getAdapter().getCount(); a++) {
+                                spinIPEstrutura.get(i-1).setSelection(a);
+                                if (spinIPEstrutura.get(i-1).getSelectedItem().toString().equals(textoIPEstruturaPartido[i])) {
+                                    break;
+                                }
                             }
                         }
                     }
-                    quantidadeLampada.setText(formularioAtual.getQuantidadeLampada());
-                    if (formularioAtual.getTipoPot().equals("-")) {
-                        tipoPot.setSelection(0);
-                    } else {
-                        for (int i = 0; i < tipoPot.getAdapter().getCount(); i++) {
-                            tipoPot.setSelection(i);
-                            if (tipoPot.getSelectedItem().toString().equals(formularioAtual.getTipoPot())) {
-                                break;
+                    String[] textoIPQuantidadePartido = formularioAtual.getQuantidadeLampada().split(",");
+                    for (int i = 1;i< textoIPQuantidadePartido.length; i++) {
+                        editIPQuantidadeLampada.get(i-1).setText(textoIPQuantidadePartido[i]);
+                    }
+                    String[] textoIPTipoPotPartido = formularioAtual.getTipoPot().split(",");
+                    for (int i = 1;i< textoIPTipoPotPartido.length; i++){
+                        if (textoIPTipoPotPartido[i].equals("-")) {
+                            spinIPTipo.get(i-1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinIPTipo.get(i-1).getAdapter().getCount(); a++) {
+                                spinIPTipo.get(i-1).setSelection(a);
+                                if (spinIPTipo.get(i-1).getSelectedItem().toString().equals(textoIPTipoPotPartido[i])) {
+                                    break;
+                                }
                             }
                         }
                     }
-                    potReator.setText(formularioAtual.getPotReator());
-                    if (formularioAtual.getIpAtivacao().equals("-")) {
-                        ipAtivacao.setSelection(0);
-                    } else {
-                        for (int i = 0; i < ipAtivacao.getAdapter().getCount(); i++) {
-                            ipAtivacao.setSelection(i);
-                            if (ipAtivacao.getSelectedItem().toString().equals(formularioAtual.getIpAtivacao())) {
-                                break;
+                    String[] textoIPTipoAtivacaoPartido = formularioAtual.getIpAtivacao().split(",");
+                    for (int i = 1;i< textoIPTipoAtivacaoPartido.length; i++){
+                        if (textoIPTipoAtivacaoPartido[i].equals("-")) {
+                            spinIPTipoAtivacao.get(i-1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinIPTipoAtivacao.get(i-1).getAdapter().getCount(); a++) {
+                                spinIPTipoAtivacao.get(i-1).setSelection(a);
+                                if (spinIPTipoAtivacao.get(i-1).getSelectedItem().toString().equals(textoIPTipoAtivacaoPartido[i])) {
+                                    break;
+                                }
                             }
                         }
                     }
-                    if (formularioAtual.getVinteEQuatro().equals("Sim")) {
-                        vinteEQuatro.setChecked(true);
-                        quantidade24H.setEnabled(true);
+
+                    String[] textoIPCheckPartido = formularioAtual.getVinteEQuatro().split(",");
+                    for (int i = 1;i< textoIPCheckPartido.length; i++) {
+                        if(textoIPCheckPartido[i].equals("Sim")) {
+                            checkIP24.get(i - 1).setChecked(true);
+                            editIP24H.get(i-1).setEnabled(true);
+                        }
                     }
-                    quantidade24H.setText(formularioAtual.getQuantidade24H());
-                    ipEstrutura.setEnabled(true);
-                    quantidadeLampada.setEnabled(true);
-                    tipoPot.setEnabled(true);
-                    potReator.setEnabled(true);
-                    ipAtivacao.setEnabled(true);
-                    vinteEQuatro.setEnabled(true);
+                    String[] textoIPQuantidade24 = formularioAtual.getQuantidade24H().split(",");
+                    for (int i = 1;i< textoIPQuantidade24.length; i++) {
+                        editIP24H.get(i-1).setText(textoIPQuantidade24[i]);
+                    }
                 }
                 observacaoIP.setText(formularioAtual.getObservacaoIP());
 
@@ -1994,114 +1835,129 @@ public class CadastroFragment extends Fragment {
 
                 if (formularioAtual.getAtivos().equals("Sim")) {
                     ativos.setChecked(true);
-                    chkTrafoMono.setEnabled(true);
-                    chkTrafoTrifasico.setEnabled(true);
-                    trafoMono.setEnabled(true);
-                    trafoTrifasico.setEnabled(true);
-                    chFusivel.setEnabled(true);
-                    chFaca.setEnabled(true);
-                    religador.setEnabled(true);
-                    medicao.setEnabled(true);
-                    chBanco.setEnabled(true);
-                    chFusivelReligador.setEnabled(true);
-                    ramalSubt.setEnabled(true);
-                    textOutros.setVisibility(View.VISIBLE);
-                    outros.setEnabled(true);
+                    String[] textoAtivoChFacaPartido = formularioAtual.getChFaca().split(",");
+                    for (int i = 1; i < textoAtivoChFacaPartido.length; i++) {
+                        createAtivo();
+                    }
 
-                    ativos.setVisibility(View.VISIBLE);
-                    chkTrafoMono.setVisibility(View.VISIBLE);
-                    chkTrafoTrifasico.setVisibility(View.VISIBLE);
-                    trafoMono.setVisibility(View.VISIBLE);
-                    trafoTrifasico.setVisibility(View.VISIBLE);
-                    chFusivel.setVisibility(View.VISIBLE);
-                    chFaca.setVisibility(View.VISIBLE);
-                    religador.setVisibility(View.VISIBLE);
-                    medicao.setVisibility(View.VISIBLE);
-                    chBanco.setVisibility(View.VISIBLE);
-                    chFusivelReligador.setVisibility(View.VISIBLE);
-                    ramalSubt.setVisibility(View.VISIBLE);
-                    outros.setVisibility(View.VISIBLE);
-                    fotoAtivos.setVisibility(View.VISIBLE);
-                    btnFoto13.setVisibility(View.VISIBLE);
-                    btnUpload13.setVisibility(View.VISIBLE);
-                    fotoAtivos2.setVisibility(View.VISIBLE);
-                    btnFoto14.setVisibility(View.VISIBLE);
-                    relativeSpinMono.setVisibility(View.VISIBLE);
-                    relativeSpinTri.setVisibility(View.VISIBLE);
-                    btnUpload14.setVisibility(View.VISIBLE);
-                    relativeBanco.setVisibility(View.VISIBLE);
-                    relativeRamal.setVisibility(View.VISIBLE);
-                    relativeChFaca.setVisibility(View.VISIBLE);
-                    textFusivel.setVisibility(View.VISIBLE);
-                    textFusivelReligador.setVisibility(View.VISIBLE);
-                }
-                if (formularioAtual.getChkTrafoTrifasico().equals("Sim")) {
-                    chkTrafoTrifasico.setChecked(true);
-                }
-                if (formularioAtual.getChkTrafoMono().equals("Sim")) {
-                    chkTrafoMono.setChecked(true);
-                }
-                if (formularioAtual.getTrafoTrifasico().equals("-")) {
-                    trafoTrifasico.setSelection(0);
-                } else {
-                    for (int i = 0; i < trafoTrifasico.getAdapter().getCount(); i++) {
-                        trafoTrifasico.setSelection(i);
-                        if (trafoTrifasico.getSelectedItem().toString().equals(formularioAtual.getTrafoTrifasico())) {
-                            break;
+                    String[] textoAtivoCheckTrifasicoPartido = formularioAtual.getChkTrafoTrifasico().split(",");
+                    for (int i = 1; i < textoAtivoCheckTrifasicoPartido.length; i++) {
+                        if (textoAtivoCheckTrifasicoPartido[i].equals("Sim")) {
+                            checkAtivoTrifasico.get(i - 1).setChecked(true);
+                            spinAtivoTrifasico.get(i - 1).setEnabled(true);
                         }
                     }
-                }
-                if (formularioAtual.getTrafoMono().equals("-")) {
-                    trafoMono.setSelection(0);
-                } else {
-                    for (int i = 0; i < trafoMono.getAdapter().getCount(); i++) {
-                        trafoMono.setSelection(i);
-                        if (trafoMono.getSelectedItem().toString().equals(formularioAtual.getTrafoMono())) {
-                            break;
-                        }
-                    }
-                }
 
-                if (formularioAtual.getReligador().equals("Sim")) {
-                    religador.setChecked(true);
-                }
-                if (formularioAtual.getMedicao().equals("Sim")) {
-                    medicao.setChecked(true);
-                }
-                chFusivel.setText(formularioAtual.getChFusivel());
-                chFusivelReligador.setText(formularioAtual.getChFusivelReligador());
-                if (formularioAtual.getBanco().equals("-")) {
-                    chBanco.setSelection(0);
-                } else {
-                    for (int i = 0; i < chBanco.getAdapter().getCount(); i++) {
-                        chBanco.setSelection(i);
-                        if (chBanco.getSelectedItem().toString().equals(formularioAtual.getBanco())) {
-                            break;
+                    String[] textoAtivoCheckMonoPartido = formularioAtual.getChkTrafoMono().split(",");
+                    for (int i = 1; i < textoAtivoCheckMonoPartido.length; i++) {
+                        if (textoAtivoCheckMonoPartido[i].equals("Sim")) {
+                            checkAtivoMono.get(i - 1).setChecked(true);
+                            spinAtivoMono.get(i - 1).setEnabled(true);
                         }
                     }
-                }
-                if (formularioAtual.getChFaca().equals("-")) {
-                    chFaca.setSelection(0);
-                } else {
-                    for (int i = 0; i < chFaca.getAdapter().getCount(); i++) {
-                        chFaca.setSelection(i);
-                        if (chFaca.getSelectedItem().toString().equals(formularioAtual.getChFaca())) {
-                            break;
+
+                    String[] textoAtivoTrifasicoPartido = formularioAtual.getTrafoTrifasico().split(",");
+                    for (int i = 1; i < textoAtivoTrifasicoPartido.length; i++) {
+                        if (textoAtivoTrifasicoPartido[i].equals("-")) {
+                            spinAtivoTrifasico.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinAtivoTrifasico.get(i - 1).getAdapter().getCount(); a++) {
+                                spinAtivoTrifasico.get(i - 1).setSelection(a);
+                                if (spinAtivoTrifasico.get(i - 1).getSelectedItem().toString().equals(textoAtivoTrifasicoPartido[i])) {
+                                    break;
+                                }
+                            }
                         }
                     }
-                }
-                if (formularioAtual.getRamalSubt().equals("-")) {
-                    ramalSubt.setSelection(0);
-                } else {
-                    for (int i = 0; i < ramalSubt.getAdapter().getCount(); i++) {
-                        ramalSubt.setSelection(i);
-                        if (ramalSubt.getSelectedItem().toString().equals(formularioAtual.getRamalSubt())) {
-                            break;
+
+                    String[] textoAtivoMonoPartido = formularioAtual.getTrafoMono().split(",");
+                    for (int i = 1; i < textoAtivoMonoPartido.length; i++) {
+                        if (textoAtivoMonoPartido[i].equals("-")) {
+                            spinAtivoMono.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinAtivoMono.get(i - 1).getAdapter().getCount(); a++) {
+                                spinAtivoMono.get(i - 1).setSelection(a);
+                                if (spinAtivoMono.get(i - 1).getSelectedItem().toString().equals(textoAtivoMonoPartido[i])) {
+                                    break;
+                                }
+                            }
                         }
                     }
+
+                    String[] textoAtivoReligador = formularioAtual.getReligador().split(",");
+                    for (int i = 1; i < textoAtivoReligador.length; i++) {
+                        if (textoAtivoReligador[i].equals("Sim")) {
+                            checkAtivoReligador.get(i - 1).setChecked(true);
+
+                        }
+                    }
+
+                    String[] textoAtivoMedicao = formularioAtual.getMedicao().split(",");
+                    for (int i = 1; i < textoAtivoMedicao.length; i++) {
+                        if (textoAtivoMedicao[i].equals("Sim")) {
+                            checkAtivoMedicao.get(i - 1).setChecked(true);
+
+                        }
+                    }
+
+                    String[] textoAtivoChFusivel = formularioAtual.getChFusivel().split(",");
+                    for (int i = 1; i < textoAtivoChFusivel.length; i++) {
+                        editAtivoChFusivel.get(i - 1).setText(textoAtivoChFusivel[i]);
+                    }
+                    String[] textoAtivoChFusivelReligador = formularioAtual.getChFusivelReligador().split(",");
+                    for (int i = 1; i < textoAtivoChFusivelReligador.length; i++) {
+                        editAtivoChFusivelReligador.get(i - 1).setText(textoAtivoChFusivelReligador[i]);
+                    }
+
+                    for (int i = 1; i < textoAtivoChFacaPartido.length; i++) {
+                        if (textoAtivoChFacaPartido[i].equals("-")) {
+                            spinAtivoChFaca.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinAtivoChFaca.get(i - 1).getAdapter().getCount(); a++) {
+                                spinAtivoChFaca.get(i - 1).setSelection(a);
+                                if (spinAtivoChFaca.get(i - 1).getSelectedItem().toString().equals(textoAtivoChFacaPartido[i])) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    String[] textoAtivoBancoPartido = formularioAtual.getBanco().split(",");
+                    for (int i = 1; i < textoAtivoBancoPartido.length; i++) {
+                        if (textoAtivoBancoPartido[i].equals("-")) {
+                            spinAtivoBanco.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinAtivoBanco.get(i - 1).getAdapter().getCount(); a++) {
+                                spinAtivoBanco.get(i - 1).setSelection(a);
+                                if (spinAtivoBanco.get(i - 1).getSelectedItem().toString().equals(textoAtivoBancoPartido[i])) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    String[] textoAtivoRamalPartido = formularioAtual.getRamalSubt().split(",");
+                    for (int i = 1; i < textoAtivoRamalPartido.length; i++) {
+                        if (textoAtivoRamalPartido[i].equals("-")) {
+                            spinAtivoRamal.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinAtivoRamal.get(i - 1).getAdapter().getCount(); a++) {
+                                spinAtivoRamal.get(i - 1).setSelection(a);
+                                if (spinAtivoRamal.get(i - 1).getSelectedItem().toString().equals(textoAtivoRamalPartido[i])) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    String[] textoAtivoOutro = formularioAtual.getOutros().split(",");
+                    for (int i = 1; i < textoAtivoOutro.length; i++) {
+                        editAtivoOutro.get(i - 1).setText(textoAtivoOutro[i]);
+                    }
+
+
                 }
                 observacaoAtivos.setText(formularioAtual.getObservacaoAtivos());
-                outros.setText(formularioAtual.getOutros());
 
                 //MUTUO
                 if (formularioAtual.getMutuo().equals("Sim")) {
@@ -2535,63 +2391,65 @@ public class CadastroFragment extends Fragment {
 
                 if (formularioAtual.getIp().equals("Sim")) {
                     ip.setChecked(true);
-                    ipEstrutura.setVisibility(View.VISIBLE);
-                    tipoPot.setVisibility(View.VISIBLE);
-                    potReator.setVisibility(View.VISIBLE);
-                    quantidadeLampada.setVisibility(View.VISIBLE);
-                    ipAtivacao.setVisibility(View.VISIBLE);
-                    vinteEQuatro.setVisibility(View.VISIBLE);
-                    quantidade24H.setVisibility(View.VISIBLE);
-                    fotoIP.setVisibility(View.VISIBLE);
-                    btnFoto4.setVisibility(View.VISIBLE);
-                    btnUpload4.setVisibility(View.VISIBLE);
-                    textLampada.setVisibility(View.VISIBLE);
-                    relativeIPTipoEstrutura.setVisibility(View.VISIBLE);
-                    relativeIPTipoLampada.setVisibility(View.VISIBLE);
-                    relativeIPTipoAtivacao.setVisibility(View.VISIBLE);
-                    if (formularioAtual.getIpEstrutura().equals("-")) {
-                        ipEstrutura.setSelection(0);
-                    } else {
-                        for (int i = 0; i < ipEstrutura.getAdapter().getCount(); i++) {
-                            ipEstrutura.setSelection(i);
-                            if (ipEstrutura.getSelectedItem().toString().equals(formularioAtual.getIpEstrutura())) {
-                                break;
+                    String[] textoIPEstruturaPartido = formularioAtual.getIpEstrutura().split(",");
+                    for (int i = 1;i< textoIPEstruturaPartido.length; i++) {
+                        createIP();
+                        btnIPLayoutRemove.setVisibility(View.VISIBLE);
+                    }
+                    for (int i = 1;i< textoIPEstruturaPartido.length; i++){
+                        if (textoIPEstruturaPartido[i].equals("-")) {
+                            spinIPEstrutura.get(i-1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinIPEstrutura.get(i-1).getAdapter().getCount(); a++) {
+                                spinIPEstrutura.get(i-1).setSelection(a);
+                                if (spinIPEstrutura.get(i-1).getSelectedItem().toString().equals(textoIPEstruturaPartido[i])) {
+                                    break;
+                                }
                             }
                         }
                     }
-                    quantidadeLampada.setText(formularioAtual.getQuantidadeLampada());
-                    if (formularioAtual.getTipoPot().equals("-")) {
-                        tipoPot.setSelection(0);
-                    } else {
-                        for (int i = 0; i < tipoPot.getAdapter().getCount(); i++) {
-                            tipoPot.setSelection(i);
-                            if (tipoPot.getSelectedItem().toString().equals(formularioAtual.getTipoPot())) {
-                                break;
+                    String[] textoIPQuantidadePartido = formularioAtual.getQuantidadeLampada().split(",");
+                    for (int i = 1;i< textoIPQuantidadePartido.length; i++) {
+                        editIPQuantidadeLampada.get(i-1).setText(textoIPQuantidadePartido[i]);
+                    }
+                    String[] textoIPTipoPotPartido = formularioAtual.getTipoPot().split(",");
+                    for (int i = 1;i< textoIPTipoPotPartido.length; i++){
+                        if (textoIPTipoPotPartido[i].equals("-")) {
+                            spinIPTipo.get(i-1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinIPTipo.get(i-1).getAdapter().getCount(); a++) {
+                                spinIPTipo.get(i-1).setSelection(a);
+                                if (spinIPTipo.get(i-1).getSelectedItem().toString().equals(textoIPTipoPotPartido[i])) {
+                                    break;
+                                }
                             }
                         }
                     }
-                    potReator.setText(formularioAtual.getPotReator());
-                    if (formularioAtual.getIpAtivacao().equals("-")) {
-                        ipAtivacao.setSelection(0);
-                    } else {
-                        for (int i = 0; i < ipAtivacao.getAdapter().getCount(); i++) {
-                            ipAtivacao.setSelection(i);
-                            if (ipAtivacao.getSelectedItem().toString().equals(formularioAtual.getIpAtivacao())) {
-                                break;
+                    String[] textoIPTipoAtivacaoPartido = formularioAtual.getIpAtivacao().split(",");
+                    for (int i = 1;i< textoIPTipoAtivacaoPartido.length; i++){
+                        if (textoIPTipoAtivacaoPartido[i].equals("-")) {
+                            spinIPTipoAtivacao.get(i-1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinIPTipoAtivacao.get(i-1).getAdapter().getCount(); a++) {
+                                spinIPTipoAtivacao.get(i-1).setSelection(a);
+                                if (spinIPTipoAtivacao.get(i-1).getSelectedItem().toString().equals(textoIPTipoAtivacaoPartido[i])) {
+                                    break;
+                                }
                             }
                         }
                     }
-                    if (formularioAtual.getVinteEQuatro().equals("Sim")) {
-                        vinteEQuatro.setChecked(true);
-                        quantidade24H.setEnabled(true);
+
+                    String[] textoIPCheckPartido = formularioAtual.getVinteEQuatro().split(",");
+                    for (int i = 1;i< textoIPCheckPartido.length; i++) {
+                        if(textoIPCheckPartido[i].equals("Sim")) {
+                            checkIP24.get(i - 1).setChecked(true);
+                            editIP24H.get(i-1).setEnabled(true);
+                        }
                     }
-                    quantidade24H.setText(formularioAtual.getQuantidade24H());
-                    ipEstrutura.setEnabled(true);
-                    quantidadeLampada.setEnabled(true);
-                    tipoPot.setEnabled(true);
-                    potReator.setEnabled(true);
-                    ipAtivacao.setEnabled(true);
-                    vinteEQuatro.setEnabled(true);
+                    String[] textoIPQuantidade24 = formularioAtual.getQuantidade24H().split(",");
+                    for (int i = 1;i< textoIPQuantidade24.length; i++) {
+                        editIP24H.get(i-1).setText(textoIPQuantidade24[i]);
+                    }
                 }
                 observacaoIP.setText(formularioAtual.getObservacaoIP());
 
@@ -2600,112 +2458,130 @@ public class CadastroFragment extends Fragment {
 
                 if (formularioAtual.getAtivos().equals("Sim")) {
                     ativos.setChecked(true);
-                    chkTrafoMono.setEnabled(true);
-                    chkTrafoTrifasico.setEnabled(true);
-                    trafoMono.setEnabled(true);
-                    trafoTrifasico.setEnabled(true);
-                    chFusivel.setEnabled(true);
-                    chFaca.setEnabled(true);
-                    religador.setEnabled(true);
-                    medicao.setEnabled(true);
-                    chBanco.setEnabled(true);
-                    chFusivelReligador.setEnabled(true);
-                    ramalSubt.setEnabled(true);
-                    textOutros.setVisibility(View.VISIBLE);
-                    outros.setEnabled(true);
+                    String[] textoAtivoChFacaPartido = formularioAtual.getChFaca().split(",");
+                    btnAtivoRemove.setVisibility(View.VISIBLE);
+                    for (int i = 1; i < textoAtivoChFacaPartido.length; i++) {
+                        createAtivo();
+                    }
 
-                    ativos.setVisibility(View.VISIBLE);
-                    chkTrafoMono.setVisibility(View.VISIBLE);
-                    chkTrafoTrifasico.setVisibility(View.VISIBLE);
-                    trafoMono.setVisibility(View.VISIBLE);
-                    trafoTrifasico.setVisibility(View.VISIBLE);
-                    chFusivel.setVisibility(View.VISIBLE);
-                    chFaca.setVisibility(View.VISIBLE);
-                    religador.setVisibility(View.VISIBLE);
-                    medicao.setVisibility(View.VISIBLE);
-                    chBanco.setVisibility(View.VISIBLE);
-                    chFusivelReligador.setVisibility(View.VISIBLE);
-                    ramalSubt.setVisibility(View.VISIBLE);
-                    outros.setVisibility(View.VISIBLE);
-                    fotoAtivos.setVisibility(View.VISIBLE);
-                    btnFoto13.setVisibility(View.VISIBLE);
-                    btnUpload13.setVisibility(View.VISIBLE);
-                    fotoAtivos2.setVisibility(View.VISIBLE);
-                    btnFoto14.setVisibility(View.VISIBLE);
-                    btnUpload14.setVisibility(View.VISIBLE);
-                    relativeBanco.setVisibility(View.VISIBLE);
-                    relativeRamal.setVisibility(View.VISIBLE);
-                    relativeChFaca.setVisibility(View.VISIBLE);
-                    textFusivel.setVisibility(View.VISIBLE);
-                    textFusivelReligador.setVisibility(View.VISIBLE);
-                }
-                if (formularioAtual.getChkTrafoTrifasico().equals("Sim")) {
-                    chkTrafoTrifasico.setChecked(true);
-                }
-                if (formularioAtual.getChkTrafoMono().equals("Sim")) {
-                    chkTrafoMono.setChecked(true);
-                }
-                if (formularioAtual.getTrafoTrifasico().equals("-")) {
-                    trafoTrifasico.setSelection(0);
-                } else {
-                    for (int i = 0; i < trafoTrifasico.getAdapter().getCount(); i++) {
-                        trafoTrifasico.setSelection(i);
-                        if (trafoTrifasico.getSelectedItem().toString().equals(formularioAtual.getTrafoTrifasico())) {
-                            break;
+                    String[] textoAtivoCheckTrifasicoPartido = formularioAtual.getChkTrafoTrifasico().split(",");
+                    for (int i = 1; i < textoAtivoCheckTrifasicoPartido.length; i++) {
+                        if (textoAtivoCheckTrifasicoPartido[i].equals("Sim")) {
+                            checkAtivoTrifasico.get(i - 1).setChecked(true);
+                            spinAtivoTrifasico.get(i - 1).setEnabled(true);
                         }
                     }
-                }
-                if (formularioAtual.getTrafoMono().equals("-")) {
-                    trafoMono.setSelection(0);
-                } else {
-                    for (int i = 0; i < trafoMono.getAdapter().getCount(); i++) {
-                        trafoMono.setSelection(i);
-                        if (trafoMono.getSelectedItem().toString().equals(formularioAtual.getTrafoMono())) {
-                            break;
-                        }
-                    }
-                }
 
-                if (formularioAtual.getReligador().equals("Sim")) {
-                    religador.setChecked(true);
-                }
-                if (formularioAtual.getMedicao().equals("Sim")) {
-                    medicao.setChecked(true);
-                }
-                chFusivel.setText(formularioAtual.getChFusivel());
-                chFusivelReligador.setText(formularioAtual.getChFusivelReligador());
-                if (formularioAtual.getBanco().equals("-")) {
-                    chBanco.setSelection(0);
-                } else {
-                    for (int i = 0; i < chBanco.getAdapter().getCount(); i++) {
-                        chBanco.setSelection(i);
-                        if (chBanco.getSelectedItem().toString().equals(formularioAtual.getBanco())) {
-                            break;
+                    String[] textoAtivoCheckMonoPartido = formularioAtual.getChkTrafoMono().split(",");
+                    for (int i = 1; i < textoAtivoCheckMonoPartido.length; i++) {
+                        if (textoAtivoCheckMonoPartido[i].equals("Sim")) {
+                            checkAtivoMono.get(i - 1).setChecked(true);
+                            spinAtivoMono.get(i - 1).setEnabled(true);
                         }
                     }
-                }
-                if (formularioAtual.getChFaca().equals("-")) {
-                    chFaca.setSelection(0);
-                } else {
-                    for (int i = 0; i < chFaca.getAdapter().getCount(); i++) {
-                        chFaca.setSelection(i);
-                        if (chFaca.getSelectedItem().toString().equals(formularioAtual.getChFaca())) {
-                            break;
+
+                    String[] textoAtivoTrifasicoPartido = formularioAtual.getTrafoTrifasico().split(",");
+                    for (int i = 1; i < textoAtivoTrifasicoPartido.length; i++) {
+                        if (textoAtivoTrifasicoPartido[i].equals("-")) {
+                            spinAtivoTrifasico.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinAtivoTrifasico.get(i - 1).getAdapter().getCount(); a++) {
+                                spinAtivoTrifasico.get(i - 1).setSelection(a);
+                                if (spinAtivoTrifasico.get(i - 1).getSelectedItem().toString().equals(textoAtivoTrifasicoPartido[i])) {
+                                    break;
+                                }
+                            }
                         }
                     }
-                }
-                if (formularioAtual.getRamalSubt().equals("-")) {
-                    ramalSubt.setSelection(0);
-                } else {
-                    for (int i = 0; i < ramalSubt.getAdapter().getCount(); i++) {
-                        ramalSubt.setSelection(i);
-                        if (ramalSubt.getSelectedItem().toString().equals(formularioAtual.getRamalSubt())) {
-                            break;
+
+                    String[] textoAtivoMonoPartido = formularioAtual.getTrafoMono().split(",");
+                    for (int i = 1; i < textoAtivoMonoPartido.length; i++) {
+                        if (textoAtivoMonoPartido[i].equals("-")) {
+                            spinAtivoMono.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinAtivoMono.get(i - 1).getAdapter().getCount(); a++) {
+                                spinAtivoMono.get(i - 1).setSelection(a);
+                                if (spinAtivoMono.get(i - 1).getSelectedItem().toString().equals(textoAtivoMonoPartido[i])) {
+                                    break;
+                                }
+                            }
                         }
                     }
+
+                    String[] textoAtivoReligador = formularioAtual.getReligador().split(",");
+                    for (int i = 1; i < textoAtivoReligador.length; i++) {
+                        if (textoAtivoReligador[i].equals("Sim")) {
+                            checkAtivoReligador.get(i - 1).setChecked(true);
+
+                        }
+                    }
+
+                    String[] textoAtivoMedicao = formularioAtual.getMedicao().split(",");
+                    for (int i = 1; i < textoAtivoMedicao.length; i++) {
+                        if (textoAtivoMedicao[i].equals("Sim")) {
+                            checkAtivoMedicao.get(i - 1).setChecked(true);
+
+                        }
+                    }
+
+                    String[] textoAtivoChFusivel = formularioAtual.getChFusivel().split(",");
+                    for (int i = 1; i < textoAtivoChFusivel.length; i++) {
+                        editAtivoChFusivel.get(i - 1).setText(textoAtivoChFusivel[i]);
+                    }
+                    String[] textoAtivoChFusivelReligador = formularioAtual.getChFusivelReligador().split(",");
+                    for (int i = 1; i < textoAtivoChFusivelReligador.length; i++) {
+                        editAtivoChFusivelReligador.get(i - 1).setText(textoAtivoChFusivelReligador[i]);
+                    }
+
+                    for (int i = 1; i < textoAtivoChFacaPartido.length; i++) {
+                        if (textoAtivoChFacaPartido[i].equals("-")) {
+                            spinAtivoChFaca.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinAtivoChFaca.get(i - 1).getAdapter().getCount(); a++) {
+                                spinAtivoChFaca.get(i - 1).setSelection(a);
+                                if (spinAtivoChFaca.get(i - 1).getSelectedItem().toString().equals(textoAtivoChFacaPartido[i])) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    String[] textoAtivoBancoPartido = formularioAtual.getBanco().split(",");
+                    for (int i = 1; i < textoAtivoBancoPartido.length; i++) {
+                        if (textoAtivoBancoPartido[i].equals("-")) {
+                            spinAtivoBanco.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinAtivoBanco.get(i - 1).getAdapter().getCount(); a++) {
+                                spinAtivoBanco.get(i - 1).setSelection(a);
+                                if (spinAtivoBanco.get(i - 1).getSelectedItem().toString().equals(textoAtivoBancoPartido[i])) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    String[] textoAtivoRamalPartido = formularioAtual.getRamalSubt().split(",");
+                    for (int i = 1; i < textoAtivoRamalPartido.length; i++) {
+                        if (textoAtivoRamalPartido[i].equals("-")) {
+                            spinAtivoRamal.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinAtivoRamal.get(i - 1).getAdapter().getCount(); a++) {
+                                spinAtivoRamal.get(i - 1).setSelection(a);
+                                if (spinAtivoRamal.get(i - 1).getSelectedItem().toString().equals(textoAtivoRamalPartido[i])) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    String[] textoAtivoOutro = formularioAtual.getOutros().split(",");
+                    for (int i = 1; i < textoAtivoOutro.length; i++) {
+                        editAtivoOutro.get(i - 1).setText(textoAtivoOutro[i]);
+                    }
+
+
                 }
                 observacaoAtivos.setText(formularioAtual.getObservacaoAtivos());
-                outros.setText(formularioAtual.getOutros());
 
                 //MUTUO
                 if (formularioAtual.getMutuo().equals("Sim")) {
@@ -2910,185 +2786,6 @@ public class CadastroFragment extends Fragment {
 
     }
 
-
-    private void novoOcupante(final View root) {
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 8;
-        requireActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                outroOcupante = true;
-                root.findViewById(R.id.btnCadastroSalvar).setVisibility(View.GONE);
-                contadorAr = formularioAtual.getContadorAr();
-                contadorAt = formularioAtual.getContadorAt();
-                contadorIp = formularioAtual.getContadorIp();
-                codigo.setText(formularioAtual.getCodigo());
-
-
-                imgPathPan = formularioAtual.getCaminhoImagem();
-                if (imgPathPan == null || imgPathPan.equals("")) {
-
-                } else {
-                    fotoPan.setImageBitmap(BitmapFactory.decodeFile(imgPathPan,options));
-                    imagemPan = BitmapFactory.decodeFile(imgPathPan,options);
-                }
-                imgPathAlt = formularioAtual.getCaminhoImagem2();
-                if (imgPathAlt == null || imgPathAlt.equals("")) {
-
-                } else {
-                    imgPathAlt = formularioAtual.getCaminhoImagem2();
-                    fotoAlt.setImageBitmap(BitmapFactory.decodeFile(imgPathAlt,options));
-                    imagemAlt = BitmapFactory.decodeFile(imgPathAlt,options);
-                }
-
-                imgPathQualidade = formularioAtual.getCaminhoImagem3();
-                if (imgPathQualidade == null || imgPathQualidade.equals("")) {
-
-                } else {
-                    imgPathQualidade = formularioAtual.getCaminhoImagem3();
-                    fotoQualidade.setImageBitmap(BitmapFactory.decodeFile(imgPathQualidade,options));
-                    imagemQualidade = BitmapFactory.decodeFile(imgPathQualidade,options);
-                }
-
-                /*imgPathIP = formularioAtual.getCaminhoImagem4();
-                if (imgPathIP == null || imgPathIP.equals("")) {
-
-                } else {
-                    imgPathIP = formularioAtual.getCaminhoImagem4();
-                    fotoIP.setImageBitmap(BitmapFactory.decodeFile(imgPathIP,options));
-                    imagemIP = BitmapFactory.decodeFile(imgPathIP,options);
-                }
-
-                imgPathAtivos = formularioAtual.getCaminhoImagem7();
-                if (imgPathAtivos == null || imgPathAtivos.equals("")) {
-
-                } else {
-                    imgPathAtivos = formularioAtual.getCaminhoImagem7();
-                    fotoAtivos.setImageBitmap(BitmapFactory.decodeFile(imgPathAtivos,options));
-                    imagemAtivos = BitmapFactory.decodeFile(imgPathAtivos,options);
-                }
-
-
-                if (imgPathAtivos2 == null || imgPathAtivos2.equals("")) {
-                    imgPathAtivos2 = formularioAtual.getCaminhoImagem8();
-                } else {
-                    imgPathAtivos2 = formularioAtual.getCaminhoImagem8();
-                    fotoAtivos2.setImageBitmap(BitmapFactory.decodeFile(imgPathAtivos2,options));
-                    imagemAtivos2 = BitmapFactory.decodeFile(imgPathAtivos2,options);
-                }
-
-                imgPathMutuo = formularioAtual.getCaminhoImagem9();
-                if (imgPathMutuo == null || imgPathMutuo.equals("")) {
-
-                } else {
-                    imgPathMutuo = formularioAtual.getCaminhoImagem9();
-                    fotoMutuo.setImageBitmap(BitmapFactory.decodeFile(imgPathMutuo,options));
-                    imagemMutuo = BitmapFactory.decodeFile(imgPathMutuo,options);
-                }
-
-                imgPathMutuo2 = formularioAtual.getCaminhoImagem10();
-                if (imgPathMutuo2 == null || imgPathMutuo2.equals("")) {
-
-                } else {
-                    imgPathMutuo2 = formularioAtual.getCaminhoImagem10();
-                    fotoMutuo2.setImageBitmap(BitmapFactory.decodeFile(imgPathMutuo2,options));
-                    imagemMutuo2 = BitmapFactory.decodeFile(imgPathMutuo2,options);
-                }
-
-                imgPathMutuo3 = formularioAtual.getCaminhoImagem11();
-                if (imgPathMutuo3 == null || imgPathMutuo3.equals("")) {
-
-                } else {
-                    imgPathMutuo3 = formularioAtual.getCaminhoImagem11();
-                    fotoMutuo3.setImageBitmap(BitmapFactory.decodeFile(imgPathMutuo3,options));
-                    imagemMutuo3 = BitmapFactory.decodeFile(imgPathMutuo3,options);
-                }
-
-                imgPathVeg = formularioAtual.getCaminhoImagem12();
-                if (imgPathVeg == null || imgPathVeg.equals("")) {
-
-                } else {
-                    imgPathVeg = formularioAtual.getCaminhoImagem12();
-                    fotoVeg.setImageBitmap(BitmapFactory.decodeFile(imgPathVeg,options));
-                    imagemVeg = BitmapFactory.decodeFile(imgPathVeg,options);
-                }*/
-                endereco.setText(formularioAtual.getEndereco());
-                urlFotoPan = Uri.parse(formularioAtual.getUrlImagem());
-                urlFotoAlt = Uri.parse(formularioAtual.getUrlImagem2());
-                urlFotoQualidade = Uri.parse(formularioAtual.getUrlImagem3());
-                /*
-                urlFotoIP = Uri.parse(formularioAtual.getUrlImagem4());
-                urlFotoAtivos = Uri.parse(formularioAtual.getUrlImagem7());
-                urlFotoAtivos2 = Uri.parse(formularioAtual.getUrlImagem8());
-                urlFotoMutuo = Uri.parse(formularioAtual.getUrlImagem9());
-                urlFotoMutuo2 = Uri.parse(formularioAtual.getUrlImagem10());
-                urlFotoMutuo3 = Uri.parse(formularioAtual.getUrlImagem11());
-                urlFotoVeg = Uri.parse(formularioAtual.getUrlImagem12());
-                */
-                if (formularioAtual.getMunicipio().equals("-")) {
-                    municipio.setSelection(0);
-                } else {
-                    for (int i = 0; i < municipio.getAdapter().getCount(); i++) {
-                        municipio.setSelection(i);
-                        if (municipio.getSelectedItem().toString().equals(formularioAtual.getMunicipio())) {
-                            break;
-                        }
-                    }
-                }
-                latitude.setText(formularioAtual.getLatitude());
-                longitude.setText(formularioAtual.getLongitude());
-
-                //CARACTERISTICAS FÍSICAS
-                if (formularioAtual.getAlturaCarga().equals("-")) {
-                    alturaCarga.setSelection(0);
-                } else {
-                    for (int i = 0; i < alturaCarga.getAdapter().getCount(); i++) {
-                        alturaCarga.setSelection(i);
-                        if (alturaCarga.getSelectedItem().toString().equals(formularioAtual.getAlturaCarga())) {
-                            break;
-                        }
-                    }
-                }
-                if (formularioAtual.getTipoPoste().equals("-")) {
-                    tipoPoste.setSelection(0);
-                } else {
-                    for (int i = 0; i < tipoPoste.getAdapter().getCount(); i++) {
-                        tipoPoste.setSelection(i);
-                        if (tipoPoste.getSelectedItem().toString().equals(formularioAtual.getTipoPoste())) {
-                            break;
-                        }
-                    }
-                }
-                if (formularioAtual.getNormal().equals("Sim")) {
-                    normal.setChecked(true);
-                } else {
-                    normal.setChecked(false);
-                    ferragemExposta.setEnabled(true);
-                    fletido.setEnabled(true);
-                    abalroado.setEnabled(true);
-                    trincado.setEnabled(true);
-                    danificado.setEnabled(true);
-                }
-                if (formularioAtual.getFerragemExposta().equals("Sim")) {
-                    ferragemExposta.setChecked(true);
-                }
-                if (formularioAtual.getFletido().equals("Sim")) {
-                    fletido.setChecked(true);
-                }
-                if (formularioAtual.getDanificado().equals("Sim")) {
-                    danificado.setChecked(true);
-                }
-                if (formularioAtual.getAbalroado().equals("Sim")) {
-                    abalroado.setChecked(true);
-                }
-                if (formularioAtual.getTrincado().equals("Sim")) {
-                    trincado.setChecked(true);
-                }
-                observacaoFisicas.setText(formularioAtual.getObservacaoFisicas());
-            }
-        });
-    }
-
     class NovoPosteTask extends AsyncTask<Void, Void, Void> {
         ProgressDialog progressDialogAsync = new ProgressDialog(requireContext(), R.style.LightDialogTheme);
 
@@ -3136,41 +2833,6 @@ public class CadastroFragment extends Fragment {
         protected Void doInBackground(Void... params) {
             ThreadMesmoPoste threadMesmoPoste = new ThreadMesmoPoste(root);
             threadMesmoPoste.start();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    progressDialogAsync.dismiss();
-                }
-
-            }, 1);
-        }
-    }
-
-    class OutroOcupanteTask extends AsyncTask<Void, Void, Void> {
-        ProgressDialog progressDialogAsync = new ProgressDialog(requireContext(), R.style.LightDialogTheme);
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialogAsync.setMessage("Carregando dados..."); // Setting Message
-            progressDialogAsync.setTitle("Por favor Espere"); // Setting Title
-            progressDialogAsync.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
-            progressDialogAsync.show(); // Display Progress Dialog
-            progressDialogAsync.setCancelable(false);
-            progressDialogAsync.show();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            ThreadOutroOcupante threadOutroOcupante = new ThreadOutroOcupante(root);
-            threadOutroOcupante.start();
             return null;
         }
 
@@ -3383,17 +3045,54 @@ public class CadastroFragment extends Fragment {
                 formulario.setIp("Não");
                 formulario.setColor4(String.valueOf(R.color.colorPrimary));
             }
-            setLista(formulario, ipEstrutura, "ipEstrutura");
-            formulario.setQuantidadeLampada(Objects.requireNonNull(quantidadeLampada.getText().toString()));
-            setLista(formulario, tipoPot, "tipoPot");
-            formulario.setPotReator(Objects.requireNonNull(potReator.getText()).toString());
-            setLista(formulario, ipAtivacao, "ipAtivacao");
-            if (vinteEQuatro.isChecked()) {
-                formulario.setVinteEQuatro("Sim");
-            } else {
-                formulario.setVinteEQuatro("Não");
+            String textoIpEstrutura ="";
+            for(int t=0;t<spinIPEstrutura.size();t++){
+                setLista(formulario, spinIPEstrutura.get(t), "ipEstrutura");
+                textoIpEstrutura = textoIpEstrutura + "," + formulario.getIpEstrutura();
             }
-            formulario.setQuantidade24H(Objects.requireNonNull(quantidade24H.getText().toString()));
+            formulario.setIpEstrutura(textoIpEstrutura);
+            String textoIpQuantidadeLampada ="";
+            for(int t=0;t<editIPQuantidadeLampada.size();t++){
+                formulario.setQuantidadeLampada(Objects.requireNonNull(editIPQuantidadeLampada.get(t).getText().toString()));
+                textoIpQuantidadeLampada = textoIpQuantidadeLampada + "," + formulario.getQuantidadeLampada();
+            }
+            formulario.setQuantidadeLampada(textoIpQuantidadeLampada);
+
+            String textoIpTipoPot ="";
+            for(int t=0;t<spinIPTipo.size();t++){
+                setLista(formulario, spinIPTipo.get(t), "tipoPot");
+                textoIpTipoPot = textoIpTipoPot + "," + formulario.getTipoPot();
+            }
+            formulario.setTipoPot(textoIpTipoPot);
+            String textoIpPotReator ="";
+            for(int t=0;t<editIPPot.size();t++){
+                formulario.setPotReator(Objects.requireNonNull(editIPPot.get(t).getText().toString()));
+                textoIpPotReator = textoIpPotReator + "," + formulario.getPotReator();
+            }
+            formulario.setPotReator(textoIpPotReator);
+
+            String textoIpAtivacao ="";
+            for(int t=0;t<spinIPTipoAtivacao.size();t++){
+                setLista(formulario, spinIPTipoAtivacao.get(t), "ipAtivacao");
+                textoIpAtivacao = textoIpAtivacao + "," + formulario.getIpAtivacao();
+            }
+            formulario.setIpAtivacao(textoIpAtivacao);
+            String textoIpCheck ="";
+            for(int t=0;t<checkIP24.size();t++){
+                if (checkIP24.get(t).isChecked()) {
+                    formulario.setVinteEQuatro("Sim");
+                } else {
+                    formulario.setVinteEQuatro("Não");
+                }
+                textoIpCheck = textoIpCheck + "," + formulario.getVinteEQuatro();
+            }
+            formulario.setVinteEQuatro(textoIpCheck);
+            String textoIpQuantidade24H ="";
+            for(int t=0;t<editIP24H.size();t++){
+                formulario.setQuantidade24H(Objects.requireNonNull(editIP24H.get(t).getText().toString()));
+                textoIpQuantidade24H = textoIpQuantidade24H + "," + formulario.getQuantidade24H();
+            }
+            formulario.setQuantidade24H(Objects.requireNonNull(textoIpQuantidade24H));
             formulario.setObservacaoIP(Objects.requireNonNull(observacaoIP.getText().toString()));
 
 
@@ -3406,35 +3105,105 @@ public class CadastroFragment extends Fragment {
                 formulario.setColor7(String.valueOf(R.color.colorPrimary));
                 formulario.setColor8(String.valueOf(R.color.colorPrimary));
             }
-            if (chkTrafoTrifasico.isChecked()) {
-                formulario.setChkTrafoTrifasico("Sim");
-            } else {
-                formulario.setChkTrafoTrifasico("Não");
+
+            String textoAtivoChkTrifasico ="";
+            for(int t=0;t<checkAtivoTrifasico.size();t++){
+                if (checkAtivoTrifasico.get(t).isChecked()) {
+                    formulario.setChkTrafoTrifasico("Sim");
+                } else {
+                    formulario.setChkTrafoTrifasico("Não");
+                }
+                textoAtivoChkTrifasico = textoAtivoChkTrifasico + "," + formulario.getChkTrafoTrifasico();
             }
-            if (chkTrafoMono.isChecked()) {
-                formulario.setChkTrafoMono("Sim");
-            } else {
-                formulario.setChkTrafoMono("Não");
+            formulario.setChkTrafoTrifasico(textoAtivoChkTrifasico);
+
+            String textoAtivoChkMono ="";
+            for(int t=0;t<checkAtivoMono.size();t++){
+                if (checkAtivoMono.get(t).isChecked()) {
+                    formulario.setChkTrafoMono("Sim");
+                } else {
+                    formulario.setChkTrafoMono("Não");
+                }
+                textoAtivoChkMono = textoAtivoChkMono + "," + formulario.getChkTrafoMono();
             }
-            setLista(formulario, trafoTrifasico, "trafoTrifasico");
-            setLista(formulario, trafoMono, "trafoMono");
-            if (religador.isChecked()) {
-                formulario.setReligador("Sim");
-            } else {
-                formulario.setReligador("Não");
+            formulario.setChkTrafoMono(textoAtivoChkMono);
+            String textoAtivoTrifasico ="";
+            for(int t=0;t<spinAtivoTrifasico.size();t++){
+                setLista(formulario, spinAtivoTrifasico.get(t), "trafoTrifasico");
+                textoAtivoTrifasico = textoAtivoTrifasico + "," + formulario.getTrafoTrifasico();
             }
-            if (medicao.isChecked()) {
-                formulario.setMedicao("Sim");
-            } else {
-                formulario.setMedicao("Não");
+            formulario.setTrafoTrifasico(textoAtivoTrifasico);
+            String textoAtivoMono ="";
+            for(int t=0;t<spinAtivoMono.size();t++){
+                setLista(formulario, spinAtivoMono.get(t), "trafoMono");
+                textoAtivoMono = textoAtivoMono + "," + formulario.getTrafoMono();
             }
-            formulario.setChFusivel(Objects.requireNonNull(chFusivel.getText().toString()));
-            setLista(formulario, chFaca, "chFaca");
-            setLista(formulario, chBanco, "chBanco");
-            formulario.setChFusivelReligador(Objects.requireNonNull(chFusivelReligador.getText().toString()));
-            setLista(formulario, ramalSubt, "ramalSubt");
+            formulario.setTrafoMono(textoAtivoMono);
+
+            String textoAtivoReligador ="";
+            for(int t=0;t<checkAtivoReligador.size();t++){
+                if (checkAtivoReligador.get(t).isChecked()) {
+                    formulario.setReligador("Sim");
+                } else {
+                    formulario.setReligador("Não");
+                }
+                textoAtivoReligador = textoAtivoReligador + "," + formulario.getReligador();
+            }
+            formulario.setReligador(textoAtivoReligador);
+
+            String textoAtivoMedicao ="";
+            for(int t=0;t<checkAtivoMedicao.size();t++){
+                if (checkAtivoMedicao.get(t).isChecked()) {
+                    formulario.setMedicao("Sim");
+                } else {
+                    formulario.setMedicao("Não");
+                }
+                textoAtivoMedicao = textoAtivoMedicao + "," + formulario.getMedicao();
+            }
+            formulario.setMedicao(textoAtivoMedicao);
+
+            String textoAtivoChFusivel ="";
+            for(int t=0;t<editAtivoChFusivel.size();t++){
+                formulario.setChFusivel(Objects.requireNonNull(editAtivoChFusivel.get(t).getText().toString()));
+                textoAtivoChFusivel  = textoAtivoChFusivel  + "," + formulario.getChFusivel();
+            }
+            formulario.setChFusivel(Objects.requireNonNull(textoAtivoChFusivel));
+
+            String textoAtivoChFusivelReligador ="";
+            for(int t=0;t<editAtivoChFusivelReligador.size();t++){
+                formulario.setChFusivelReligador(Objects.requireNonNull(editAtivoChFusivelReligador.get(t).getText().toString()));
+                textoAtivoChFusivelReligador  = textoAtivoChFusivelReligador  + "," + formulario.getChFusivelReligador();
+            }
+            formulario.setChFusivelReligador(Objects.requireNonNull(textoAtivoChFusivelReligador));
+
+            String textoAtivoChFaca ="";
+            for(int t=0;t<spinAtivoChFaca.size();t++){
+                setLista(formulario, spinAtivoChFaca.get(t), "chFaca");
+                textoAtivoChFaca = textoAtivoChFaca + "," + formulario.getChFaca();
+            }
+            formulario.setChFaca(textoAtivoChFaca);
+
+            String textoAtivoBanco ="";
+            for(int t=0;t<spinAtivoBanco.size();t++){
+                setLista(formulario, spinAtivoBanco.get(t), "chBanco");
+                textoAtivoBanco = textoAtivoBanco + "," + formulario.getBanco();
+            }
+            formulario.setBanco(textoAtivoBanco);
+
+            String textoAtivoRamalSubt ="";
+            for(int t=0;t<spinAtivoRamal.size();t++){
+                setLista(formulario, spinAtivoRamal.get(t), "ramalSubt");
+                textoAtivoRamalSubt = textoAtivoRamalSubt + "," + formulario.getRamalSubt();
+            }
+            formulario.setRamalSubt(textoAtivoRamalSubt);
+
+            String textoAtivoOutros ="";
+            for(int t=0;t<editAtivoOutro.size();t++){
+                formulario.setOutros(Objects.requireNonNull(editAtivoOutro.get(t).getText().toString()));
+                textoAtivoOutros  = textoAtivoOutros  + "," + formulario.getOutros();
+            }
+            formulario.setOutros(Objects.requireNonNull(textoAtivoOutros));
             formulario.setObservacaoAtivos(Objects.requireNonNull(observacaoAtivos.getText()).toString());
-            formulario.setOutros(Objects.requireNonNull(outros.getText()).toString());
 
             //MUTUO
             if (mutuo.isChecked()) {
@@ -3568,11 +3337,11 @@ public class CadastroFragment extends Fragment {
                     transaction.detach(cadastroFragment);
                     transaction.addToBackStack(null);
                     transaction.commit();
-                    StyleableToast.makeText(requireActivity().getApplicationContext(), "Sucesso ao atualizar formulário", R.style.ToastDone).show();
+                    StyleableToast.makeText(requireActivity().getApplicationContext(), "Sucesso ao salvar formulário", R.style.ToastDone).show();
                     progressDialog.dismiss();
                     limparMemoria();
                 } else {
-                    StyleableToast.makeText(requireActivity().getApplicationContext(), "Erro ao atualizar formulário", R.style.ToastError).show();
+                    StyleableToast.makeText(requireActivity().getApplicationContext(), "Erro ao salvar formulário", R.style.ToastError).show();
                     progressDialog.dismiss();
                 }
 
@@ -3609,13 +3378,6 @@ public class CadastroFragment extends Fragment {
         progressDialog = null;
         geocoder = null;
         addresses = null;
-
-        relativeChFaca= null;
-        relativeBanco= null;
-        relativeRamal = null;
-        relativeIPTipoEstrutura = null;
-        relativeIPTipoLampada = null;
-        relativeIPTipoAtivacao = null;
         relativeFinalidade = null;
         fotoPan.setImageResource(R.drawable.ic_menu_camera);
         fotoAlt.setImageResource(R.drawable.ic_menu_camera);
@@ -3663,7 +3425,445 @@ public class CadastroFragment extends Fragment {
         Runtime.getRuntime().gc();
         //this.finalize();
     }
+    public void createIP(){
+        LinearLayout ll = root.findViewById(R.id.layoutHolderIP);
+        // add edittext
+        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        p.setMargins(0, 20, 0, 20);
+        RelativeLayout relativeLayout1 = new RelativeLayout(requireActivity().getApplicationContext());
+        RelativeLayout.LayoutParams pRelative = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        relativeLayout1.setLayoutParams(p);
+        if(editIP24H.size()>0){
+            TextView textView0 = new TextView(requireActivity().getApplicationContext());
+            //textView.setLayoutParams(p);
+            textView0.setText("Iluminação Publica " + (editIP24H.size()+1));
+            textView0.setTextSize(20);
+            textView0.setTextColor(getResources().getColor(R.color.textColor));
+            textView0.setTypeface(null, Typeface.BOLD);
+            ll.addView(textView0,p);
+            textIP.add(textView0);
+        }
+        Spinner spinner = new Spinner(requireActivity().getApplicationContext());
+        spinner.setLayoutParams(pRelative);
+        String[] testArray = getResources().getStringArray(R.array.IluminacaoTipo);
+        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter<>(
+                requireActivity().getApplicationContext(), android.R.layout.simple_spinner_item, testArray );
+        spinner.setAdapter(spinnerArrayAdapter);
+        spinner.setPopupBackgroundResource(R.drawable.spinner_pop);
+        relativeLayout1.setBackground(getResources().getDrawable(R.drawable.spinner_style));
+        relativeLayout1.addView(spinner);
+        ll.addView(relativeLayout1);
+        TextView textView = new TextView(requireActivity().getApplicationContext());
+        //textView.setLayoutParams(p);
+        textView.setText("Quantidade Lâmpada");
+        textView.setTextColor(getResources().getColor(R.color.textColor));
+        textView.setTypeface(null, Typeface.BOLD);
+        ll.addView(textView,p);
+        final EditText editText = new EditText(requireActivity().getApplicationContext());
+        editText.setBackground(getResources().getDrawable(R.drawable.edit_round));
+        editText.setHeight(70);
+        editText.setPadding(10, 10, 10, 10);
+        ll.addView(editText,p);
+        RelativeLayout relativeLayout2 = new RelativeLayout(requireActivity().getApplicationContext());
+        final Spinner spinner2 = new Spinner(requireActivity().getApplicationContext());
+        spinner2.setLayoutParams(pRelative);
+        String[] testArray2 = getResources().getStringArray(R.array.IluminacaoLampadaTipo);
+        ArrayAdapter spinnerArrayAdapter2 = new ArrayAdapter<>(
+                requireActivity().getApplicationContext(), android.R.layout.simple_spinner_item, testArray2 );
+        spinner2.setAdapter(spinnerArrayAdapter2);
+        spinner2.setPopupBackgroundResource(R.drawable.spinner_pop);
+        relativeLayout2.setBackground(getResources().getDrawable(R.drawable.spinner_style));
+        relativeLayout2.addView(spinner2);
+        ll.addView(relativeLayout2);
+        final EditText editText2 = new EditText(requireActivity().getApplicationContext());
+        editText2.setHint("Pot.Lampada");
+        editText2.setBackground(getResources().getDrawable(R.drawable.edit_round));
+        editText2.setHeight(70);
+        editText2.setPadding(10, 10, 10, 10);
+        ll.addView(editText2,p);
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String[] texto = (spinner2.getSelectedItem().toString()).split(" ");
+                try {
+                    editText2.setText(texto[1]);
+                } catch (Exception e) {
 
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        RelativeLayout relativeLayout3 = new RelativeLayout(requireActivity().getApplicationContext());
+        Spinner spinner3 = new Spinner(requireActivity().getApplicationContext());
+        spinner3.setLayoutParams(pRelative);
+        String[] testArray3 = getResources().getStringArray(R.array.TipoAtivacao);
+        ArrayAdapter spinnerArrayAdapter3 = new ArrayAdapter<>(
+                requireActivity().getApplicationContext(), android.R.layout.simple_spinner_item, testArray3 );
+        spinner3.setAdapter(spinnerArrayAdapter3);
+        spinner3.setPopupBackgroundResource(R.drawable.spinner_pop);
+        relativeLayout3.setBackground(getResources().getDrawable(R.drawable.spinner_style));
+        relativeLayout3.addView(spinner3);
+        ll.addView(relativeLayout3);
+        final CheckBox checkBox = new CheckBox(requireActivity().getApplicationContext());
+        checkBox.setText("24 Horas");
+        checkBox.setTextColor(getResources().getColor(R.color.textColor));
+        ll.addView(checkBox);
+        final EditText editText3 = new EditText(requireActivity().getApplicationContext());
+        editText3.setHint("Quantidade 24H");
+        editText3.setBackground(getResources().getDrawable(R.drawable.edit_round));
+        editText3.setEnabled(false);
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkBox.isChecked()){
+                    try{
+                        editText3.setEnabled(true);
+                    }catch (Exception e){
+
+                    }
+                }else{
+                    editText3.setEnabled(false);
+                    editText3.setText("");
+                }
+            }
+        });
+        checkBox.setButtonTintList(getResources().getColorStateList(R.color.colorAccent));
+        editText3.setHeight(70);
+        editText3.setPadding(10, 0, 10, 10);
+        ll.addView(editText3,p);
+        spinIPEstrutura.add(spinner);
+        textIPQLampada.add(textView);
+        editIPQuantidadeLampada.add(editText);
+        spinIPTipo.add(spinner2);
+        editIPPot.add(editText2);
+        spinIPTipoAtivacao.add(spinner3);
+        checkIP24.add(checkBox);
+        editIP24H.add(editText3);
+    }
+
+    public void removeIP(){
+        LinearLayout ll = root.findViewById(R.id.layoutHolderIP);
+        try{
+            ll.removeView(textIP.get(textIP.size()-1));
+            textIP.remove(textIP.size()-1);
+        }catch (Exception e){
+
+        }
+        ll.removeView((View)spinIPEstrutura.get(spinIPEstrutura.size()-1).getParent());
+        ll.removeView(textIPQLampada.get(textIPQLampada.size()-1));
+        ll.removeView(editIPQuantidadeLampada.get(editIPQuantidadeLampada.size()-1));
+        ll.removeView((View)spinIPTipo.get(spinIPTipo.size()-1).getParent());
+        ll.removeView(editIPPot.get(editIPPot.size()-1));
+        ll.removeView((View)spinIPTipoAtivacao.get(spinIPTipoAtivacao.size()-1).getParent());
+        ll.removeView(checkIP24.get(checkIP24.size()-1));
+        ll.removeView(editIP24H.get(editIP24H.size()-1));
+        spinIPEstrutura.remove(spinIPEstrutura.size()-1);
+        textIPQLampada.remove(textIPQLampada.size()-1);
+        editIPQuantidadeLampada.remove(editIPQuantidadeLampada.size()-1);
+        spinIPTipo.remove(spinIPTipo.size()-1);
+        editIPPot.remove(editIPPot.size()-1);
+        spinIPTipoAtivacao.remove(spinIPTipoAtivacao.size()-1);
+        checkIP24.remove(checkIP24.size()-1);
+        editIP24H.remove(editIP24H.size()-1);
+        if(spinIPTipoAtivacao.size() == 0){
+            btnIPLayoutRemove.setVisibility(View.GONE);
+        }
+
+    }
+
+    public void removeIPAll(){
+        LinearLayout ll = root.findViewById(R.id.layoutHolderIP);
+        ll.removeAllViews();
+        try{
+            textIP.clear();
+        }catch (Exception e){
+
+        }
+        spinIPEstrutura.clear();
+        textIPQLampada.clear();
+        editIPQuantidadeLampada.clear();
+        spinIPTipo.clear();
+        editIPPot.clear();
+        spinIPTipoAtivacao.clear();
+        checkIP24.clear();
+        editIP24H.clear();
+    }
+
+    public void createAtivo(){
+        LinearLayout ll = root.findViewById(R.id.layoutHolderAtivo);
+        // add edittext
+        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        p.setMargins(0, 20, 0, 20);
+        RelativeLayout relativeLayout1 = new RelativeLayout(requireActivity().getApplicationContext());
+        RelativeLayout.LayoutParams pRelative = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        relativeLayout1.setLayoutParams(p);
+        if(editAtivoOutro.size()>0){
+            TextView textView0 = new TextView(requireActivity().getApplicationContext());
+            //textView.setLayoutParams(p);
+            textView0.setText("Ativos " + (editAtivoOutro.size()+1));
+            textView0.setTextSize(20);
+            textView0.setTextColor(getResources().getColor(R.color.textColor));
+            textView0.setTypeface(null, Typeface.BOLD);
+            ll.addView(textView0,p);
+            textAtivo.add(textView0);
+        }
+        final CheckBox checkBox = new CheckBox(requireActivity().getApplicationContext());
+        checkBox.setText("Trifásico");
+        checkBox.setTextColor(getResources().getColor(R.color.textColor));
+        ll.addView(checkBox);
+
+        final Spinner spinner = new Spinner(requireActivity().getApplicationContext());
+        spinner.setLayoutParams(pRelative);
+        spinner.setEnabled(false);
+        String[] testArray = getResources().getStringArray(R.array.TrafoTrifasico);
+        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter<>(
+                requireActivity().getApplicationContext(), android.R.layout.simple_spinner_item, testArray );
+        spinner.setAdapter(spinnerArrayAdapter);
+        spinner.setPopupBackgroundResource(R.drawable.spinner_pop);
+        relativeLayout1.setBackground(getResources().getDrawable(R.drawable.spinner_style));
+        relativeLayout1.addView(spinner);
+        ll.addView(relativeLayout1);
+
+        final CheckBox checkBox2 = new CheckBox(requireActivity().getApplicationContext());
+        checkBox2.setText("Monofásico");
+        checkBox2.setTextColor(getResources().getColor(R.color.textColor));
+        ll.addView(checkBox2);
+
+        RelativeLayout relativeLayout2 = new RelativeLayout(requireActivity().getApplicationContext());
+        relativeLayout2.setLayoutParams(p);
+
+        final Spinner spinner2 = new Spinner(requireActivity().getApplicationContext());
+        spinner2.setLayoutParams(pRelative);
+        spinner2.setEnabled(false);
+        String[] testArray2 = getResources().getStringArray(R.array.TrafoMono);
+        ArrayAdapter spinnerArrayAdapter2 = new ArrayAdapter<>(
+                requireActivity().getApplicationContext(), android.R.layout.simple_spinner_item, testArray2 );
+        spinner2.setAdapter(spinnerArrayAdapter2);
+        spinner2.setPopupBackgroundResource(R.drawable.spinner_pop);
+        relativeLayout2.setBackground(getResources().getDrawable(R.drawable.spinner_style));
+        relativeLayout2.addView(spinner2);
+        ll.addView(relativeLayout2);
+
+        TextView textView = new TextView(requireActivity().getApplicationContext());
+        textView.setText("Chave Fusível");
+        textView.setTextColor(getResources().getColor(R.color.textColor));
+        textView.setTypeface(null, Typeface.BOLD);
+        ll.addView(textView,p);
+
+        final EditText editText = new EditText(requireActivity().getApplicationContext());
+        editText.setBackground(getResources().getDrawable(R.drawable.edit_round));
+        editText.setHeight(70);
+        editText.setPadding(10, 10, 10, 10);
+        ll.addView(editText,p);
+
+        TextView textView2 = new TextView(requireActivity().getApplicationContext());
+        textView2.setText("Chave Fusível Religador");
+        textView2.setTextColor(getResources().getColor(R.color.textColor));
+        textView2.setTypeface(null, Typeface.BOLD);
+        ll.addView(textView2,p);
+
+        final EditText editText2 = new EditText(requireActivity().getApplicationContext());
+        editText2.setBackground(getResources().getDrawable(R.drawable.edit_round));
+        editText2.setHeight(70);
+        editText2.setPadding(10, 10, 10, 10);
+        ll.addView(editText2,p);
+
+        RelativeLayout relativeLayout3 = new RelativeLayout(requireActivity().getApplicationContext());
+        relativeLayout3.setLayoutParams(p);
+
+        Spinner spinner3 = new Spinner(requireActivity().getApplicationContext());
+        spinner3.setLayoutParams(pRelative);
+        String[] testArray3 = getResources().getStringArray(R.array.ChFaca);
+        ArrayAdapter spinnerArrayAdapter3 = new ArrayAdapter<>(
+                requireActivity().getApplicationContext(), android.R.layout.simple_spinner_item, testArray3 );
+        spinner3.setAdapter(spinnerArrayAdapter3);
+        spinner3.setPopupBackgroundResource(R.drawable.spinner_pop);
+        relativeLayout3.setBackground(getResources().getDrawable(R.drawable.spinner_style));
+        relativeLayout3.addView(spinner3);
+        ll.addView(relativeLayout3);
+
+        RelativeLayout relativeLayout4 = new RelativeLayout(requireActivity().getApplicationContext());
+        relativeLayout4.setLayoutParams(p);
+
+        Spinner spinner4 = new Spinner(requireActivity().getApplicationContext());
+        spinner4.setLayoutParams(pRelative);
+        String[] testArray4 = getResources().getStringArray(R.array.Banco);
+        ArrayAdapter spinnerArrayAdapter4 = new ArrayAdapter<>(
+                requireActivity().getApplicationContext(), android.R.layout.simple_spinner_item, testArray4 );
+        spinner4.setAdapter(spinnerArrayAdapter4);
+        spinner4.setPopupBackgroundResource(R.drawable.spinner_pop);
+        relativeLayout4.setBackground(getResources().getDrawable(R.drawable.spinner_style));
+        relativeLayout4.addView(spinner4);
+        ll.addView(relativeLayout4);
+
+        RelativeLayout relativeLayout5 = new RelativeLayout(requireActivity().getApplicationContext());
+        relativeLayout5.setLayoutParams(p);
+
+        Spinner spinner5 = new Spinner(requireActivity().getApplicationContext());
+        spinner5.setLayoutParams(pRelative);
+        String[] testArray5 = getResources().getStringArray(R.array.RamalSubt);
+        ArrayAdapter spinnerArrayAdapter5 = new ArrayAdapter<>(
+                requireActivity().getApplicationContext(), android.R.layout.simple_spinner_item, testArray5 );
+        spinner5.setAdapter(spinnerArrayAdapter5);
+        spinner5.setPopupBackgroundResource(R.drawable.spinner_pop);
+        relativeLayout5.setBackground(getResources().getDrawable(R.drawable.spinner_style));
+        relativeLayout5.addView(spinner5);
+        ll.addView(relativeLayout5);
+
+        final CheckBox checkBox3 = new CheckBox(requireActivity().getApplicationContext());
+        checkBox3.setText("Religador");
+        checkBox3.setTextColor(getResources().getColor(R.color.textColor));
+        ll.addView(checkBox3);
+
+        final CheckBox checkBox4 = new CheckBox(requireActivity().getApplicationContext());
+        checkBox4.setText("Medição");
+        checkBox4.setTextColor(getResources().getColor(R.color.textColor));
+        ll.addView(checkBox4);
+
+        TextView textView3 = new TextView(requireActivity().getApplicationContext());
+        textView3.setText("Outros");
+        textView3.setTextColor(getResources().getColor(R.color.textColor));
+        textView3.setTypeface(null, Typeface.BOLD);
+        ll.addView(textView3,p);
+
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkBox.isChecked()){
+                    spinner.setEnabled(true);
+                    spinner2.setEnabled(false);
+                    spinner2.setSelection(0);
+                    checkBox2.setChecked(false);
+                }
+                else {
+                    spinner.setEnabled(false);
+                }
+            }
+        });
+
+        checkBox2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkBox2.isChecked()){
+                    spinner2.setEnabled(true);
+                    spinner.setEnabled(false);
+                    spinner.setSelection(0);
+                    checkBox.setChecked(false);
+                }
+                else {
+                    spinner2.setEnabled(false);
+                }
+            }
+        });
+
+        final EditText editText3 = new EditText(requireActivity().getApplicationContext());
+        editText3.setBackground(getResources().getDrawable(R.drawable.edit_round));
+        editText3.setHeight(70);
+        editText3.setPadding(10, 10, 10, 10);
+        ll.addView(editText3,p);
+        checkBox.setButtonTintList(getResources().getColorStateList(R.color.colorAccent));
+        checkBox2.setButtonTintList(getResources().getColorStateList(R.color.colorAccent));
+        checkBox3.setButtonTintList(getResources().getColorStateList(R.color.colorAccent));
+        checkBox4.setButtonTintList(getResources().getColorStateList(R.color.colorAccent));
+
+
+        checkAtivoTrifasico.add(checkBox);
+        checkAtivoMono.add(checkBox2);
+        checkAtivoReligador.add(checkBox3);
+        checkAtivoMedicao.add(checkBox4);
+
+        spinAtivoTrifasico.add(spinner);
+        spinAtivoMono.add(spinner2);
+        spinAtivoChFaca.add(spinner3);
+        spinAtivoBanco.add(spinner4);
+        spinAtivoRamal.add(spinner5);
+
+        textAtivoChFusivel.add(textView);
+        textAtivoChFusivelReligador.add(textView2);
+        textAtivoOutro.add(textView3);
+
+        editAtivoChFusivel.add(editText);
+        editAtivoChFusivelReligador.add(editText2);
+        editAtivoOutro.add(editText3);
+    }
+
+
+    public void removeAtivo(){
+        LinearLayout ll = root.findViewById(R.id.layoutHolderAtivo);
+        try{
+            ll.removeView(textAtivo.get(textAtivo.size()-1));
+            textAtivo.remove(textAtivo.size()-1);
+        }catch (Exception e){
+
+        }
+        ll.removeView((View)spinAtivoTrifasico.get(spinAtivoTrifasico.size()-1).getParent());
+        ll.removeView((View)spinAtivoMono.get(spinAtivoMono.size()-1).getParent());
+        ll.removeView((View)spinAtivoChFaca.get(spinAtivoChFaca.size()-1).getParent());
+        ll.removeView((View)spinAtivoBanco.get(spinAtivoBanco.size()-1).getParent());
+        ll.removeView((View)spinAtivoRamal.get(spinAtivoRamal.size()-1).getParent());
+        ll.removeView(textAtivoChFusivel.get(textAtivoChFusivel.size()-1));
+        ll.removeView(editAtivoChFusivel.get(editAtivoChFusivel.size()-1));
+        ll.removeView(textAtivoChFusivelReligador.get(textAtivoChFusivelReligador.size()-1));
+        ll.removeView(editAtivoChFusivelReligador.get(editAtivoChFusivelReligador.size()-1));
+        ll.removeView(textAtivoOutro.get(textAtivoOutro.size()-1));
+        ll.removeView(editAtivoOutro.get(editAtivoOutro.size()-1));
+        ll.removeView(checkAtivoTrifasico.get(checkAtivoTrifasico.size()-1));
+        ll.removeView(checkAtivoMono.get(checkAtivoMono.size()-1));
+        ll.removeView(checkAtivoReligador.get(checkAtivoReligador.size()-1));
+        ll.removeView(checkAtivoMedicao.get(checkAtivoMedicao.size()-1));
+
+        spinAtivoTrifasico.remove(spinAtivoTrifasico.size()-1);
+        spinAtivoMono.remove(spinAtivoMono.size()-1);
+        spinAtivoChFaca.remove(spinAtivoChFaca.size()-1);
+        spinAtivoBanco.remove(spinAtivoBanco.size()-1);
+        spinAtivoRamal.remove(spinAtivoRamal.size()-1);
+        textAtivoChFusivel.remove(textAtivoChFusivel.size()-1);
+        editAtivoChFusivel.remove(editAtivoChFusivel.size()-1);
+        textAtivoChFusivelReligador.remove(textAtivoChFusivelReligador.size()-1);
+        editAtivoChFusivelReligador.remove(editAtivoChFusivelReligador.size()-1);
+        textAtivoOutro.remove(textAtivoOutro.size()-1);
+        editAtivoOutro.remove(editAtivoOutro.size()-1);
+        checkAtivoTrifasico.remove(checkAtivoTrifasico.size()-1);
+        checkAtivoMono.remove(checkAtivoMono.size()-1);
+        checkAtivoReligador.remove(checkAtivoReligador.size()-1);
+        checkAtivoMedicao.remove(checkAtivoMedicao.size()-1);
+
+        if(spinAtivoTrifasico.size() == 0){
+            btnAtivoRemove.setVisibility(View.GONE);
+        }
+    }
+    public void removeAtivoAll(){
+        LinearLayout ll = root.findViewById(R.id.layoutHolderAtivo);
+        ll.removeAllViews();
+        try{
+            textAtivo.clear();
+        }catch (Exception e){
+
+        }
+        spinAtivoTrifasico.clear();
+        spinAtivoMono.clear();
+        spinAtivoChFaca.clear();
+        spinAtivoBanco.clear();
+        spinAtivoRamal.clear();
+        textAtivoChFusivel.clear();
+        editAtivoChFusivel.clear();
+        textAtivoChFusivelReligador.clear();
+        editAtivoChFusivelReligador.clear();
+        textAtivoOutro.clear();
+        editAtivoOutro.clear();
+        checkAtivoTrifasico.clear();
+        checkAtivoMono.clear();
+        checkAtivoReligador.clear();
+        checkAtivoMedicao.clear();
+    }
+
+    public void createMutuo(){
+
+    }
 
 
 

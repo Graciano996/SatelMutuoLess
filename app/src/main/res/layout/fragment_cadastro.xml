@@ -954,6 +954,42 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
+        <Button
+            android:id="@+id/buttonMutuo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/button_selector_foto"
+            android:text="ADICIONAR"
+            app:layout_constraintEnd_toStartOf="@+id/buttonMutuoRemove"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutHolderMutuo" />
+
+        <Button
+            android:id="@+id/buttonMutuoRemove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/button_selector_foto"
+            android:text="REMOVER"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/buttonMutuo"
+            app:layout_constraintTop_toBottomOf="@+id/layoutHolderMutuo" />
+
+        <LinearLayout
+            android:id="@+id/layoutHolderMutuo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chkCadastroMutuo" />
+
         <TextView
             android:id="@+id/textViewQuantidadeOcupante"
             android:layout_width="wrap_content"
@@ -1355,7 +1391,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textCadastroDescricao" />
+            app:layout_constraintTop_toBottomOf="@+id/buttonMutuo" />
 
         <EditText
             android:id="@+id/textCadastroObservacaoMutuo"

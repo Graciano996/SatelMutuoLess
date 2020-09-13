@@ -115,15 +115,19 @@ public class CadastroFragment extends Fragment {
     Boolean controle = false;
     List<Address> addresses;
 
-    public Button btnIPLayoutRemove, btnAtivoRemove;
+    public Button btnIPLayoutRemove, btnAtivoRemove, btnMutuoRemove;
     private List<EditText> editIPQuantidadeLampada, editIPPot,editIP24H,editAtivoChFusivel,
-            editAtivoChFusivelReligador,editAtivoOutro;
+            editAtivoChFusivelReligador,editAtivoOutro,editMutuoNome ,editMutuoQuantidade,
+            editMutuoQuantidade2, editMutuoIrregularidade;
     private List<Spinner> spinIPEstrutura, spinIPTipo, spinIPTipoAtivacao,spinAtivoTrifasico,
-    spinAtivoMono,spinAtivoChFaca,spinAtivoBanco,spinAtivoRamal;
+    spinAtivoMono,spinAtivoChFaca,spinAtivoBanco,spinAtivoRamal,spinMutuoTipoCabo,
+    spinMutuoTipoCabo2,spinMutuoFinalidade,spinMutuoCeans,spinMutuoTar,spinMutuoReservaTec,
+            spinMutuoBackbone;
     private List<CheckBox> checkIP24,checkAtivoTrifasico,checkAtivoMono,checkAtivoReligador,
-    checkAtivoMedicao;
+    checkAtivoMedicao,checkMutuoPlaca,checkMutuoDescida;
     private List<TextView> textIPQLampada, textIP,textAtivoChFusivel,textAtivoChFusivelReligador,
-    textAtivoOutro,textAtivo;
+    textAtivoOutro,textAtivo, textMutuo,textMutuoNome,textMutuoQuantidade,textMutuoQuantidade2,
+    textMutuoIrregularidade;
     private RelativeLayout relativeFinalidade,
     relativeCeans, relativeTar, relativeReservaTec, relativeBackbone,relativeTipoCabo,relativeTipoCabodois,
     relativeDimensaoVegetacao, relativeBaixa, relativeMedia, relativeEstadoArvore,
@@ -193,6 +197,24 @@ public class CadastroFragment extends Fragment {
         checkAtivoMono = new ArrayList<>();
         checkAtivoReligador = new ArrayList<>();
         checkAtivoMedicao = new ArrayList<>();
+        textMutuo = new ArrayList<>();
+        textMutuoNome = new ArrayList<>();
+        textMutuoQuantidade = new ArrayList<>();
+        textMutuoQuantidade2 = new ArrayList<>();
+        textMutuoIrregularidade = new ArrayList<>();
+        editMutuoNome = new ArrayList<>();
+        editMutuoQuantidade = new ArrayList<>();
+        editMutuoQuantidade2 = new ArrayList<>();
+        editMutuoIrregularidade = new ArrayList<>();
+        spinMutuoTipoCabo = new ArrayList<>();
+        spinMutuoTipoCabo2 = new ArrayList<>();
+        spinMutuoFinalidade = new ArrayList<>();
+        spinMutuoCeans = new ArrayList<>();
+        spinMutuoTar = new ArrayList<>();
+        spinMutuoReservaTec = new ArrayList<>();
+        spinMutuoBackbone = new ArrayList<>();
+        checkMutuoPlaca = new ArrayList<>();
+        checkMutuoDescida = new ArrayList<>();
 
 
         fotoPan = root.findViewById(R.id.imageCadastroFoto);
@@ -884,82 +906,36 @@ public class CadastroFragment extends Fragment {
             }
         });
 
+        btnMutuoRemove = root.findViewById(R.id.buttonMutuoRemove);
+        btnMutuoRemove.setVisibility(View.GONE);
+        btnMutuoRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeMutuo();
+            }
+        });
+
+        final Button btnMutuo = root.findViewById(R.id.buttonMutuo);
+        btnMutuo.setVisibility(View.GONE);
+        btnMutuo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createMutuo();
+                btnMutuoRemove.setVisibility(View.VISIBLE);
+            }
+        });
+
         mutuo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (mutuo.isChecked()) {
-                    mutuoDados(quantidadeCabos, null, true);
-                    mutuoDados(null, tipoCabo, true);
-                    mutuoDados(quantidadeCabosdois, null, true);
-                    mutuoDados(null, tipoCabodois, true);
-                    nome.setVisibility(View.VISIBLE);
-                    mutuoDados(null, finalidade, true);
-                    mutuoDados(null, ceans, true);
-                    mutuoDados(null, tar, true);
-                    mutuoDados(null, reservaTec, true);
-                    mutuoDados(null, backbone, true);
-                    mutuoDados(descricaoIrregularidade, null, true);
-                    mutuoDados(observacaoMutuo, null, true);
-                    placaIdentificadora.setEnabled(true);
-                    placaIdentificadora.setVisibility(View.VISIBLE);
-                    descidaCabos.setVisibility(View.VISIBLE);
-                    descidaCabos.setEnabled(true);
-                    fotoMutuo.setVisibility(View.VISIBLE);
-                    textOcupante.setVisibility(View.VISIBLE);
-                    quantidadeOcupantes.setVisibility(View.VISIBLE);
-                    textQuantidadeCabo.setVisibility(View.VISIBLE);
-                    textQuantidadeCabodois.setVisibility(View.VISIBLE);
-                    textNome.setVisibility(View.VISIBLE);
-                    textIrregularidade.setVisibility(View.VISIBLE);
-                    relativeFinalidade.setVisibility(View.VISIBLE);
-                    relativeCeans.setVisibility(View.VISIBLE);
-                    relativeTar.setVisibility(View.VISIBLE);
-                    relativeReservaTec.setVisibility(View.VISIBLE);
-                    relativeBackbone.setVisibility(View.VISIBLE);
-                    relativeTipoCabo.setVisibility(View.VISIBLE);
-                    relativeTipoCabodois.setVisibility(View.VISIBLE);
+                    btnMutuo.setVisibility(View.VISIBLE);
                 } else {
-                    mutuoDados(quantidadeCabos, null, false);
-                    mutuoDados(quantidadeCabosdois, null, false);
-                    mutuoDados(null, tipoCabo, false);
-                    mutuoDados(null, tipoCabodois, false);
-                    nome.setVisibility(View.GONE);
-                    mutuoDados(null, finalidade, false);
-                    mutuoDados(null, ceans, false);
-                    mutuoDados(null, tar, false);
-                    mutuoDados(null, reservaTec, false);
-                    mutuoDados(null, backbone, false);
-                    mutuoDados(descricaoIrregularidade, null, false);
-                    mutuoDados(observacaoMutuo, null, false);
-                    placaIdentificadora.setChecked(false);
-                    placaIdentificadora.setEnabled(false);
-                    placaIdentificadora.setVisibility(View.GONE);
-                    descidaCabos.setChecked(false);
-                    descidaCabos.setEnabled(false);
-                    descidaCabos.setVisibility(View.GONE);
-                    textOcupante.setVisibility(View.GONE);
-                    quantidadeOcupantes.setVisibility(View.GONE);
-                    textQuantidadeCabo.setVisibility(View.GONE);
-                    textQuantidadeCabodois.setVisibility(View.GONE);
-                    textNome.setVisibility(View.GONE);
-                    textIrregularidade.setVisibility(View.GONE);
-                    relativeFinalidade.setVisibility(View.GONE);
-                    relativeCeans.setVisibility(View.GONE);
-                    relativeTar.setVisibility(View.GONE);
-                    relativeReservaTec.setVisibility(View.GONE);
-                    relativeBackbone.setVisibility(View.GONE);
-                    relativeTipoCabo.setVisibility(View.GONE);
-                    relativeTipoCabodois.setVisibility(View.GONE);
+                    btnMutuo.setVisibility(View.GONE);
+                    removeMutuoAll();
+                    btnMutuoRemove.setVisibility(View.GONE);
                 }
-                try {
-                    if (formularioAtual != null && controle == false) {
 
-                        quantidadeOcupantes.setText(formularioAtual.getQuantidadeOcupantes());
-                        quantidadeOcupantes.setEnabled(false);
-                    }
-                }catch (Exception e){
-
-                }
             }
         });
 
@@ -1962,128 +1938,150 @@ public class CadastroFragment extends Fragment {
                 //MUTUO
                 if (formularioAtual.getMutuo().equals("Sim")) {
                     mutuo.setChecked(true);
-                    fotoMutuo.setVisibility(View.VISIBLE);
-                    btnFoto15.setVisibility(View.VISIBLE);
-                    btnUpload15.setVisibility(View.VISIBLE);
+                    quantidadeOcupantes.setText(formularioAtual.getQuantidadeOcupantes());
+                    String[] textoMutuoNome = formularioAtual.getNome().split(",");
+                    btnMutuoRemove.setVisibility(View.VISIBLE);
+                    for (int i = 1; i < textoMutuoNome.length; i++) {
+                        createMutuo();
+                    }
 
-                    fotoMutuo2.setVisibility(View.VISIBLE);
-                    btnFoto16.setVisibility(View.VISIBLE);
-                    btnUpload16.setVisibility(View.VISIBLE);
+                    for (int i = 1; i < textoMutuoNome.length; i++) {
+                        editMutuoNome.get(i - 1).setText(textoMutuoNome[i]);
+                    }
 
-                    fotoMutuo3.setVisibility(View.VISIBLE);
-                    btnFoto17.setVisibility(View.VISIBLE);
-                    btnUpload17.setVisibility(View.VISIBLE);
-                    textOcupante.setVisibility(View.VISIBLE);
-                    quantidadeOcupantes.setVisibility(View.VISIBLE);
-                    quantidadeCabos.setVisibility(View.VISIBLE);
-                    tipoCabo.setVisibility(View.VISIBLE);
-                    quantidadeCabosdois.setVisibility(View.VISIBLE);
-                    tipoCabodois.setVisibility(View.VISIBLE);
-                    nome.setVisibility(View.VISIBLE);
-                    finalidade.setVisibility(View.VISIBLE);
-                    ceans.setVisibility(View.VISIBLE);
-                    tar.setVisibility(View.VISIBLE);
-                    reservaTec.setVisibility(View.VISIBLE);
-                    backbone.setVisibility(View.VISIBLE);
-                    placaIdentificadora.setVisibility(View.VISIBLE);
-                    descidaCabos.setVisibility(View.VISIBLE);
-                    descricaoIrregularidade.setVisibility(View.VISIBLE);
-                    textQuantidadeCabo.setVisibility(View.VISIBLE);
-                    textQuantidadeCabodois.setVisibility(View.VISIBLE);
-                    textNome.setVisibility(View.VISIBLE);
-                    textIrregularidade.setVisibility(View.VISIBLE);
-                    relativeFinalidade.setVisibility(View.VISIBLE);
-                    relativeCeans.setVisibility(View.VISIBLE);
-                    relativeTar.setVisibility(View.VISIBLE);
-                    relativeReservaTec.setVisibility(View.VISIBLE);
-                    relativeBackbone.setVisibility(View.VISIBLE);
-                    relativeTipoCabo.setVisibility(View.VISIBLE);
-                    relativeTipoCabodois.setVisibility(View.VISIBLE);
+                    String[] textoMutuoQuantidade = formularioAtual.getQuantidadeCabos().split(",");
+                    for (int i = 1; i < textoMutuoQuantidade.length; i++) {
+                        editMutuoQuantidade.get(i - 1).setText(textoMutuoQuantidade[i]);
+                    }
+
+                    String[] textoMutuoTipoCabo = formularioAtual.getTipoCabo().split(",");
+                    for (int i = 1; i < textoMutuoTipoCabo.length; i++) {
+                        if (textoMutuoTipoCabo[i].equals("-")) {
+                            spinMutuoTipoCabo.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinMutuoTipoCabo.get(i - 1).getAdapter().getCount(); a++) {
+                                spinMutuoTipoCabo.get(i - 1).setSelection(a);
+                                if (spinMutuoTipoCabo.get(i - 1).getSelectedItem().toString().equals(textoMutuoTipoCabo[i])) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
 
 
-                }
-                //1
-                quantidadeOcupantes.setText(formularioAtual.getQuantidadeOcupantes());
-                quantidadeCabos.setText(formularioAtual.getQuantidadeCabos());
-                if (formularioAtual.getTipoCabo().equals("-")) {
-                    tipoCabo.setSelection(0);
-                } else {
-                    for (int i = 0; i < tipoCabo.getAdapter().getCount(); i++) {
-                        tipoCabo.setSelection(i);
-                        if (tipoCabo.getSelectedItem().toString().equals(formularioAtual.getTipoCabo())) {
-                            break;
+                    String[] textoMutuoQuantidade2 = formularioAtual.getQuantidadeCabosdois().split(",");
+                    for (int i = 1; i < textoMutuoQuantidade2.length; i++) {
+                        editMutuoQuantidade2.get(i - 1).setText(textoMutuoQuantidade2[i]);
+                    }
+
+                    String[] textoMutuoTipoCabo2 = formularioAtual.getTipoCabodois().split(",");
+                    for (int i = 1; i < textoMutuoTipoCabo2.length; i++) {
+                        if (textoMutuoTipoCabo2[i].equals("-")) {
+                            spinMutuoTipoCabo2.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinMutuoTipoCabo2.get(i - 1).getAdapter().getCount(); a++) {
+                                spinMutuoTipoCabo2.get(i - 1).setSelection(a);
+                                if (spinMutuoTipoCabo2.get(i - 1).getSelectedItem().toString().equals(textoMutuoTipoCabo2[i])) {
+                                    break;
+                                }
+                            }
                         }
                     }
-                }
-                quantidadeCabosdois.setText(formularioAtual.getQuantidadeCabosdois());
-                if (formularioAtual.getTipoCabodois().equals("-")) {
-                    tipoCabodois.setSelection(0);
-                } else {
-                    for (int i = 0; i < tipoCabodois.getAdapter().getCount(); i++) {
-                        tipoCabodois.setSelection(i);
-                        if (tipoCabodois.getSelectedItem().toString().equals(formularioAtual.getTipoCabodois())) {
-                            break;
+
+                    String[] textoMutuoFinalidade = formularioAtual.getFinalidade().split(",");
+                    for (int i = 1; i < textoMutuoFinalidade.length; i++) {
+                        if (textoMutuoFinalidade[i].equals("-")) {
+                            spinMutuoFinalidade.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinMutuoFinalidade.get(i - 1).getAdapter().getCount(); a++) {
+                                spinMutuoFinalidade.get(i - 1).setSelection(a);
+                                if (spinMutuoFinalidade.get(i - 1).getSelectedItem().toString().equals(textoMutuoFinalidade[i])) {
+                                    break;
+                                }
+                            }
                         }
                     }
-                }
-                nome.setText(formularioAtual.getNome());
-                if (formularioAtual.getFinalidade().equals("-")) {
-                    finalidade.setSelection(0);
-                } else {
-                    for (int i = 0; i < finalidade.getAdapter().getCount(); i++) {
-                        finalidade.setSelection(i);
-                        if (finalidade.getSelectedItem().toString().equals(formularioAtual.getFinalidade())) {
-                            break;
+
+                    String[] textoMutuoCeans = formularioAtual.getCeans().split(",");
+                    for (int i = 1; i < textoMutuoCeans.length; i++) {
+                        if (textoMutuoCeans[i].equals("-")) {
+                            spinMutuoCeans.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinMutuoCeans.get(i - 1).getAdapter().getCount(); a++) {
+                                spinMutuoCeans.get(i - 1).setSelection(a);
+                                if (spinMutuoCeans.get(i - 1).getSelectedItem().toString().equals(textoMutuoCeans[i])) {
+                                    break;
+                                }
+                            }
                         }
                     }
-                }
-                if (formularioAtual.getCeans().equals("-")) {
-                    ceans.setSelection(0);
-                } else {
-                    for (int i = 0; i < ceans.getAdapter().getCount(); i++) {
-                        ceans.setSelection(i);
-                        if (ceans.getSelectedItem().toString().equals(formularioAtual.getCeans())) {
-                            break;
+
+                    String[] textoMutuoTar = formularioAtual.getTar().split(",");
+                    for (int i = 1; i < textoMutuoTar.length; i++) {
+                        if (textoMutuoTar[i].equals("-")) {
+                            spinMutuoTar.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinMutuoTar.get(i - 1).getAdapter().getCount(); a++) {
+                                spinMutuoTar.get(i - 1).setSelection(a);
+                                if (spinMutuoTar.get(i - 1).getSelectedItem().toString().equals(textoMutuoTar[i])) {
+                                    break;
+                                }
+                            }
                         }
                     }
-                }
-                if (formularioAtual.getTar().equals("-")) {
-                    tar.setSelection(0);
-                } else {
-                    for (int i = 0; i < tar.getAdapter().getCount(); i++) {
-                        tar.setSelection(i);
-                        if (tar.getSelectedItem().toString().equals(formularioAtual.getTar())) {
-                            break;
+
+                    String[] textoMutuoReservaTec = formularioAtual.getReservaTec().split(",");
+                    for (int i = 1; i < textoMutuoReservaTec.length; i++) {
+                        if (textoMutuoReservaTec[i].equals("-")) {
+                            spinMutuoReservaTec.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinMutuoReservaTec.get(i - 1).getAdapter().getCount(); a++) {
+                                spinMutuoReservaTec.get(i - 1).setSelection(a);
+                                if (spinMutuoReservaTec.get(i - 1).getSelectedItem().toString().equals(textoMutuoReservaTec[i])) {
+                                    break;
+                                }
+                            }
                         }
                     }
-                }
-                if (formularioAtual.getReservaTec().equals("-")) {
-                    reservaTec.setSelection(0);
-                } else {
-                    for (int i = 0; i < reservaTec.getAdapter().getCount(); i++) {
-                        reservaTec.setSelection(i);
-                        if (reservaTec.getSelectedItem().toString().equals(formularioAtual.getReservaTec())) {
-                            break;
+
+                    String[] textoMutuoBackbone = formularioAtual.getBackbone().split(",");
+                    for (int i = 1; i < textoMutuoBackbone.length; i++) {
+                        if (textoMutuoBackbone[i].equals("-")) {
+                            spinMutuoBackbone.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinMutuoBackbone.get(i - 1).getAdapter().getCount(); a++) {
+                                spinMutuoBackbone.get(i - 1).setSelection(a);
+                                if (spinMutuoBackbone.get(i - 1).getSelectedItem().toString().equals(textoMutuoBackbone[i])) {
+                                    break;
+                                }
+                            }
                         }
                     }
-                }
-                if (formularioAtual.getBackbone().equals("-")) {
-                    backbone.setSelection(0);
-                } else {
-                    for (int i = 0; i < backbone.getAdapter().getCount(); i++) {
-                        backbone.setSelection(i);
-                        if (backbone.getSelectedItem().toString().equals(formularioAtual.getBackbone())) {
-                            break;
+
+                    String[] textoMutuoPlacaIdent = formularioAtual.getPlacaIdent().split(",");
+                    for (int i = 1; i < textoMutuoPlacaIdent.length; i++) {
+                        if (textoMutuoPlacaIdent[i].equals("Sim")) {
+                            checkMutuoPlaca.get(i - 1).setChecked(true);
+
                         }
                     }
+
+                    String[] textoMutuoDescida = formularioAtual.getDescidaCabos().split(",");
+                    for (int i = 1; i < textoMutuoDescida.length; i++) {
+                        if (textoMutuoDescida[i].equals("Sim")) {
+                            checkMutuoDescida.get(i - 1).setChecked(true);
+
+                        }
+                    }
+
+                    String[] textoMutuoIrregularidade = formularioAtual.getDescricaoIrregularidade().split(",");
+                    for (int i = 1; i < textoMutuoIrregularidade.length; i++) {
+                        editMutuoIrregularidade.get(i - 1).setText(textoMutuoIrregularidade[i]);
+                    }
+
+
                 }
-                if (formularioAtual.getPlacaIdent().equals("Sim")) {
-                    placaIdentificadora.setChecked(true);
-                }
-                if (formularioAtual.getDescidaCabos().equals("Sim")) {
-                    descidaCabos.setChecked(true);
-                }
-                descricaoIrregularidade.setText(formularioAtual.getDescricaoIrregularidade());
+
                 observacaoMutuo.setText((formularioAtual.getObservacaoMutuo()));
 
                 if (formularioAtual.getVegetacao().equals("Sim")) {
@@ -2586,127 +2584,153 @@ public class CadastroFragment extends Fragment {
                 //MUTUO
                 if (formularioAtual.getMutuo().equals("Sim")) {
                     mutuo.setChecked(true);
-                    fotoMutuo.setVisibility(View.VISIBLE);
-                    btnFoto15.setVisibility(View.VISIBLE);
-                    btnUpload15.setVisibility(View.VISIBLE);
+                    quantidadeOcupantes.setText(formularioAtual.getQuantidadeOcupantes());
+                    Log.i("TESTES", formularioAtual.getQuantidadeOcupantes());
+                    String[] textoMutuoNome = formularioAtual.getNome().split(",");
+                    Log.i("TESTES",""+textoMutuoNome.length);
+                    btnMutuoRemove.setVisibility(View.VISIBLE);
+                    for (int i = 1; i < textoMutuoNome.length; i++) {
+                        createMutuo();
+                    }
 
-                    fotoMutuo2.setVisibility(View.VISIBLE);
-                    btnFoto16.setVisibility(View.VISIBLE);
-                    btnUpload16.setVisibility(View.VISIBLE);
+                    for (int i = 1; i < textoMutuoNome.length; i++) {
+                        editMutuoNome.get(i - 1).setText(textoMutuoNome[i]);
+                    }
+                    Log.i("TESTES", formularioAtual.getQuantidadeCabos());
+                    String[] textoMutuoQuantidade = formularioAtual.getQuantidadeCabos().split(",");
+                    Log.i("TESTES", ""+textoMutuoQuantidade.length);
+                    for (int i = 1; i < textoMutuoQuantidade.length; i++) {
+                        editMutuoQuantidade.get(i - 1).setText(textoMutuoQuantidade[i]);
+                    }
 
-                    fotoMutuo3.setVisibility(View.VISIBLE);
-                    btnFoto17.setVisibility(View.VISIBLE);
-                    btnUpload17.setVisibility(View.VISIBLE);
-                    quantidadeOcupantes.setVisibility(View.VISIBLE);
-                    quantidadeCabos.setVisibility(View.VISIBLE);
-                    tipoCabo.setVisibility(View.VISIBLE);
-                    quantidadeCabosdois.setVisibility(View.VISIBLE);
-                    tipoCabodois.setVisibility(View.VISIBLE);
-                    nome.setVisibility(View.VISIBLE);
-                    finalidade.setVisibility(View.VISIBLE);
-                    ceans.setVisibility(View.VISIBLE);
-                    tar.setVisibility(View.VISIBLE);
-                    reservaTec.setVisibility(View.VISIBLE);
-                    backbone.setVisibility(View.VISIBLE);
-                    placaIdentificadora.setVisibility(View.VISIBLE);
-                    descidaCabos.setVisibility(View.VISIBLE);
-                    descricaoIrregularidade.setVisibility(View.VISIBLE);
-                    textQuantidadeCabo.setVisibility(View.VISIBLE);
-                    textQuantidadeCabodois.setVisibility(View.VISIBLE);
-                    textNome.setVisibility(View.VISIBLE);
-                    textIrregularidade.setVisibility(View.VISIBLE);
-                    relativeFinalidade.setVisibility(View.VISIBLE);
-                    relativeCeans.setVisibility(View.VISIBLE);
-                    relativeTar.setVisibility(View.VISIBLE);
-                    relativeReservaTec.setVisibility(View.VISIBLE);
-                    relativeBackbone.setVisibility(View.VISIBLE);
-                    relativeTipoCabo.setVisibility(View.VISIBLE);
-                    relativeTipoCabodois.setVisibility(View.VISIBLE);
+                    String[] textoMutuoTipoCabo = formularioAtual.getTipoCabo().split(",");
+                    for (int i = 1; i < textoMutuoTipoCabo.length; i++) {
+                        if (textoMutuoTipoCabo[i].equals("-")) {
+                            spinMutuoTipoCabo.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinMutuoTipoCabo.get(i - 1).getAdapter().getCount(); a++) {
+                                spinMutuoTipoCabo.get(i - 1).setSelection(a);
+                                if (spinMutuoTipoCabo.get(i - 1).getSelectedItem().toString().equals(textoMutuoTipoCabo[i])) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
 
 
-                }
-                //1
-                quantidadeOcupantes.setText(formularioAtual.getQuantidadeOcupantes());
-                quantidadeCabos.setText(formularioAtual.getQuantidadeCabos());
-                if (formularioAtual.getTipoCabo().equals("-")) {
-                    tipoCabo.setSelection(0);
-                } else {
-                    for (int i = 0; i < tipoCabo.getAdapter().getCount(); i++) {
-                        tipoCabo.setSelection(i);
-                        if (tipoCabo.getSelectedItem().toString().equals(formularioAtual.getTipoCabo())) {
-                            break;
+                    String[] textoMutuoQuantidade2 = formularioAtual.getQuantidadeCabosdois().split(",");
+                    for (int i = 1; i < textoMutuoQuantidade2.length; i++) {
+                        editMutuoQuantidade2.get(i - 1).setText(textoMutuoQuantidade2[i]);
+                    }
+
+                    String[] textoMutuoTipoCabo2 = formularioAtual.getTipoCabodois().split(",");
+                    for (int i = 1; i < textoMutuoTipoCabo2.length; i++) {
+                        if (textoMutuoTipoCabo2[i].equals("-")) {
+                            spinMutuoTipoCabo2.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinMutuoTipoCabo2.get(i - 1).getAdapter().getCount(); a++) {
+                                spinMutuoTipoCabo2.get(i - 1).setSelection(a);
+                                if (spinMutuoTipoCabo2.get(i - 1).getSelectedItem().toString().equals(textoMutuoTipoCabo2[i])) {
+                                    break;
+                                }
+                            }
                         }
                     }
-                }
-                quantidadeCabosdois.setText(formularioAtual.getQuantidadeCabosdois());
-                if (formularioAtual.getTipoCabodois().equals("-")) {
-                    tipoCabodois.setSelection(0);
-                } else {
-                    for (int i = 0; i < tipoCabodois.getAdapter().getCount(); i++) {
-                        tipoCabodois.setSelection(i);
-                        if (tipoCabodois.getSelectedItem().toString().equals(formularioAtual.getTipoCabodois())) {
-                            break;
+
+                    String[] textoMutuoFinalidade = formularioAtual.getFinalidade().split(",");
+                    for (int i = 1; i < textoMutuoFinalidade.length; i++) {
+                        if (textoMutuoFinalidade[i].equals("-")) {
+                            spinMutuoFinalidade.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinMutuoFinalidade.get(i - 1).getAdapter().getCount(); a++) {
+                                spinMutuoFinalidade.get(i - 1).setSelection(a);
+                                if (spinMutuoFinalidade.get(i - 1).getSelectedItem().toString().equals(textoMutuoFinalidade[i])) {
+                                    break;
+                                }
+                            }
                         }
                     }
-                }
-                nome.setText(formularioAtual.getNome());
-                if (formularioAtual.getFinalidade().equals("-")) {
-                    finalidade.setSelection(0);
-                } else {
-                    for (int i = 0; i < finalidade.getAdapter().getCount(); i++) {
-                        finalidade.setSelection(i);
-                        if (finalidade.getSelectedItem().toString().equals(formularioAtual.getFinalidade())) {
-                            break;
+
+                    String[] textoMutuoCeans = formularioAtual.getCeans().split(",");
+                    for (int i = 1; i < textoMutuoCeans.length; i++) {
+                        if (textoMutuoCeans[i].equals("-")) {
+                            spinMutuoCeans.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinMutuoCeans.get(i - 1).getAdapter().getCount(); a++) {
+                                spinMutuoCeans.get(i - 1).setSelection(a);
+                                if (spinMutuoCeans.get(i - 1).getSelectedItem().toString().equals(textoMutuoCeans[i])) {
+                                    break;
+                                }
+                            }
                         }
                     }
-                }
-                if (formularioAtual.getCeans().equals("-")) {
-                    ceans.setSelection(0);
-                } else {
-                    for (int i = 0; i < ceans.getAdapter().getCount(); i++) {
-                        ceans.setSelection(i);
-                        if (ceans.getSelectedItem().toString().equals(formularioAtual.getCeans())) {
-                            break;
+
+                    String[] textoMutuoTar = formularioAtual.getTar().split(",");
+                    for (int i = 1; i < textoMutuoTar.length; i++) {
+                        if (textoMutuoTar[i].equals("-")) {
+                            spinMutuoTar.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinMutuoTar.get(i - 1).getAdapter().getCount(); a++) {
+                                spinMutuoTar.get(i - 1).setSelection(a);
+                                if (spinMutuoTar.get(i - 1).getSelectedItem().toString().equals(textoMutuoTar[i])) {
+                                    break;
+                                }
+                            }
                         }
                     }
-                }
-                if (formularioAtual.getTar().equals("-")) {
-                    tar.setSelection(0);
-                } else {
-                    for (int i = 0; i < tar.getAdapter().getCount(); i++) {
-                        tar.setSelection(i);
-                        if (tar.getSelectedItem().toString().equals(formularioAtual.getTar())) {
-                            break;
+
+                    String[] textoMutuoReservaTec = formularioAtual.getReservaTec().split(",");
+                    for (int i = 1; i < textoMutuoReservaTec.length; i++) {
+                        if (textoMutuoReservaTec[i].equals("-")) {
+                            spinMutuoReservaTec.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinMutuoReservaTec.get(i - 1).getAdapter().getCount(); a++) {
+                                spinMutuoReservaTec.get(i - 1).setSelection(a);
+                                if (spinMutuoReservaTec.get(i - 1).getSelectedItem().toString().equals(textoMutuoReservaTec[i])) {
+                                    break;
+                                }
+                            }
                         }
                     }
-                }
-                if (formularioAtual.getReservaTec().equals("-")) {
-                    reservaTec.setSelection(0);
-                } else {
-                    for (int i = 0; i < reservaTec.getAdapter().getCount(); i++) {
-                        reservaTec.setSelection(i);
-                        if (reservaTec.getSelectedItem().toString().equals(formularioAtual.getReservaTec())) {
-                            break;
+
+                    String[] textoMutuoBackbone = formularioAtual.getBackbone().split(",");
+                    for (int i = 1; i < textoMutuoBackbone.length; i++) {
+                        if (textoMutuoBackbone[i].equals("-")) {
+                            spinMutuoBackbone.get(i - 1).setSelection(0);
+                        } else {
+                            for (int a = 0; a < spinMutuoBackbone.get(i - 1).getAdapter().getCount(); a++) {
+                                spinMutuoBackbone.get(i - 1).setSelection(a);
+                                if (spinMutuoBackbone.get(i - 1).getSelectedItem().toString().equals(textoMutuoBackbone[i])) {
+                                    break;
+                                }
+                            }
                         }
                     }
-                }
-                if (formularioAtual.getBackbone().equals("-")) {
-                    backbone.setSelection(0);
-                } else {
-                    for (int i = 0; i < backbone.getAdapter().getCount(); i++) {
-                        backbone.setSelection(i);
-                        if (backbone.getSelectedItem().toString().equals(formularioAtual.getBackbone())) {
-                            break;
+
+                    String[] textoMutuoPlacaIdent = formularioAtual.getPlacaIdent().split(",");
+                    for (int i = 1; i < textoMutuoPlacaIdent.length; i++) {
+                        if (textoMutuoPlacaIdent[i].equals("Sim")) {
+                            checkMutuoPlaca.get(i - 1).setChecked(true);
+
                         }
                     }
+
+                    String[] textoMutuoDescida = formularioAtual.getDescidaCabos().split(",");
+                    for (int i = 1; i < textoMutuoDescida.length; i++) {
+                        if (textoMutuoDescida[i].equals("Sim")) {
+                            checkMutuoDescida.get(i - 1).setChecked(true);
+
+                        }
+                    }
+
+                    String[] textoMutuoIrregularidade = formularioAtual.getDescricaoIrregularidade().split(",");
+                    for (int i = 1; i < textoMutuoIrregularidade.length; i++) {
+                        editMutuoIrregularidade.get(i - 1).setText(textoMutuoIrregularidade[i]);
+                    }
+
+
                 }
-                if (formularioAtual.getPlacaIdent().equals("Sim")) {
-                    placaIdentificadora.setChecked(true);
-                }
-                if (formularioAtual.getDescidaCabos().equals("Sim")) {
-                    descidaCabos.setChecked(true);
-                }
-                descricaoIrregularidade.setText(formularioAtual.getDescricaoIrregularidade());
+
                 observacaoMutuo.setText((formularioAtual.getObservacaoMutuo()));
 
                 if (formularioAtual.getVegetacao().equals("Sim")) {
@@ -3211,33 +3235,109 @@ public class CadastroFragment extends Fragment {
 
             } else {
                 formulario.setMutuo("Não");
-                formulario.setColor9(String.valueOf(R.color.colorPrimary));
-                formulario.setColor10(String.valueOf(R.color.colorPrimary));
-                formulario.setColor11(String.valueOf(R.color.colorPrimary));
-            }
-            formulario.setQuantidadeOcupantes(Objects.requireNonNull(quantidadeOcupantes.getText()).toString());
-            formulario.setQuantidadeCabos(Objects.requireNonNull(quantidadeCabos.getText()).toString());
-            setLista(formulario, tipoCabo, "tipoCabo");
-            formulario.setQuantidadeCabosdois(Objects.requireNonNull(quantidadeCabosdois.getText()).toString());
-            setLista(formulario, tipoCabodois, "tipoCabodois");
-            formulario.setNome(Objects.requireNonNull(nome.getText()).toString());
-            setLista(formulario, finalidade, "finalidade");
-            setLista(formulario, ceans, "ceans");
-            setLista(formulario, tar, "tar");
-            setLista(formulario, reservaTec, "reservaTec");
-            setLista(formulario, backbone, "backbone");
-            if (placaIdentificadora.isChecked()) {
-                formulario.setPlacaIdent("Sim");
-            } else {
-                formulario.setPlacaIdent("Não");
-            }
 
-            if (descidaCabos.isChecked()) {
-                formulario.setDescidaCabos("Sim");
-            } else {
-                formulario.setDescidaCabos("Não");
             }
-            formulario.setDescricaoIrregularidade(Objects.requireNonNull(descricaoIrregularidade.getText()).toString());
+            formulario.setQuantidadeOcupantes(Objects.requireNonNull(editMutuoNome.size()).toString());
+
+            String textoMutuoNome ="";
+            for(int t=0;t<editMutuoNome.size();t++){
+                formulario.setNome(Objects.requireNonNull(editMutuoNome.get(t).getText().toString()));
+                textoMutuoNome  = textoMutuoNome  + "," + formulario.getNome();
+            }
+            formulario.setNome(Objects.requireNonNull(textoMutuoNome));
+
+            String textoMutuoQuantidadeCabo ="";
+            for(int t=0;t<editMutuoQuantidade.size();t++){
+                formulario.setQuantidadeCabos(Objects.requireNonNull(editMutuoQuantidade.get(t).getText().toString()));
+                textoMutuoQuantidadeCabo  = textoMutuoQuantidadeCabo  + "," + formulario.getQuantidadeCabos();
+            }
+            formulario.setQuantidadeCabos(Objects.requireNonNull(textoMutuoQuantidadeCabo));
+
+            String textoMutuoTipoCabo ="";
+            for(int t=0;t<spinMutuoTipoCabo.size();t++){
+                setLista(formulario, spinMutuoTipoCabo.get(t), "tipoCabo");
+                textoMutuoTipoCabo = textoMutuoTipoCabo + "," + formulario.getTipoCabo();
+            }
+            formulario.setTipoCabo(textoMutuoTipoCabo);
+
+            String textoMutuoQuantidadeCabo2 ="";
+            for(int t=0;t<editMutuoQuantidade2.size();t++){
+                formulario.setQuantidadeCabosdois(Objects.requireNonNull(editMutuoQuantidade2.get(t).getText().toString()));
+                textoMutuoQuantidadeCabo2  = textoMutuoQuantidadeCabo2  + "," + formulario.getQuantidadeCabosdois();
+            }
+            formulario.setQuantidadeCabosdois(Objects.requireNonNull(textoMutuoQuantidadeCabo2));
+
+            String textoMutuoTipoCabo2 ="";
+            for(int t=0;t<spinMutuoTipoCabo2.size();t++){
+                setLista(formulario, spinMutuoTipoCabo2.get(t), "tipoCabodois");
+                textoMutuoTipoCabo2 = textoMutuoTipoCabo2 + "," + formulario.getTipoCabodois();
+            }
+            formulario.setTipoCabodois(textoMutuoTipoCabo2);
+
+            String textoMutuoFinalidade ="";
+            for(int t=0;t<spinMutuoFinalidade.size();t++){
+                setLista(formulario, spinMutuoFinalidade.get(t), "finalidade");
+                textoMutuoFinalidade = textoMutuoFinalidade + "," + formulario.getFinalidade();
+            }
+            formulario.setFinalidade(textoMutuoFinalidade);
+
+            String textoMutuoCeans ="";
+            for(int t=0;t<spinMutuoCeans.size();t++){
+                setLista(formulario, spinMutuoCeans.get(t), "ceans");
+                textoMutuoCeans = textoMutuoCeans + "," + formulario.getCeans();
+            }
+            formulario.setCeans(textoMutuoCeans);
+
+            String textoMutuoTar ="";
+            for(int t=0;t<spinMutuoTar.size();t++){
+                setLista(formulario, spinMutuoTar.get(t), "tar");
+                textoMutuoTar = textoMutuoTar + "," + formulario.getTar();
+            }
+            formulario.setTar(textoMutuoTar);
+
+            String textoMutuoReservaTec ="";
+            for(int t=0;t<spinMutuoReservaTec.size();t++){
+                setLista(formulario, spinMutuoReservaTec.get(t), "reservaTec");
+                textoMutuoReservaTec = textoMutuoReservaTec + "," + formulario.getReservaTec();
+            }
+            formulario.setReservaTec(textoMutuoReservaTec);
+
+            String textoMutuoBackbone ="";
+            for(int t=0;t<spinMutuoBackbone.size();t++){
+                setLista(formulario, spinMutuoBackbone.get(t), "backbone");
+                textoMutuoBackbone = textoMutuoBackbone + "," + formulario.getBackbone();
+            }
+            formulario.setBackbone(textoMutuoBackbone);
+
+            String textoMutuoPlaca ="";
+            for(int t=0;t<checkMutuoPlaca.size();t++){
+                if (checkMutuoPlaca.get(t).isChecked()) {
+                    formulario.setPlacaIdent("Sim");
+                } else {
+                    formulario.setPlacaIdent("Não");
+                }
+                textoMutuoPlaca = textoMutuoPlaca + "," + formulario.getPlacaIdent();
+            }
+            formulario.setPlacaIdent(textoMutuoPlaca);
+
+            String textoMutuoDescida ="";
+            for(int t=0;t<checkMutuoDescida.size();t++){
+                if (checkMutuoDescida.get(t).isChecked()) {
+                    formulario.setDescidaCabos("Sim");
+                } else {
+                    formulario.setDescidaCabos("Não");
+                }
+                textoMutuoDescida = textoMutuoDescida + "," + formulario.getDescidaCabos();
+            }
+            formulario.setDescidaCabos(textoMutuoDescida);
+
+            String textoMutuoIrregularidade ="";
+            for(int t=0;t<editMutuoIrregularidade.size();t++){
+                formulario.setDescricaoIrregularidade(Objects.requireNonNull(editMutuoIrregularidade.get(t).getText().toString()));
+                textoMutuoIrregularidade  = textoMutuoIrregularidade  + "," + formulario.getDescricaoIrregularidade();
+            }
+            formulario.setDescricaoIrregularidade(Objects.requireNonNull(textoMutuoIrregularidade));
+
             formulario.setObservacaoMutuo(Objects.requireNonNull(observacaoMutuo.getText()).toString());
             //VEGETAÇÃO
             if (chkVegetacao.isChecked()) {
@@ -3257,7 +3357,6 @@ public class CadastroFragment extends Fragment {
             }
             setLista(formulario, localArvore, "localArvore");
             formulario.setObservacaoVegetacao(Objects.requireNonNull(observacaoVegetacao.getText()).toString());
-            formulario.setNome(Objects.requireNonNull(nome.getText()).toString());
             formulario.setContadorAr(contadorAr);
             formulario.setContadorAt(contadorAt);
             formulario.setContadorIp(contadorIp);
@@ -3862,6 +3961,282 @@ public class CadastroFragment extends Fragment {
     }
 
     public void createMutuo(){
+        LinearLayout ll = root.findViewById(R.id.layoutHolderMutuo);
+
+        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        p.setMargins(0, 20, 0, 20);
+        if(editMutuoQuantidade.size()>0){
+            TextView textView0 = new TextView(requireActivity().getApplicationContext());
+            //textView.setLayoutParams(p);
+            textView0.setText("Mutuo " + (editMutuoQuantidade.size()+1));
+            textView0.setTextSize(20);
+            textView0.setTextColor(getResources().getColor(R.color.textColor));
+            textView0.setTypeface(null, Typeface.BOLD);
+            ll.addView(textView0,p);
+            textMutuo.add(textView0);
+        }
+        RelativeLayout.LayoutParams pRelative = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        TextView textView = new TextView(requireActivity().getApplicationContext());
+        textView.setText("Nome da Empresa");
+        textView.setTextColor(getResources().getColor(R.color.textColor));
+        textView.setTypeface(null, Typeface.BOLD);
+        ll.addView(textView,p);
+
+        final EditText editText = new EditText(requireActivity().getApplicationContext());
+        editText.setBackground(getResources().getDrawable(R.drawable.edit_round));
+        editText.setHeight(70);
+        editText.setPadding(10, 10, 10, 10);
+        ll.addView(editText,p);
+
+        TextView textView2 = new TextView(requireActivity().getApplicationContext());
+        textView2.setText("Quantidade de Cabos");
+        textView2.setTextColor(getResources().getColor(R.color.textColor));
+        textView2.setTypeface(null, Typeface.BOLD);
+        ll.addView(textView2,p);
+
+        final EditText editText2 = new EditText(requireActivity().getApplicationContext());
+        editText2.setBackground(getResources().getDrawable(R.drawable.edit_round));
+        editText2.setHeight(70);
+        editText2.setPadding(10, 10, 10, 10);
+        ll.addView(editText2,p);
+
+        RelativeLayout relativeLayout = new RelativeLayout(requireActivity().getApplicationContext());
+        relativeLayout.setLayoutParams(p);
+
+        final Spinner spinner = new Spinner(requireActivity().getApplicationContext());
+        spinner.setLayoutParams(pRelative);
+        String[] testArray = getResources().getStringArray(R.array.TipoCaboMutuo);
+        ArrayAdapter spinnerArrayAdapter = new ArrayAdapter<>(
+                requireActivity().getApplicationContext(), android.R.layout.simple_spinner_item, testArray );
+        spinner.setAdapter(spinnerArrayAdapter);
+        spinner.setPopupBackgroundResource(R.drawable.spinner_pop);
+        relativeLayout.setBackground(getResources().getDrawable(R.drawable.spinner_style));
+        relativeLayout.addView(spinner);
+        ll.addView(relativeLayout);
+
+        TextView textView3 = new TextView(requireActivity().getApplicationContext());
+        textView3.setText("Quantidade de Cabos 2");
+        textView3.setTextColor(getResources().getColor(R.color.textColor));
+        textView3.setTypeface(null, Typeface.BOLD);
+        ll.addView(textView3,p);
+
+        final EditText editText3 = new EditText(requireActivity().getApplicationContext());
+        editText3.setBackground(getResources().getDrawable(R.drawable.edit_round));
+        editText3.setHeight(70);
+        editText3.setPadding(10, 10, 10, 10);
+        ll.addView(editText3,p);
+
+        RelativeLayout relativeLayout2 = new RelativeLayout(requireActivity().getApplicationContext());
+        relativeLayout2.setLayoutParams(p);
+
+        final Spinner spinner2 = new Spinner(requireActivity().getApplicationContext());
+        spinner2.setLayoutParams(pRelative);
+        String[] testArray2 = getResources().getStringArray(R.array.TipoCaboMutuo2);
+        ArrayAdapter spinnerArrayAdapter2 = new ArrayAdapter<>(
+                requireActivity().getApplicationContext(), android.R.layout.simple_spinner_item, testArray2 );
+        spinner2.setAdapter(spinnerArrayAdapter2);
+        spinner2.setPopupBackgroundResource(R.drawable.spinner_pop);
+        relativeLayout2.setBackground(getResources().getDrawable(R.drawable.spinner_style));
+        relativeLayout2.addView(spinner2);
+        ll.addView(relativeLayout2);
+
+        RelativeLayout relativeLayout3 = new RelativeLayout(requireActivity().getApplicationContext());
+        relativeLayout3.setLayoutParams(p);
+
+        final Spinner spinner3 = new Spinner(requireActivity().getApplicationContext());
+        spinner3.setLayoutParams(pRelative);
+        String[] testArray3 = getResources().getStringArray(R.array.finalidade);
+        ArrayAdapter spinnerArrayAdapter3 = new ArrayAdapter<>(
+                requireActivity().getApplicationContext(), android.R.layout.simple_spinner_item, testArray3 );
+        spinner3.setAdapter(spinnerArrayAdapter3);
+        spinner3.setPopupBackgroundResource(R.drawable.spinner_pop);
+        relativeLayout3.setBackground(getResources().getDrawable(R.drawable.spinner_style));
+        relativeLayout3.addView(spinner3);
+        ll.addView(relativeLayout3);
+
+        RelativeLayout relativeLayout4 = new RelativeLayout(requireActivity().getApplicationContext());
+        relativeLayout4.setLayoutParams(p);
+
+        final Spinner spinner4 = new Spinner(requireActivity().getApplicationContext());
+        spinner4.setLayoutParams(pRelative);
+        String[] testArray4 = getResources().getStringArray(R.array.ceans);
+        ArrayAdapter spinnerArrayAdapter4 = new ArrayAdapter<>(
+                requireActivity().getApplicationContext(), android.R.layout.simple_spinner_item, testArray4 );
+        spinner4.setAdapter(spinnerArrayAdapter4);
+        spinner4.setPopupBackgroundResource(R.drawable.spinner_pop);
+        relativeLayout4.setBackground(getResources().getDrawable(R.drawable.spinner_style));
+        relativeLayout4.addView(spinner4);
+        ll.addView(relativeLayout4);
+
+        RelativeLayout relativeLayout5 = new RelativeLayout(requireActivity().getApplicationContext());
+        relativeLayout5.setLayoutParams(p);
+
+        final Spinner spinner5 = new Spinner(requireActivity().getApplicationContext());
+        spinner5.setLayoutParams(pRelative);
+        String[] testArray5 = getResources().getStringArray(R.array.tar);
+        ArrayAdapter spinnerArrayAdapter5 = new ArrayAdapter<>(
+                requireActivity().getApplicationContext(), android.R.layout.simple_spinner_item, testArray5 );
+        spinner5.setAdapter(spinnerArrayAdapter5);
+        spinner5.setPopupBackgroundResource(R.drawable.spinner_pop);
+        relativeLayout5.setBackground(getResources().getDrawable(R.drawable.spinner_style));
+        relativeLayout5.addView(spinner5);
+        ll.addView(relativeLayout5);
+
+        RelativeLayout relativeLayout6 = new RelativeLayout(requireActivity().getApplicationContext());
+        relativeLayout6.setLayoutParams(p);
+
+        final Spinner spinner6 = new Spinner(requireActivity().getApplicationContext());
+        spinner6.setLayoutParams(pRelative);
+        String[] testArray6 = getResources().getStringArray(R.array.reservaTec);
+        ArrayAdapter spinnerArrayAdapter6 = new ArrayAdapter<>(
+                requireActivity().getApplicationContext(), android.R.layout.simple_spinner_item, testArray6 );
+        spinner6.setAdapter(spinnerArrayAdapter6);
+        spinner6.setPopupBackgroundResource(R.drawable.spinner_pop);
+        relativeLayout6.setBackground(getResources().getDrawable(R.drawable.spinner_style));
+        relativeLayout6.addView(spinner6);
+        ll.addView(relativeLayout6);
+
+        RelativeLayout relativeLayout7 = new RelativeLayout(requireActivity().getApplicationContext());
+        relativeLayout7.setLayoutParams(p);
+
+        final Spinner spinner7 = new Spinner(requireActivity().getApplicationContext());
+        spinner7.setLayoutParams(pRelative);
+        String[] testArray7 = getResources().getStringArray(R.array.backbone);
+        ArrayAdapter spinnerArrayAdapter7 = new ArrayAdapter<>(
+                requireActivity().getApplicationContext(), android.R.layout.simple_spinner_item, testArray7 );
+        spinner7.setAdapter(spinnerArrayAdapter7);
+        spinner7.setPopupBackgroundResource(R.drawable.spinner_pop);
+        relativeLayout7.setBackground(getResources().getDrawable(R.drawable.spinner_style));
+        relativeLayout7.addView(spinner7);
+        ll.addView(relativeLayout7);
+
+        final CheckBox checkBox = new CheckBox(requireActivity().getApplicationContext());
+        checkBox.setText("Placa Identificadora");
+        checkBox.setTextColor(getResources().getColor(R.color.textColor));
+        ll.addView(checkBox);
+
+        final CheckBox checkBox2 = new CheckBox(requireActivity().getApplicationContext());
+        checkBox2.setText("Descidade de Cabos");
+        checkBox2.setTextColor(getResources().getColor(R.color.textColor));
+        ll.addView(checkBox2);
+
+        TextView textView4 = new TextView(requireActivity().getApplicationContext());
+        textView4.setText("Irregularidade");
+        textView4.setTextColor(getResources().getColor(R.color.textColor));
+        textView4.setTypeface(null, Typeface.BOLD);
+        ll.addView(textView4,p);
+
+        final EditText editText4 = new EditText(requireActivity().getApplicationContext());
+        editText4.setBackground(getResources().getDrawable(R.drawable.edit_round));
+        editText4.setHeight(70);
+        editText4.setPadding(10, 10, 10, 10);
+        ll.addView(editText4,p);
+
+        checkBox.setButtonTintList(getResources().getColorStateList(R.color.colorAccent));
+        checkBox2.setButtonTintList(getResources().getColorStateList(R.color.colorAccent));
+
+        checkMutuoPlaca.add(checkBox);
+        checkMutuoDescida.add(checkBox2);
+
+        spinMutuoTipoCabo.add(spinner);
+        spinMutuoTipoCabo2.add(spinner2);
+        spinMutuoFinalidade.add(spinner3);
+        spinMutuoCeans.add(spinner4);
+        spinMutuoTar.add(spinner5);
+        spinMutuoReservaTec.add(spinner6);
+        spinMutuoBackbone.add(spinner7);
+
+        textMutuoNome.add(textView);
+        textMutuoQuantidade.add(textView2);
+        textMutuoQuantidade2.add(textView3);
+        textMutuoIrregularidade.add(textView4);
+
+        editMutuoNome.add(editText);
+        editMutuoQuantidade.add(editText2);
+        editMutuoQuantidade2.add(editText3);
+        editMutuoIrregularidade.add(editText4);
+    }
+
+    public void removeMutuo(){
+        LinearLayout ll = root.findViewById(R.id.layoutHolderMutuo);
+        try{
+            ll.removeView(textMutuo.get(textMutuo.size()-1));
+            textMutuo.remove(textMutuo.size()-1);
+        }catch (Exception e){
+
+        }
+
+        ll.removeView((View)spinMutuoTipoCabo.get(spinMutuoTipoCabo.size()-1).getParent());
+        ll.removeView((View)spinMutuoTipoCabo2.get(spinMutuoTipoCabo2.size()-1).getParent());
+        ll.removeView((View)spinMutuoFinalidade.get(spinMutuoFinalidade.size()-1).getParent());
+        ll.removeView((View)spinMutuoCeans.get(spinMutuoCeans.size()-1).getParent());
+        ll.removeView((View)spinMutuoTar.get(spinMutuoTar.size()-1).getParent());
+        ll.removeView((View)spinMutuoReservaTec.get(spinMutuoReservaTec.size()-1).getParent());
+        ll.removeView((View)spinMutuoBackbone.get(spinMutuoBackbone.size()-1).getParent());
+        ll.removeView(textMutuoNome.get(textMutuoNome.size()-1));
+        ll.removeView(textMutuoQuantidade.get(textMutuoQuantidade.size()-1));
+        ll.removeView(textMutuoQuantidade2.get(textMutuoQuantidade2.size()-1));
+        ll.removeView(textMutuoIrregularidade.get(textMutuoIrregularidade.size()-1));
+        ll.removeView(editMutuoNome.get(editMutuoNome.size()-1));
+        ll.removeView(editMutuoQuantidade.get(editMutuoQuantidade.size()-1));
+        ll.removeView(editMutuoQuantidade2.get(editMutuoQuantidade2.size()-1));
+        ll.removeView(editMutuoIrregularidade.get(editMutuoIrregularidade.size()-1));
+        ll.removeView(checkMutuoPlaca.get(checkMutuoPlaca.size()-1));
+        ll.removeView(checkMutuoDescida.get(checkMutuoDescida.size()-1));
+
+        spinMutuoTipoCabo.remove(spinMutuoTipoCabo.size()-1);
+        spinMutuoTipoCabo2.remove(spinMutuoTipoCabo2.size()-1);
+        spinMutuoFinalidade.remove(spinMutuoFinalidade.size()-1);
+        spinMutuoCeans.remove(spinMutuoCeans.size()-1);
+        spinMutuoTar.remove(spinMutuoTar.size()-1);
+        spinMutuoReservaTec.remove(spinMutuoReservaTec.size()-1);
+        spinMutuoBackbone.remove(spinMutuoBackbone.size()-1);
+        textMutuoNome.remove(textMutuoNome.size()-1);
+        editMutuoNome.remove(editMutuoNome.size()-1);
+        textMutuoQuantidade.remove(textMutuoQuantidade.size()-1);
+        editMutuoQuantidade.remove(editMutuoQuantidade.size()-1);
+        textMutuoQuantidade2.remove(textMutuoQuantidade2.size()-1);
+        editMutuoQuantidade2.remove(editMutuoQuantidade2.size()-1);
+        textMutuoIrregularidade.remove(textMutuoIrregularidade.size()-1);
+        editMutuoIrregularidade.remove(editMutuoIrregularidade.size()-1);
+        checkMutuoPlaca.remove(checkMutuoPlaca.size()-1);
+        checkMutuoDescida.remove(checkMutuoDescida.size()-1);
+
+
+        if(spinMutuoTipoCabo.size() == 0){
+            btnMutuoRemove.setVisibility(View.GONE);
+        }
+
+    }
+
+    public void removeMutuoAll(){
+        LinearLayout ll = root.findViewById(R.id.layoutHolderMutuo);
+        ll.removeAllViews();
+        try{
+            textMutuo.clear();
+        }catch (Exception e){
+
+        }
+
+        spinMutuoTipoCabo.clear();
+        spinMutuoTipoCabo2.clear();
+        spinMutuoFinalidade.clear();
+        spinMutuoCeans.clear();
+        spinMutuoTar.clear();
+        spinMutuoReservaTec.clear();
+        spinMutuoBackbone.clear();
+        textMutuoNome.clear();
+        editMutuoNome.clear();
+        textMutuoQuantidade.clear();
+        editMutuoQuantidade.clear();
+        textMutuoQuantidade2.clear();
+        editMutuoQuantidade2.clear();
+        textMutuoIrregularidade.clear();
+        editMutuoIrregularidade.clear();
+        checkMutuoPlaca.clear();
+        checkMutuoDescida.clear();
+
 
     }
 

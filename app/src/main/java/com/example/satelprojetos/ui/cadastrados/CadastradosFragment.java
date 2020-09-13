@@ -303,7 +303,7 @@ public class CadastradosFragment extends Fragment {
                 }
             };
 
-            int socketTimeOut = 50000;// u can change this .. here it is 50 seconds
+            int socketTimeOut = 50000;
 
             RetryPolicy retryPolicy = new DefaultRetryPolicy(socketTimeOut, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
             stringRequest.setRetryPolicy(retryPolicy);
@@ -327,13 +327,7 @@ public class CadastradosFragment extends Fragment {
                 ConnectivityManager connectivityManager = (ConnectivityManager) requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
                 if (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                         connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
-                    /*FormularioDAO formularioDAO = new FormularioDAO(getActivity().getApplicationContext());
-                    listaFormulario = formularioDAO.listar();
-                    autentificacao = ConfiguracaoFirebase.getFirebaseAuth();
-                    DatabaseReference formularios = referencia.child("usuarios").child(Base64Custom.codificarBase64(autentificacao.getCurrentUser().getEmail())).child("formulario");
-                    for (int i = 0; i < listaFormulario.size(); i++) {
-                        formularios.child(listaFormulario.get(i).getId().toString()).setValue(listaFormulario.get(i));
-                    }*/
+
                     enviarParaGS(this.formularios, this.email);
                 }else{
                     requireActivity().runOnUiThread(new Runnable() {

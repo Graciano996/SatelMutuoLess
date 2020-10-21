@@ -559,32 +559,9 @@ public class CadastroFragment extends Fragment {
 
         //MUTUO
         mutuo = root.findViewById(R.id.chkCadastroMutuo);
-        textOcupante = root.findViewById(R.id.textViewQuantidadeOcupante);
+
         quantidadeOcupantes = root.findViewById(R.id.textCadastroQuantidadeMutuo);
-        textQuantidadeCabo = root.findViewById(R.id.textViewQuantidadeMutuodois);
-        quantidadeCabos = root.findViewById(R.id.textCadastroMutuoQuantidadeCabos);
-        textQuantidadeCabodois = root.findViewById(R.id.textViewQuantidadeMutuo);
-        quantidadeCabosdois = root.findViewById(R.id.textCadastroMutuoQuantidadeCabosdois);
-        relativeTipoCabo = root.findViewById(R.id.relativeSpinTipoCabo);
-        tipoCabo = root.findViewById(R.id.spinCadastroMutuoTipoCabo);
-        relativeTipoCabodois = root.findViewById(R.id.relativeSpinTipoCabodois);
-        tipoCabodois = root.findViewById(R.id.spinCadastroMutuoTipoCabodois);
-        textNome = root.findViewById(R.id.textViewNome);
-        nome = root.findViewById(R.id.textCadastroNome);
-        relativeFinalidade = root.findViewById(R.id.relativeSpinFinalidade);
-        finalidade = root.findViewById(R.id.spinCadastroFinalidade);
-        relativeCeans = root.findViewById(R.id.relativeSpinCeans);
-        ceans = root.findViewById(R.id.spinCadastroCeans);
-        relativeTar = root.findViewById(R.id.relativeSpinTar);
-        tar = root.findViewById(R.id.spinCadastroTar);
-        relativeReservaTec = root.findViewById(R.id.relativeSpinReservaTec);
-        reservaTec = root.findViewById(R.id.spinCadastroReservaTec);
-        relativeBackbone = root.findViewById(R.id.relativeSpinBackbone);
-        backbone = root.findViewById(R.id.spinCadastroBackbone);
-        placaIdentificadora = root.findViewById(R.id.chkCadastroPlaca);
-        descidaCabos = root.findViewById(R.id.chkCadastroDescidaCabos);
-        textIrregularidade = root.findViewById(R.id.textViewIrregularidade);
-        descricaoIrregularidade = root.findViewById(R.id.textCadastroDescricao);
+
         observacaoMutuo = root.findViewById(R.id.textCadastroObservacaoMutuo);
         Button buttonUpload = root.findViewById(R.id.btnCadastroUploadAll);
         buttonUpload.setOnClickListener(new View.OnClickListener() {
@@ -3306,7 +3283,7 @@ public class CadastroFragment extends Fragment {
         progressDialog = null;
         geocoder = null;
         addresses = null;
-        relativeFinalidade = null;
+
         fotoPan.setImageResource(R.drawable.ic_menu_camera);
         fotoAlt.setImageResource(R.drawable.ic_menu_camera);
         fotoQualidade.setImageResource(R.drawable.ic_menu_camera);

@@ -144,7 +144,9 @@ public class CadastradosFragment extends Fragment {
 
     }
 
-
+    /*
+    Alimenta o RecyclerView, com uma lista de formulários
+     */
     public void carregarFormulariosCadastrados() {
         //Listar Formulários
         FormularioDAO formularioDAO = new FormularioDAO(getActivity().getApplicationContext());
@@ -173,6 +175,11 @@ public class CadastradosFragment extends Fragment {
         carregarFormulariosCadastrados();
     }
 
+    /*
+    Pega os objetos da lista de formulários e envia os dados para um script google que tem a
+    função de colocar os dados na planilha google, para um melhor controle optou-se por enviar um
+    arquivo por vez, devido a grande instabilidade de rede da região.
+    */
     public void enviarParaGS(final List<Formulario> formularioLista, final String email){
         final EnviadoDAO enviadoDAO = new EnviadoDAO(getActivity().getApplicationContext());
         final FormularioDAO formularioDAO = new FormularioDAO(getActivity().getApplicationContext());

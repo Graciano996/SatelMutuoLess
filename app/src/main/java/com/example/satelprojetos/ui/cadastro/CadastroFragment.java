@@ -1,3 +1,4 @@
+
 package com.example.satelprojetos.ui.cadastro;
 
 import android.Manifest;
@@ -128,24 +129,16 @@ public class CadastroFragment extends Fragment {
     private List<TextView> textIPQLampada, textIP,textAtivoChFusivel,textAtivoChFusivelReligador,
     textAtivoOutro,textAtivo, textMutuo,textMutuoNome,textMutuoQuantidade,textMutuoQuantidade2,
     textMutuoIrregularidade;
-    private RelativeLayout relativeFinalidade,
-    relativeCeans, relativeTar, relativeReservaTec, relativeBackbone,relativeTipoCabo,relativeTipoCabodois,
-    relativeDimensaoVegetacao, relativeBaixa, relativeMedia, relativeEstadoArvore,
+    private RelativeLayout relativeDimensaoVegetacao, relativeBaixa, relativeMedia, relativeEstadoArvore,
             relativeLocalArvore;
-    private TextView textQuantidadeCabo,
-    textQuantidadeCabodois, textNome, textIrregularidade, textOcupante;
     private EditText codigo, endereco, latitude, longitude, observacaoFisicas,
             observacaoAtivos,
-            observacaoVegetacao, observacaoIP, quantidadeOcupantes,
-            quantidadeCabos, quantidadeCabosdois, nome,  descricaoIrregularidade, observacaoMutuo;
+            observacaoVegetacao, observacaoIP, quantidadeOcupantes, observacaoMutuo;
     private Spinner municipio, alturaCarga, tipoPoste,
-            dimensaoVegetacao,
-
-            tipoCabo, tipoCabodois, distaciaBaixa, distanciaMedia, estadoArvore,
-            localArvore, finalidade, ceans,tar,reservaTec,backbone;
+            dimensaoVegetacao, distaciaBaixa, distanciaMedia, estadoArvore,
+            localArvore;
     private CheckBox normal, ferragemExposta, fletido, danificado, abalroado, trincado,
-            ativos, ip, mutuo,
-            placaIdentificadora, descidaCabos, quedaArvore,chkVegetacao;
+            ativos, ip, mutuo, quedaArvore,chkVegetacao;
     private Formulario formularioAtual;
     private File photoFile = null;
     private Location localizacao;
@@ -159,8 +152,8 @@ public class CadastroFragment extends Fragment {
             imagemMutuo, imagemMutuo2, imagemMutuo3,imagemVeg;
     private String imgPathPan, imgPathAlt, imgPathQualidade,imgPathIP, imgPathAtivos,
             imgPathAtivos2, imgPathMutuo, imgPathMutuo2, imgPathMutuo3,imgPathVeg;
-    public Button btnUpload, btn, btnFoto, btnFoto2,btnFoto3,btnFoto4, btnFoto13,btnFoto14,btnFoto15,btnFoto16,btnFoto17,
-    btnFoto30,btnUpload2,btnUpload3, btnUpload4,btnUpload13,btnUpload14,btnUpload15,btnUpload16,btnUpload17,btnUpload30;
+    public Button btnFoto, btnFoto2,btnFoto3,btnFoto4, btnFoto13,btnFoto14,btnFoto15,btnFoto16,btnFoto17,
+    btnFoto30,btnUpload30;
     public View root;
     Boolean outroOcupante = false;
 
@@ -539,110 +532,6 @@ public class CadastroFragment extends Fragment {
             }
         });
 
-        btnUpload = root.findViewById(R.id.btnUpload);
-        btnUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btn = btnUpload;
-                ThreadUpload threadUpload = new ThreadUpload(imgPathPan, codigo, contadorAt, 1, "CS");
-                threadUpload.start();
-                //upload(imagemPan, imgPathPan, codigo, contadorAt, 1, "CS");
-
-            }
-        });
-
-        btnUpload2 = root.findViewById(R.id.btnUpload2);
-        btnUpload2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btn = btnUpload2;
-                ThreadUpload threadUpload = new ThreadUpload(imgPathAlt, codigo, contadorAt, 2, "CS");
-                threadUpload.start();
-                //upload(imagemAlt, imgPathAlt, codigo, contadorAt, 2, "CS");
-
-            }
-        });
-
-        btnUpload3 = root.findViewById(R.id.btnUpload3);
-        btnUpload3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btn = btnUpload3;
-                ThreadUpload threadUpload = new ThreadUpload(imgPathQualidade, codigo, contadorAt, 3, "CS");
-                threadUpload.start();
-                //upload(imagemQualidade, imgPathQualidade, codigo, contadorAt, 3, "CS");
-            }
-        });
-
-        btnUpload4 = root.findViewById(R.id.btnUpload4);
-        btnUpload4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btn = btnUpload4;
-                ThreadUpload threadUpload = new ThreadUpload(imgPathIP, codigo, contadorIp, 4, "IP");
-                threadUpload.start();
-            }
-        });
-
-        btnUpload13 = root.findViewById(R.id.btnUpload13);
-        btnUpload13.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btn = btnUpload13;
-                ThreadUpload threadUpload = new ThreadUpload(imgPathAtivos, codigo, contadorAt, 5, "CS");
-                threadUpload.start();
-            }
-        });
-        btnUpload14 = root.findViewById(R.id.btnUpload14);
-        btnUpload14.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btn = btnUpload14;
-                ThreadUpload threadUpload = new ThreadUpload(imgPathAtivos2, codigo, contadorAt, 6, "CS");
-                threadUpload.start();
-            }
-        });
-
-        btnUpload15 = root.findViewById(R.id.btnUpload15);
-        btnUpload15.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btn = btnUpload15;
-                ThreadUpload threadUpload = new ThreadUpload(imgPathMutuo, codigo, contadorAt, 7, "CS");
-                threadUpload.start();
-            }
-        });
-
-        btnUpload16 = root.findViewById(R.id.btnUpload16);
-        btnUpload16.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btn = btnUpload16;
-                ThreadUpload threadUpload = new ThreadUpload(imgPathMutuo2, codigo, contadorAt, 8, "CS");
-                threadUpload.start();
-            }
-        });
-
-        btnUpload17 = root.findViewById(R.id.btnUpload17);
-        btnUpload17.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btn = btnUpload17;
-                ThreadUpload threadUpload = new ThreadUpload(imgPathMutuo3, codigo, contadorAt, 9, "CS");
-                threadUpload.start();
-            }
-        });
-
-        btnUpload30 = root.findViewById(R.id.btnUpload30);
-        btnUpload30.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btn = btnUpload30;
-                ThreadUpload threadUpload = new ThreadUpload(imgPathVeg, codigo, contadorAr, 10, "Ar");
-                threadUpload.start();
-            }
-        });
-
 
         endereco = root.findViewById(R.id.textCadastroEndereco);
         municipio = root.findViewById(R.id.spinCadastroMunicipio);
@@ -697,7 +586,13 @@ public class CadastroFragment extends Fragment {
         textIrregularidade = root.findViewById(R.id.textViewIrregularidade);
         descricaoIrregularidade = root.findViewById(R.id.textCadastroDescricao);
         observacaoMutuo = root.findViewById(R.id.textCadastroObservacaoMutuo);
-
+        Button buttonUpload = root.findViewById(R.id.btnCadastroUploadAll);
+        buttonUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uploadAll();
+            }
+        });
         //VEGETAÇÃO
         chkVegetacao = root.findViewById(R.id.chkCadastroVegetacao);
         relativeDimensaoVegetacao = root.findViewById(R.id.relativeSpinDimensaoVegetacao);
@@ -743,16 +638,17 @@ public class CadastroFragment extends Fragment {
             }
         });
         try {
-            assert this.getArguments() != null;
-            codigoEnergisa = (String) this.getArguments().getSerializable("codigoEnergisa");
-            if (codigoEnergisa != null) {
-                codigo.setText(codigoEnergisa);
+            if( this.getArguments() != null) {
+                codigoEnergisa = (String) this.getArguments().getSerializable("codigoEnergisa");
+                if (codigoEnergisa != null) {
+                    codigo.setText(codigoEnergisa);
+                }
             }
         } catch (Exception e) {
         }
         Button buttonCadastrar = root.findViewById(R.id.btnCadastroSalvar);
         try {
-            assert this.getArguments() != null;
+            //assert this.getArguments() != null;
             formularioAtual = (Formulario) this.getArguments().getSerializable("formularioSelecionado");
             if (formularioAtual != null) {
                 final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity(), R.style.LightDialogTheme);
@@ -1089,7 +985,7 @@ public class CadastroFragment extends Fragment {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-
+    //Função para rotacionar a Imagem, para que a mesma fique com 90º
     private static Bitmap rotateImageIfRequired(String filePath) throws IOException {
         ExifInterface ei;
         ei = new ExifInterface(filePath);
@@ -1111,6 +1007,7 @@ public class CadastroFragment extends Fragment {
         }
     }
 
+    //Função para enviar a foto para o banco de dados.
     public void upload(String imgPathUpload, EditText codigoUpload, int contadorUpload, final int codigoSetor, String sufixo) {
         if (imgPathUpload == null) {
             requireActivity().runOnUiThread(new Runnable() {
@@ -1134,12 +1031,7 @@ public class CadastroFragment extends Fragment {
                 requireActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        progressDialog = new ProgressDialog(requireContext(), R.style.LightDialogTheme);
-                        progressDialog.setMessage("Enviando dados..."); // Setting Message
-                        progressDialog.setTitle("Por favor Espere"); // Setting Title
-                        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
-                        progressDialog.show(); // Display Progress Dialog
-                        progressDialog.setCancelable(false);
+
                     }
                 });
                 Bitmap imagemCorrigida;
@@ -1181,64 +1073,54 @@ public class CadastroFragment extends Fragment {
                                 switch (codigoSetor) {
                                     case 1:
                                         urlFotoPan = task.getResult();
-                                        contadorAt = contadorAt + 1;
-                                        btn.setText("Enviado");
-                                        progressDialog.dismiss();
+
+
                                         break;
                                     case 2:
                                         urlFotoAlt = task.getResult();
-                                        contadorAt = contadorAt + 1;
-                                        btn.setText("Enviado");
-                                        progressDialog.dismiss();
+
+
                                         break;
                                     case 3:
                                         urlFotoQualidade = task.getResult();
-                                        contadorAt = contadorAt + 1;
-                                        btn.setText("Enviado");
+
                                         progressDialog.dismiss();
                                         break;
                                     case 4:
                                         urlFotoIP = task.getResult();
-                                        contadorIp = contadorIp + 1;
-                                        btn.setText("Enviado");
-                                        progressDialog.dismiss();
+
+
                                         break;
                                     case 5:
                                         urlFotoAtivos = task.getResult();
-                                        contadorAt = contadorAt + 1;
-                                        btn.setText("Enviado");
-                                        progressDialog.dismiss();
+
+
                                         break;
                                     case 6:
                                         urlFotoAtivos2 = task.getResult();
-                                        contadorAt = contadorAt + 1;
-                                        btn.setText("Enviado");
-                                        progressDialog.dismiss();
+
+
                                         break;
                                     case 7:
                                         urlFotoMutuo = task.getResult();
-                                        contadorAt = contadorAt + 1;
-                                        btn.setText("Enviado");
-                                        progressDialog.dismiss();
+
+
                                         break;
                                     case 8:
                                         urlFotoMutuo2 = task.getResult();
-                                        contadorAt = contadorAt + 1;
-                                        btn.setText("Enviado");
-                                        progressDialog.dismiss();
+
+
                                         break;
                                     case 9:
                                         urlFotoMutuo3 = task.getResult();
-                                        contadorAt = contadorAt + 1;
-                                        btn.setText("Enviado");
-                                        progressDialog.dismiss();
+
+
                                         break;
                                     case 10:
-                                        Log.i("ARVORE", "2");
+
                                         urlFotoVeg = task.getResult();
-                                        contadorAr = contadorAr + 1;
-                                        btn.setText("Enviado");
-                                        progressDialog.dismiss();
+
+
                                         break;
                                 }
                             }
@@ -1268,6 +1150,7 @@ public class CadastroFragment extends Fragment {
         }
     }
 
+    //Função criar um novo Thread quando chamar a ação da câmera
     class ThreadCamera extends Thread {
         private int requestCode;
         private int resultCode;
@@ -1285,6 +1168,7 @@ public class CadastroFragment extends Fragment {
         }
     }
 
+    //Função criar um novo Thread quando chamar a ação de Upload
     class ThreadUpload extends Thread {
         private String imgPathUpload;
         private EditText codigoUpload;
@@ -1334,6 +1218,7 @@ public class CadastroFragment extends Fragment {
     }
 
 
+    //Função para recuperar o resultCode após a escolha de câmera ou galeria
     public void intentGet(int requestCode, int resultCode, @Nullable final Intent data) {
         if (resultCode == RESULT_OK) {
             final Uri localImagemSelecionada;
@@ -1649,6 +1534,7 @@ public class CadastroFragment extends Fragment {
         }
     }
 
+    //Função para recuperar  certos dados do poste selecionado
     private void novoPoste(final View root) {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 8;
@@ -2161,6 +2047,7 @@ public class CadastroFragment extends Fragment {
         });
     }
 
+    //Função para recuperar todos os dados do poste selecionado
     private void mesmoPoste(final View root) {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 8;
@@ -2276,56 +2163,7 @@ public class CadastroFragment extends Fragment {
                 longitude.setText(formularioAtual.getLongitude());
 
 
-                if ((urlFotoPan == null) || ((urlFotoPan.toString()).equals(""))) {
 
-                } else {
-                    btnUpload.setText("Enviado");
-                }
-                if ((urlFotoAlt == null) || ((urlFotoAlt.toString()).equals(""))) {
-
-                } else {
-                    btnUpload2.setText("Enviado");
-                }
-                if ((urlFotoQualidade == null) || ((urlFotoQualidade.toString()).equals(""))) {
-
-                } else {
-                    btnUpload3.setText("Enviado");
-                }
-                if ((urlFotoIP == null) || ((urlFotoIP.toString()).equals(""))) {
-
-                } else {
-                    btnUpload4.setText("Enviado");
-                }
-                if ((urlFotoAtivos == null) || ((urlFotoAtivos.toString()).equals(""))) {
-
-                } else {
-                    btnUpload13.setText("Enviado");
-                }
-                if ((urlFotoAtivos2 == null) || ((urlFotoAtivos2.toString()).equals(""))) {
-
-                } else {
-                    btnUpload14.setText("Enviado");
-                }
-                if ((urlFotoMutuo == null) || ((urlFotoMutuo.toString()).equals(""))) {
-
-                } else {
-                    btnUpload15.setText("Enviado");
-                }
-                if ((urlFotoMutuo2 == null) || ((urlFotoMutuo2.toString()).equals(""))) {
-
-                } else {
-                    btnUpload16.setText("Enviado");
-                }
-                if ((urlFotoMutuo3 == null) || ((urlFotoMutuo3.toString()).equals(""))) {
-
-                } else {
-                    btnUpload17.setText("Enviado");
-                }
-                if ((urlFotoVeg == null) || ((urlFotoVeg.toString()).equals(""))) {
-
-                } else {
-                    btnUpload30.setText("Enviado");
-                }
 
                 if (formularioAtual.getMunicipio().equals("-")) {
                     municipio.setSelection(0);
@@ -2809,7 +2647,7 @@ public class CadastroFragment extends Fragment {
         });
 
     }
-
+    //Função para criar um thread assíncrono para a função novoPoste
     class NovoPosteTask extends AsyncTask<Void, Void, Void> {
         ProgressDialog progressDialogAsync = new ProgressDialog(requireContext(), R.style.LightDialogTheme);
 
@@ -2839,6 +2677,7 @@ public class CadastroFragment extends Fragment {
         }
     }
 
+    //Função para criar um thread assíncrono para a função mesmoPoste
     class MesmoPosteTask extends AsyncTask<Void, Void, Void> {
         ProgressDialog progressDialogAsync = new ProgressDialog(requireContext(), R.style.LightDialogTheme);
 
@@ -2874,6 +2713,7 @@ public class CadastroFragment extends Fragment {
         }
     }
 
+    //Função utilizada para pegar os dados, e salvar no banco de dados interno do android.
     public void getFormulario(Boolean novoPosteEstado) throws Throwable {
         Log.i("ENTREI","AQUI");
         progressDialog = new ProgressDialog(requireContext(), R.style.LightDialogTheme);
@@ -3454,21 +3294,10 @@ public class CadastroFragment extends Fragment {
     }
 
 
-
-    //free up any drawables..views
-    private void unbindDrawables(View view) {
-        if (view.getBackground() != null) {
-            view.getBackground().setCallback(null);
-        }
-        if (view instanceof ViewGroup) {
-            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-                unbindDrawables(((ViewGroup) view).getChildAt(i));
-            }
-            if (!(view instanceof AdapterView<?>))
-                ((ViewGroup) view).removeAllViews();
-        }
-    }
-
+    /*
+    *Função usada para limpar a memoria do android, devido aos Bitmap que consomen muita RAM
+    *levando a paralização e crash do aplicativo.
+     */
     public void limparMemoria() throws Throwable {
         locationManager = null;
         locationListener = null;
@@ -3524,6 +3353,8 @@ public class CadastroFragment extends Fragment {
         Runtime.getRuntime().gc();
         //this.finalize();
     }
+
+    //Funçao usada para criar os campos para preencher ilumininação pública dinâmicamente.
     public void createIP(){
         LinearLayout ll = root.findViewById(R.id.layoutHolderIP);
         // add edittext
@@ -3644,6 +3475,7 @@ public class CadastroFragment extends Fragment {
         editIP24H.add(editText3);
     }
 
+    //Função utilizada para remover a ultima iluminação pública adicionado pelo botão "Adicionar".
     public void removeIP(){
         LinearLayout ll = root.findViewById(R.id.layoutHolderIP);
         try{
@@ -3674,6 +3506,10 @@ public class CadastroFragment extends Fragment {
 
     }
 
+    /*
+    Função usada para remover todos os botões gerados ao apertar "Adicionar" na parte de iluminação
+    pública
+    */
     public void removeIPAll(){
         LinearLayout ll = root.findViewById(R.id.layoutHolderIP);
         ll.removeAllViews();
@@ -3692,6 +3528,7 @@ public class CadastroFragment extends Fragment {
         editIP24H.clear();
     }
 
+    //Funçao usada para criar os campos para preencher uso ativo dinâmicamente.
     public void createAtivo(){
         LinearLayout ll = root.findViewById(R.id.layoutHolderAtivo);
         // add edittext
@@ -3891,6 +3728,7 @@ public class CadastroFragment extends Fragment {
     }
 
 
+    //Função utilizada para remover o ultimo ativo adicionado pelo botão "Adicionar".
     public void removeAtivo(){
         LinearLayout ll = root.findViewById(R.id.layoutHolderAtivo);
         try{
@@ -3935,6 +3773,8 @@ public class CadastroFragment extends Fragment {
             btnAtivoRemove.setVisibility(View.GONE);
         }
     }
+
+    //Função usada para remover todos os campos gerados ao apertar "Adicionar" na parte de Ativos.
     public void removeAtivoAll(){
         LinearLayout ll = root.findViewById(R.id.layoutHolderAtivo);
         ll.removeAllViews();
@@ -3960,6 +3800,8 @@ public class CadastroFragment extends Fragment {
         checkAtivoMedicao.clear();
     }
 
+
+    //Funçao usada para criar os campos para preencher uso mutuo dinâmicamente.
     public void createMutuo(){
         LinearLayout ll = root.findViewById(R.id.layoutHolderMutuo);
 
@@ -4158,6 +4000,7 @@ public class CadastroFragment extends Fragment {
         editMutuoIrregularidade.add(editText4);
     }
 
+    //Função utilizada para remover o ultimo uso mútuo adicionado pelo botão "Adicionar".
     public void removeMutuo(){
         LinearLayout ll = root.findViewById(R.id.layoutHolderMutuo);
         try{
@@ -4210,6 +4053,7 @@ public class CadastroFragment extends Fragment {
 
     }
 
+   //Função usada para remover todos os campos gerados ao apertar "Adicionar" na parte de uso Mutuo.
     public void removeMutuoAll(){
         LinearLayout ll = root.findViewById(R.id.layoutHolderMutuo);
         ll.removeAllViews();
@@ -4236,11 +4080,162 @@ public class CadastroFragment extends Fragment {
         editMutuoIrregularidade.clear();
         checkMutuoPlaca.clear();
         checkMutuoDescida.clear();
-
-
     }
 
+// Função para enviar as fotos para o Firebase
+public void uploadAll(){
+    contadorAt = 1;
+    progressDialog = new ProgressDialog(requireContext(), R.style.LightDialogTheme);
+    progressDialog.setMessage("Enviando dados..."); // Setting Message
+    progressDialog.setTitle("Por favor Espere"); // Setting Title
+    progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL); // Progress Dialog Style Spinner
+    progressDialog.show(); // Display Progress Dialog
+    progressDialog.setCancelable(false);
 
+    //É necessário estipular um tempo, para que o progress dialog, não feche imediatamente
+    new Handler().postDelayed(
+            new Runnable() {
+                public void run() {
+                    if(imgPathPan!=null){
+                        ThreadUpload threadUpload = new ThreadUpload(imgPathPan, codigo, contadorAt, 1, "CS");
+                        threadUpload.start();
+                        contadorAt = contadorAt+1;
+                        progressDialog.setProgress(10);
+                    }else{
+                        progressDialog.setProgress(10);
+                    }
+                }
+            }, 1000);
+
+    new Handler().postDelayed(
+            new Runnable() {
+                public void run() {
+                    if(imgPathAlt!=null){
+                        ThreadUpload threadUpload = new ThreadUpload(imgPathAlt, codigo, contadorAt, 2, "CS");
+                        threadUpload.start();
+                        contadorAt = contadorAt+1;
+                        progressDialog.setProgress(20);
+                    }else{
+                        progressDialog.setProgress(20);
+                    }
+                }
+            }, 1500);
+
+    new Handler().postDelayed(
+            new Runnable() {
+                public void run() {
+                    if(imgPathQualidade!=null){
+                        ThreadUpload threadUpload = new ThreadUpload(imgPathQualidade, codigo, contadorAt, 3, "CS");
+                        threadUpload.start();
+                        contadorAt = contadorAt+1;
+                        progressDialog.setProgress(30);
+                    }else{
+                        progressDialog.setProgress(30);
+                    }
+                }
+            }, 2000);
+
+    new Handler().postDelayed(
+            new Runnable() {
+                public void run() {
+                    if(imgPathIP!=null){
+                        ThreadUpload threadUpload = new ThreadUpload(imgPathIP, codigo, 1, 4, "IP");
+                        threadUpload.start();
+                        progressDialog.setProgress(40);
+                    }else{
+                        progressDialog.setProgress(40);
+                    }
+                }
+            }, 2500);
+
+    new Handler().postDelayed(
+            new Runnable() {
+                public void run() {
+                    if(imgPathAtivos!=null){
+                        ThreadUpload threadUpload = new ThreadUpload(imgPathAtivos, codigo, contadorAt, 5, "CS");
+                        threadUpload.start();
+                        contadorAt = contadorAt+1;
+                        progressDialog.setProgress(50);
+                    }else{
+                        progressDialog.setProgress(50);
+                    }
+                }
+            }, 3000);
+
+    new Handler().postDelayed(
+            new Runnable() {
+                public void run() {
+                    if(imgPathAtivos2!=null){
+                        ThreadUpload threadUpload = new ThreadUpload(imgPathAtivos2, codigo, contadorAt, 6, "CS");
+                        threadUpload.start();
+                        contadorAt = contadorAt+1;
+                        progressDialog.setProgress(60);
+                    }else{
+                        progressDialog.setProgress(60);
+                    }
+                }
+            }, 3500);
+
+    new Handler().postDelayed(
+            new Runnable() {
+                public void run() {
+                    if(imgPathMutuo!=null){
+                        ThreadUpload threadUpload = new ThreadUpload(imgPathMutuo, codigo, contadorAt, 7, "CS");
+                        threadUpload.start();
+                        contadorAt = contadorAt+1;
+                        progressDialog.setProgress(70);
+                    }else{
+                        progressDialog.setProgress(70);
+                    }
+                }
+            }, 4000);
+
+    new Handler().postDelayed(
+            new Runnable() {
+                public void run() {
+                    if(imgPathMutuo2!=null){
+                        ThreadUpload threadUpload = new ThreadUpload(imgPathMutuo2, codigo, contadorAt, 8, "CS");
+                        threadUpload.start();
+                        contadorAt = contadorAt+1;
+                        progressDialog.setProgress(80);
+                    }else{
+                        progressDialog.setProgress(80);
+                    }
+                }
+            }, 4500);
+
+
+    new Handler().postDelayed(
+            new Runnable() {
+                public void run() {
+                    if(imgPathMutuo3!=null){
+                        ThreadUpload threadUpload = new ThreadUpload(imgPathMutuo3, codigo, contadorAt, 9, "CS");
+                        threadUpload.start();
+                        contadorAt = contadorAt+1;
+                        progressDialog.setProgress(90);
+                    }else{
+                        progressDialog.setProgress(90);
+                    }
+                }
+            }, 5000);
+
+    new Handler().postDelayed(
+            new Runnable() {
+        public void run() {
+            if(imgPathVeg!=null){
+                ThreadUpload threadUpload = new ThreadUpload(imgPathVeg, codigo, 1, 10, "Ar");
+                threadUpload.start();
+                progressDialog.setProgress(100);
+                progressDialog.dismiss();
+            }else{
+                progressDialog.setProgress(100);
+                progressDialog.dismiss();
+            }
+        }
+    }, 5500);
+
+
+}
 
 
 }

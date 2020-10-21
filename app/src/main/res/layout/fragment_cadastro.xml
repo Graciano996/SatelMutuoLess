@@ -83,45 +83,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
-        <Button
-            android:id="@+id/btnUpload3"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/button_selector"
-            android:padding="5dp"
-            android:text="Upload de Foto Qualidade"
-            android:textColor="@color/textColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto3" />
-
-        <Button
-            android:id="@+id/btnUpload2"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/button_selector"
-            android:padding="5dp"
-            android:text="Upload de Foto Alt/Res"
-            android:textColor="@color/textColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto2" />
-
-        <Button
-            android:id="@+id/btnUpload"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/button_selector"
-            android:padding="5dp"
-            android:text="Upload de Foto Panorâmica"
-            android:textColor="@color/textColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto" />
-
         <ImageView
             android:id="@+id/imageCadastroFoto3"
             android:layout_width="300dp"
@@ -134,27 +95,27 @@
 
         <Button
             android:id="@+id/btnFoto3"
-            android:layout_width="150dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/button_selector_foto"
             android:padding="5dp"
             android:text="Adicionar Foto Qualidade"
             android:textColor="@color/textColor"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto3" />
 
         <Button
             android:id="@+id/btnFoto2"
-            android:layout_width="150dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/button_selector_foto"
             android:padding="5dp"
             android:text="Adicionar Foto Alt/Res"
             android:textColor="@color/textColor"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto2" />
 
@@ -594,33 +555,20 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnUpload17"
+            app:layout_constraintTop_toBottomOf="@+id/btnFoto17"
             app:srcCompat="@drawable/ic_menu_camera" />
 
         <Button
             android:id="@+id/btnFoto30"
-            android:layout_width="150dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/button_selector_foto"
             android:padding="5dp"
             android:text="Adicionar Foto Vegetecação"
             android:textColor="@color/textColor"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto30" />
-
-        <Button
-            android:id="@+id/btnUpload30"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/button_selector"
-            android:padding="5dp"
-            android:text="Upload de Vegetação"
-            android:textColor="@color/textColor"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto30" />
 
         <RelativeLayout
@@ -678,6 +626,19 @@
             app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
         <Button
+            android:id="@+id/btnCadastroUploadAll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/button_selector"
+            android:text="Enviar Fotos"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnFoto30" />
+
+        <Button
             android:id="@+id/btnCadastroSalvar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -689,7 +650,7 @@
             android:text="Salvar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnUpload30" />
+            app:layout_constraintTop_toBottomOf="@+id/btnCadastroUploadAll" />
 
         <Button
             android:id="@+id/btnNovoPoste"
@@ -798,35 +759,21 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnUpload3"
+            app:layout_constraintTop_toBottomOf="@+id/btnFoto3"
             app:srcCompat="@drawable/ic_menu_camera" />
 
         <Button
             android:id="@+id/btnFoto4"
-            android:layout_width="150dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/button_selector_foto"
             android:padding="5dp"
             android:text="Adicionar Foto Lampada"
             android:textColor="@color/textColor"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto4" />
-
-        <Button
-            android:id="@+id/btnUpload4"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/button_selector"
-            android:padding="5dp"
-            android:text="Upload de Foto Lampada"
-            android:textColor="@color/textColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto4" />
-
 
 
         <TextView
@@ -877,33 +824,20 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnUpload4"
+            app:layout_constraintTop_toBottomOf="@+id/btnFoto4"
             app:srcCompat="@drawable/ic_menu_camera" />
 
         <Button
             android:id="@+id/btnFoto13"
-            android:layout_width="150dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/button_selector_foto"
             android:padding="5dp"
             android:text="Adicionar Foto Ativos 1"
             android:textColor="@color/textColor"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto13" />
-
-        <Button
-            android:id="@+id/btnUpload13"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/button_selector"
-            android:padding="5dp"
-            android:text="Upload de Foto Ativos 1"
-            android:textColor="@color/textColor"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto13" />
 
         <ImageView
@@ -913,33 +847,20 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnUpload13"
+            app:layout_constraintTop_toBottomOf="@+id/btnFoto13"
             app:srcCompat="@drawable/ic_menu_camera" />
 
         <Button
             android:id="@+id/btnFoto14"
-            android:layout_width="150dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/button_selector_foto"
             android:padding="5dp"
             android:text="Adicionar Foto Ativos 2"
             android:textColor="@color/textColor"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto14" />
-
-        <Button
-            android:id="@+id/btnUpload14"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/button_selector"
-            android:padding="5dp"
-            android:text="Upload de Foto Ativos 2"
-            android:textColor="@color/textColor"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto14" />
 
 
@@ -1143,33 +1064,20 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnUpload14"
+            app:layout_constraintTop_toBottomOf="@+id/btnFoto14"
             app:srcCompat="@drawable/ic_menu_camera" />
 
         <Button
             android:id="@+id/btnFoto15"
-            android:layout_width="150dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/button_selector_foto"
             android:padding="5dp"
             android:text="Adicionar Foto Mutuo 1"
             android:textColor="@color/textColor"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto15" />
-
-        <Button
-            android:id="@+id/btnUpload15"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/button_selector"
-            android:padding="5dp"
-            android:text="Upload de Foto Mutuo 1"
-            android:textColor="@color/textColor"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto15" />
 
         <ImageView
@@ -1179,33 +1087,20 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnUpload15"
+            app:layout_constraintTop_toBottomOf="@+id/btnFoto15"
             app:srcCompat="@drawable/ic_menu_camera" />
 
         <Button
             android:id="@+id/btnFoto16"
-            android:layout_width="150dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/button_selector_foto"
             android:padding="5dp"
             android:text="Adicionar Foto Mutuo 2"
             android:textColor="@color/textColor"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto16" />
-
-        <Button
-            android:id="@+id/btnUpload16"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/button_selector"
-            android:padding="5dp"
-            android:text="Upload de Foto Mutuo 2"
-            android:textColor="@color/textColor"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto16" />
 
         <ImageView
@@ -1215,33 +1110,20 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnUpload16"
+            app:layout_constraintTop_toBottomOf="@+id/btnFoto16"
             app:srcCompat="@drawable/ic_menu_camera" />
 
         <Button
             android:id="@+id/btnFoto17"
-            android:layout_width="150dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/button_selector_foto"
             android:padding="5dp"
             android:text="Adicionar Foto Mutuo 3"
             android:textColor="@color/textColor"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto17" />
-
-        <Button
-            android:id="@+id/btnUpload17"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/button_selector"
-            android:padding="5dp"
-            android:text="Upload de Foto Mutuo 3"
-            android:textColor="@color/textColor"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto17" />
 
         <RelativeLayout
@@ -1523,14 +1405,14 @@
 
         <Button
             android:id="@+id/btnFoto"
-            android:layout_width="150dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/button_selector_foto"
             android:padding="5dp"
             android:text="Adicionar Foto Panorâmica"
             android:textColor="@color/textColor"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCadastroFoto" />
 
